@@ -1,70 +1,166 @@
-# Getting Started with Create React App
+# Nihar Ranjan Sahu's Portfolio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, unique portfolio website built with React, showcasing my projects, skills, and experience as a software engineer.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Responsive Design**: Optimized for all devices (desktop, tablet, and mobile)
+- **Dark/Light Mode**: Interactive theme toggle with custom animations
+- **Project Showcase**: Display all my projects with filtering capabilities
+- **Protected Albums**: Password-protected photo galleries
+- **Interactive UI**: Modern UI elements with animations and transitions
+- **Contact Form**: Easy way for potential employers to get in touch
 
-### `npm start`
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React.js
+- Styled Components
+- React Router
+- Framer Motion
+- React Icons
+- React TsParticles
+- Typewriter Effect
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Getting Started
 
-### `npm test`
+### Prerequisites
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js (v14.0.0 or higher)
+- npm (v6.0.0 or higher)
 
-### `npm run build`
+### Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone the repository
+   ```
+   git clone https://github.com/yourusername/portfolio.git
+   cd portfolio
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Install dependencies
+   ```
+   npm install
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Start the development server
+   ```
+   npm start
+   ```
 
-### `npm run eject`
+4. Open [http://localhost:3000](http://localhost:3000) to view the website in your browser
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Project Structure
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+nihar-portfolio/
+├── public/                 # Public assets
+│   ├── images/             # Image assets
+│   │   ├── projects/       # Project images
+│   │   └── albums/         # Album photos
+├── src/                    # Source code
+│   ├── components/         # React components
+│   │   ├── common/         # Common components (Navbar, Footer, etc.)
+│   │   ├── home/           # Homepage components
+│   │   ├── projects/       # Project-related components
+│   │   ├── albums/         # Album-related components
+│   │   └── contact/        # Contact components
+│   ├── context/            # React context
+│   ├── data/               # Data files (projects, skills, etc.)
+│   ├── pages/              # Page components
+│   ├── styles/             # Global styles
+│   └── utils/              # Utility functions
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Customization Guide
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Adding New Projects
 
-## Learn More
+1. Open `src/data/projects.js`
+2. Add a new project object to the array with the following structure:
+   ```javascript
+   {
+     id: 6, // Increment from the last ID
+     title: "Project Title",
+     description: "Project description",
+     features: [
+       "Feature 1",
+       "Feature 2",
+       "Feature 3"
+     ],
+     techStack: ["React", "Node.js", "MongoDB"],
+     links: {
+       github: "https://github.com/yourusername/project",
+       live: "https://project-demo.com"
+     },
+     image: "/images/projects/project-image.jpg",
+     featured: false
+   }
+   ```
+3. Add the project image to `public/images/projects/`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Adding New Albums
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Open `src/data/albums.js`
+2. Add a new album object to the array with the following structure:
+   ```javascript
+   {
+     id: "album-id",
+     title: "Album Title",
+     description: "Album description",
+     coverImage: "/images/albums/album-cover.jpg",
+     secretCode: "yourpassword",
+     photos: [
+       {
+         id: 1,
+         url: "/images/albums/album-id/photo1.jpg",
+         caption: "Photo caption"
+       },
+       // More photos...
+     ]
+   }
+   ```
+3. Add the album cover and photos to the appropriate folders in `public/images/albums/`
 
-### Code Splitting
+### Changing Theme Colors
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+To customize the theme colors, edit the color variables in `src/styles/theme.js`:
 
-### Analyzing the Bundle Size
+```javascript
+// Light theme colors
+primary: '#3498db',
+secondary: '#2ecc71',
+// ...
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+// Dark theme colors
+primary: '#00bcd4',
+secondary: '#00e676',
+// ...
+```
 
-### Making a Progressive Web App
+## Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Build for Production
 
-### Advanced Configuration
+```
+npm run build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+This creates an optimized production build in the `build` folder that can be deployed to any static hosting service.
 
-### Deployment
+### Hosting Suggestions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Vercel
+- Netlify
+- GitHub Pages
+- Firebase Hosting
+- AWS Amplify
 
-### `npm run build` fails to minify
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is open source and available under the [MIT License](LICENSE).
+
+## Contact
+
+Nihar Ranjan Sahu - nihar4569@gmail.com
+
+GitHub: [github.com/Nihar4569](https://github.com/Nihar4569)
+LinkedIn: [linkedin.com/in/nihar4569](https://linkedin.com/in/nihar4569)
