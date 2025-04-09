@@ -30,8 +30,8 @@ const ProjectsPage = () => {
             <StatDivider />
             
             <StatItem>
-              <StatValue><FiExternalLink /> 7+</StatValue>
-              <StatLabel>Live Demos</StatLabel>
+              <StatValue>4+</StatValue>
+              <StatLabel>Hackathons</StatLabel>
             </StatItem>
           </Stats>
         </HeroContent>
