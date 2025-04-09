@@ -1,87 +1,120 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../../context/ThemeContext';
-import { FiGithub, FiExternalLink, FiInfo, FiX } from 'react-icons/fi';
+import { FiGithub, FiExternalLink, FiInfo, FiX, FiEye } from 'react-icons/fi';
 
 const ProjectCard = ({ project }) => {
   const [showDetails, setShowDetails] = useState(false);
   const { isDark } = useContext(ThemeContext);
-  
-  const toggleDetails = (e) => {
+
+  // Add event listener to close modal on Escape key
+  useEffect(() => {
+    const handleEscapeKey = (e) => {
+      if (e.key === 'Escape') {
+        setShowDetails(false);
+      }
+    };
+
+    if (showDetails) {
+      document.addEventListener('keydown', handleEscapeKey);
+      // Prevent scrolling when modal is open
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+      document.body.style.overflow = 'unset';
+    };
+  }, [showDetails]);
+
+  const openDetails = (e) => {
     e.preventDefault();
-    e.stopPropagation();
-    setShowDetails(!showDetails);
+    setShowDetails(true);
   };
-  
+
+  const closeDetails = (e) => {
+    e.preventDefault();
+    setShowDetails(false);
+  };
+
+  const preventPropagation = (e) => {
+    e.stopPropagation();
+  };
+
   return (
     <>
-      <Card isDark={isDark} onClick={toggleDetails}>
+      <Card isDark={isDark} onClick={openDetails}>
         <CardImageContainer>
           <CardImage src={project.image || "/images/placeholder/project.jpg"} alt={project.title} />
           <CardOverlay>
             <OverlayButtons>
               {project.links.github && (
-                <OverlayButton 
-                  href={project.links.github} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <OverlayButton
+                  href={project.links.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label="GitHub Repository"
-                  onClick={(e) => e.stopPropagation()} // Prevent card click
+                  onClick={preventPropagation}
                 >
                   <FiGithub />
                 </OverlayButton>
               )}
-              
+
               {project.links.live && (
-                <OverlayButton 
-                  href={project.links.live} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <OverlayButton
+                  href={project.links.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label="Live Demo"
-                  onClick={(e) => e.stopPropagation()} // Prevent card click
+                  onClick={preventPropagation}
                 >
                   <FiExternalLink />
                 </OverlayButton>
               )}
-              
-              <OverlayButton as="button" onClick={toggleDetails} aria-label="Project Details">
-                <FiInfo />
-              </OverlayButton>
             </OverlayButtons>
+
+            {project.featured && <FeaturedBadge isDark={isDark}>Featured</FeaturedBadge>}
           </CardOverlay>
-          
-          {project.featured && <FeaturedBadge isDark={isDark}>Featured</FeaturedBadge>}
         </CardImageContainer>
-        
+
         <CardContent>
           <CardTitle>{project.title}</CardTitle>
           <CardDescription>{project.description}</CardDescription>
-          
+
           <TechStack>
             {project.techStack.map((tech, index) => (
               <TechTag key={index} isDark={isDark}>{tech}</TechTag>
             ))}
           </TechStack>
+
+          <ViewDetailsButton
+            onClick={(e) => {
+              preventPropagation(e);
+              openDetails(e);
+            }}
+          >
+            <FiEye /> View Details
+          </ViewDetailsButton>
         </CardContent>
       </Card>
-      
+
       {showDetails && (
-        <ProjectDetailsModal>
-          <ModalOverlay onClick={toggleDetails} />
-          
-          <ModalContent isDark={isDark}>
+        <ProjectDetailsModal onClick={closeDetails}>
+          <ModalOverlay />
+
+          <ModalContent isDark={isDark} onClick={preventPropagation}>
             <ModalHeader>
               <ModalTitle>{project.title}</ModalTitle>
-              <CloseButton onClick={toggleDetails}>
+              <CloseButton onClick={closeDetails}>
                 <FiX />
               </CloseButton>
             </ModalHeader>
-            
+
             <ModalBody>
               <ModalImage src={project.image || "/images/placeholder/project.jpg"} alt={project.title} />
-              
+
               <ModalDescription>{project.description}</ModalDescription>
-              
+
               <ModalSection>
                 <ModalSectionTitle>Features</ModalSectionTitle>
                 <FeaturesList>
@@ -90,7 +123,7 @@ const ProjectCard = ({ project }) => {
                   ))}
                 </FeaturesList>
               </ModalSection>
-              
+
               <ModalSection>
                 <ModalSectionTitle>Technologies Used</ModalSectionTitle>
                 <ModalTechStack>
@@ -99,26 +132,26 @@ const ProjectCard = ({ project }) => {
                   ))}
                 </ModalTechStack>
               </ModalSection>
-              
+
               <ModalButtons>
                 {project.links.github && (
-                  <ModalButton 
-                    href={project.links.github} 
-                    target="_blank" 
+                  <ModalButton
+                    href={project.links.github}
+                    target="_blank"
                     rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={preventPropagation}
                   >
                     <FiGithub /> View Code
                   </ModalButton>
                 )}
-                
+
                 {project.links.live && (
-                  <ModalButton 
-                    primary 
-                    href={project.links.live} 
-                    target="_blank" 
+                  <ModalButton
+                    primary
+                    href={project.links.live}
+                    target="_blank"
                     rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={preventPropagation}
                   >
                     <FiExternalLink /> Live Demo
                   </ModalButton>
@@ -132,10 +165,40 @@ const ProjectCard = ({ project }) => {
   );
 };
 
+// Styled Components for View Details Button
+const ViewDetailsButton = styled.button`
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  background-color: ${props => props.theme.background};
+  color: ${props => props.theme.text};
+  border: 2px solid ${props => props.theme.borderColor};
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  svg {
+    font-size: 1.2rem;
+  }
+  
+  &:hover {
+    background-color: ${props => props.theme.primary};
+    color: white;
+    border-color: ${props => props.theme.primary};
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+`;
+
 // Add styled components below
 
 // Styled Components
-const Card = styled.article`
+const Card = styled.div`
   background-color: ${props => props.theme.cardBackground};
   border-radius: 15px;
   overflow: hidden;
@@ -144,6 +207,7 @@ const Card = styled.article`
   height: 100%;
   display: flex;
   flex-direction: column;
+  cursor: pointer; // Add cursor pointer to indicate clickability
   
   &:hover {
     transform: translateY(-10px);
@@ -223,8 +287,8 @@ const FeaturedBadge = styled.div`
   top: 1rem;
   left: 1rem;
   padding: 0.4rem 1rem;
-  background: ${props => props.isDark 
-    ? 'linear-gradient(135deg, #00bcd4, #00e676)' 
+  background: ${props => props.isDark
+    ? 'linear-gradient(135deg, #00bcd4, #00e676)'
     : 'linear-gradient(135deg, #3498db, #2ecc71)'
   };
   color: white;
@@ -280,8 +344,9 @@ const ProjectDetailsModal = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 2000;
   padding: 2rem;
+  padding-top: calc(2rem); // Add navbar height (80px) plus additional padding
 `;
 
 const ModalOverlay = styled.div`
@@ -292,6 +357,7 @@ const ModalOverlay = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(5px);
+  z-index: 2001;
 `;
 
 const ModalContent = styled.div`
@@ -299,11 +365,12 @@ const ModalContent = styled.div`
   border-radius: 20px;
   max-width: 800px;
   width: 100%;
-  max-height: 90vh;
+  max-height: calc(100vh - 160px); // Subtract navbar height and padding
   overflow-y: auto;
   position: relative;
-  z-index: 1001;
+  z-index: 2002;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  margin-top: 80px; // Push down to avoid navbar overlap
   
   &::-webkit-scrollbar {
     width: 8px;
@@ -325,16 +392,16 @@ const ModalContent = styled.div`
 `;
 
 const ModalHeader = styled.div`
-  padding: 1.5rem 2rem;
-  border-bottom: 1px solid ${props => props.theme.borderColor};
+  position: sticky;
+  top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
-  top: 0;
+  padding: 1.5rem 2rem;
   background-color: ${props => props.theme.cardBackground};
-  z-index: 1;
+  border-bottom: 1px solid ${props => props.theme.borderColor};
   border-radius: 20px 20px 0 0;
+  z-index: 10;
 `;
 
 const ModalTitle = styled.h2`

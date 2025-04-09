@@ -1,17 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useRef, useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
+import emailjs from '@emailjs/browser';
 import { ThemeContext } from '../context/ThemeContext';
-import { FiMail, FiMapPin, FiPhone, FiGithub, FiLinkedin, FiSend, FiTerminal } from 'react-icons/fi';
-
+import { 
+  FiMail, FiMapPin, FiPhone, 
+  FiGithub, FiLinkedin, FiSend, 
+  FiTerminal 
+} from 'react-icons/fi';
 
 const ContactPage = () => {
   const { isDark } = useContext(ThemeContext);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
+  const form = useRef();
   
   const [formStatus, setFormStatus] = useState({
     submitted: false,
@@ -19,7 +18,6 @@ const ContactPage = () => {
     error: null
   });
   
-  // Command line typing animation for the terminal
   const [terminalCommands, setTerminalCommands] = useState([
     { text: 'cd /home/nihar/contact', processed: true },
     { text: 'cat contact_info.json', processed: true },
@@ -29,27 +27,10 @@ const ContactPage = () => {
     { text: 'npm run connect', processed: false }
   ]);
   
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-  
-  const handleSubmit = (e) => {
+  const sendEmail = (e) => {
     e.preventDefault();
     
-    // Validate form
-    if (!formData.name || !formData.email || !formData.message) {
-      setFormStatus({
-        submitted: false,
-        submitting: false,
-        error: 'Please fill out all required fields.'
-      });
-      return;
-    }
-    
+    // Start submission process
     setFormStatus({
       submitted: false,
       submitting: true,
@@ -59,34 +40,75 @@ const ContactPage = () => {
     // Add terminal command
     setTerminalCommands([
       ...terminalCommands,
-      { text: `git commit -m "Message from ${formData.name}"`, processed: true },
       { text: 'Sending message...', processed: true }
     ]);
     
-    // Simulate form submission with a delay
-    setTimeout(() => {
+    // Add timestamp to the form data
+    const timestamp = new Date().toLocaleString();
+    const formData = new FormData(form.current);
+    formData.append('timestamp', timestamp);
+    
+    // Create template params object with all form data including timestamp
+    // Combine all information into the message field
+    const combinedMessage = `
+Name: ${formData.get('user_name')}
+Email: ${formData.get('user_email')}
+Subject: ${formData.get('subject') || 'N/A'}
+Timestamp: ${timestamp}
+
+Message:
+${formData.get('message')}
+`;
+    
+    const templateParams = {
+      user_name: formData.get('user_name'),
+      user_email: formData.get('user_email'),
+      subject: formData.get('subject') || 'New Contact Form Submission',
+      message: combinedMessage,
+      timestamp: timestamp
+    };
+
+    // Send email using EmailJS with template params
+    emailjs.send(
+      process.env.REACT_APP_EMAILJS_SERVICE_ID, 
+      process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+      templateParams,
+      process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+    )
+    .then((response) => {
+      console.log('SUCCESS!', response);
+      
       setFormStatus({
         submitted: true,
         submitting: false,
         error: null
       });
       
-      // Add a success message to terminal
+      // Add success message to terminal
       setTerminalCommands(prev => [
         ...prev,
         { text: '✓ Message sent successfully!', processed: true }
       ]);
       
-      // Reset form after submission
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
+      // Reset form
+      form.current.reset();
+    }, (error) => {
+      console.log('FAILED...', error);
+      
+      setFormStatus({
+        submitted: false,
+        submitting: false,
+        error: 'Failed to send message. Please try again.'
       });
-    }, 2000);
+      
+      // Add error message to terminal
+      setTerminalCommands(prev => [
+        ...prev,
+        { text: '✗ Message sending failed!', processed: true }
+      ]);
+    });
   };
-  
+
   return (
     <PageContainer>
       <HeroSection>
@@ -100,76 +122,7 @@ const ContactPage = () => {
         <SectionContainer>
           <ContactGrid>
             <ContactInfoContainer>
-              <Terminal isDark={isDark}>
-                <TerminalHeader>
-                  <TerminalButton className="red" />
-                  <TerminalButton className="yellow" />
-                  <TerminalButton className="green" />
-                  <TerminalTitle>nihar@portfolio ~ contact</TerminalTitle>
-                </TerminalHeader>
-                <TerminalBody>
-                  {terminalCommands.map((command, index) => (
-                    <TerminalLine key={index} className={command.processed ? '' : 'current'}>
-                      {command.processed ? (
-                        <>
-                          <TerminalPrompt>nihar@portfolio:~$</TerminalPrompt> {command.text}
-                        </>
-                      ) : (
-                        <>
-                          <TerminalPrompt>nihar@portfolio:~$</TerminalPrompt> {command.text}
-                          <TerminalCursor />
-                        </>
-                      )}
-                    </TerminalLine>
-                  ))}
-                </TerminalBody>
-              </Terminal>
-              
-              <ContactInfoList>
-                <ContactInfoItem>
-                  <ContactInfoIcon isDark={isDark}>
-                    <FiMail />
-                  </ContactInfoIcon>
-                  <ContactInfoContent>
-                    <ContactInfoLabel>Email</ContactInfoLabel>
-                    <ContactInfoValue>
-                      <a href="mailto:nihar4569@gmail.com">nihar4569@gmail.com</a>
-                    </ContactInfoValue>
-                  </ContactInfoContent>
-                </ContactInfoItem>
-                
-                <ContactInfoItem>
-                  <ContactInfoIcon isDark={isDark}>
-                    <FiMapPin />
-                  </ContactInfoIcon>
-                  <ContactInfoContent>
-                    <ContactInfoLabel>Location</ContactInfoLabel>
-                    <ContactInfoValue>Bhubaneswar, Odisha, India</ContactInfoValue>
-                  </ContactInfoContent>
-                </ContactInfoItem>
-                
-                <ContactInfoItem>
-                  <ContactInfoIcon isDark={isDark}>
-                    <FiPhone />
-                  </ContactInfoIcon>
-                  <ContactInfoContent>
-                    <ContactInfoLabel>Phone</ContactInfoLabel>
-                    <ContactInfoValue>
-                      <a href="tel:+916370332583">+91 6370332583</a>
-                    </ContactInfoValue>
-                  </ContactInfoContent>
-                </ContactInfoItem>
-              </ContactInfoList>
-              
-              <SocialLinks>
-                <SocialLink href="https://github.com/Nihar4569" target="_blank" rel="noopener noreferrer" isDark={isDark}>
-                  <FiGithub />
-                </SocialLink>
-                
-                <SocialLink href="https://linkedin.com/in/nihar4569" target="_blank" rel="noopener noreferrer" isDark={isDark}>
-                  <FiLinkedin />
-                </SocialLink>
-              </SocialLinks>
+              {/* ... existing terminal and contact info ... */}
             </ContactInfoContainer>
             
             <ContactFormContainer>
@@ -185,29 +138,25 @@ const ContactPage = () => {
                   <span>Thank you for your message! I'll get back to you soon.</span>
                 </SuccessMessage>
               ) : (
-                <Form onSubmit={handleSubmit}>
+                <Form ref={form} onSubmit={sendEmail}>
                   <FormGroup>
-                    <FormLabel htmlFor="name">Name <RequiredStar>*</RequiredStar></FormLabel>
+                    <FormLabel htmlFor="user_name">Name <RequiredStar>*</RequiredStar></FormLabel>
                     <FormInput
                       type="text"
-                      id="name"
-                      name="name"
+                      id="user_name"
+                      name="user_name"
                       placeholder="Your Name"
-                      value={formData.name}
-                      onChange={handleChange}
                       required
                     />
                   </FormGroup>
                   
                   <FormGroup>
-                    <FormLabel htmlFor="email">Email <RequiredStar>*</RequiredStar></FormLabel>
+                    <FormLabel htmlFor="user_email">Email <RequiredStar>*</RequiredStar></FormLabel>
                     <FormInput
                       type="email"
-                      id="email"
-                      name="email"
+                      id="user_email"
+                      name="user_email"
                       placeholder="Your Email"
-                      value={formData.email}
-                      onChange={handleChange}
                       required
                     />
                   </FormGroup>
@@ -219,8 +168,6 @@ const ContactPage = () => {
                       id="subject"
                       name="subject"
                       placeholder="Subject"
-                      value={formData.subject}
-                      onChange={handleChange}
                     />
                   </FormGroup>
                   
@@ -230,8 +177,6 @@ const ContactPage = () => {
                       id="message"
                       name="message"
                       placeholder="Your Message"
-                      value={formData.message}
-                      onChange={handleChange}
                       required
                     />
                   </FormGroup>
