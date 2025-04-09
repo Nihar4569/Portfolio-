@@ -146,8 +146,8 @@ const HeroContainer = styled.section`
   overflow: hidden;
   
   @media (max-width: 768px) {
-    padding-top: 80px;
-    align-items: flex-start;
+    padding-top: 0;
+    align-items: center;
   }
 `;
 
@@ -190,11 +190,7 @@ const HeroContent = styled.div`
     flex-direction: column-reverse;
     justify-content: center;
     text-align: center;
-    padding-top: 120px;
-  }
-  
-  @media (max-width: 480px) {
-    padding-top: 140px;
+    padding-top: 0;
   }
   
   & > * {
@@ -210,7 +206,7 @@ const HeroLeft = styled.div`
   animation-delay: 0.2s;
   
   @media (max-width: 992px) {
-    margin-top: 3rem;
+    margin-top: 1rem;
   }
 `;
 
