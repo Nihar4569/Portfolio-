@@ -244,3 +244,119 @@ input, textarea {
   }
 }
 
+/* Additional CSS for improved responsiveness - add to your theme's global styles */
+
+/* Ensures responsive grid on all screen sizes */
+.album-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Improves spacing on smaller screens */
+@media (max-width: 768px) {
+  .album-grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+  
+  .album-card {
+    margin-bottom: 1rem;
+  }
+  
+  .album-highlights {
+    margin-bottom: 2rem;
+  }
+  
+  .highlights-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .slide-content {
+    padding: 1rem;
+  }
+}
+
+/* Tweaks for very small screens */
+@media (max-width: 480px) {
+  .album-grid-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .album-card {
+    max-width: 100%;
+  }
+  
+  .highlights-container {
+    height: 200px;
+  }
+  
+  .slide-title {
+    font-size: 1rem;
+  }
+  
+  .slide-description {
+    font-size: 0.8rem;
+  }
+  
+  .nav-buttons {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/* Fluid typography for better readability */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 1200px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 992px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+/* Improved scrollbar for album thumbnails */
+.thumbnails-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.thumbnails-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+.thumbnails-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.thumbnails-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Touch-friendly adjustments */
+@media (pointer: coarse) {
+  .navigation-button {
+    padding: 12px;
+  }
+  
+  .dot-indicator {
+    width: 12px;
+    height: 12px;
+    margin: 0 6px;
+  }
+}

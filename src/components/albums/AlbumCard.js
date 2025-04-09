@@ -1,19 +1,56 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../../context/ThemeContext';
-import { FiLock, FiImage, FiKey } from 'react-icons/fi';
+import { FiLock, FiImage, FiKey, FiUnlock } from 'react-icons/fi';
 import AuthModal from './AuthModal';
+import AlbumViewer from './AlbumViewer';
+import ModalOverlay from './ModalOverlay';
 
 const AlbumCard = ({ album }) => {
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showAlbumViewer, setShowAlbumViewer] = useState(false);
+  const [viewerName, setViewerName] = useState('Guest');
   const { isDark } = useContext(ThemeContext);
+  const [photoCount, setPhotoCount] = useState(0);
+  
+  // Fetch photo count when component mounts
+  useEffect(() => {
+    // This is a simplified approach - in production you would
+    // call an API to get the actual photo count
+    const photoCountMap = {
+      "/images/albums/soa": 27,
+      "/images/albums/sih": 8,
+      "/images/albums/school-memories": 12,
+      "/images/albums/hometown": 20
+    };
+    
+    setPhotoCount(photoCountMap[album.photoDirectory] || 10);
+  }, [album.photoDirectory]);
   
   const handleClick = () => {
-    setShowAuthModal(true);
+    // If album is not locked, open directly
+    if (!album.lock) {
+      setViewerName('Guest');
+      setShowAlbumViewer(true);
+    } else {
+      // If album is locked, show auth modal
+      setShowAuthModal(true);
+    }
   };
   
   const closeAuthModal = () => {
     setShowAuthModal(false);
+  };
+  
+  const closeAlbumViewer = () => {
+    setShowAlbumViewer(false);
+  };
+  
+  // Callback for successful authentication
+  const onAuthSuccess = (name) => {
+    setViewerName(name);
+    setShowAuthModal(false);
+    setShowAlbumViewer(true);
   };
   
   return (
@@ -24,9 +61,11 @@ const AlbumCard = ({ album }) => {
           <CardOverlay>
             <LockContainer>
               <OverlayIcon>
-                <FiKey />
+                {album.lock ? <FiKey /> : <FiUnlock />}
               </OverlayIcon>
-              <OverlayText>Access Protected</OverlayText>
+              <OverlayText>
+                {album.lock ? 'Access Protected' : 'Public Album'}
+              </OverlayText>
             </LockContainer>
           </CardOverlay>
         </CardImageContainer>
@@ -34,7 +73,7 @@ const AlbumCard = ({ album }) => {
         <CardContent>
           <CardHeader>
             <LockIcon>
-              <FiLock />
+              {album.lock ? <FiLock /> : <FiUnlock />}
             </LockIcon>
             <CardTitle>{album.title}</CardTitle>
           </CardHeader>
@@ -43,15 +82,31 @@ const AlbumCard = ({ album }) => {
           <CardFooter>
             <PhotoCount>
               <FiImage />
-              <span>{album.photos.length} Photos</span>
+              <span>{photoCount} Photos</span>
             </PhotoCount>
-            <AccessButton>Enter Code</AccessButton>
+            <AccessButton>
+              {album.lock ? 'Enter Code' : 'View Album'}
+            </AccessButton>
           </CardFooter>
         </CardContent>
       </Card>
       
       {showAuthModal && (
-        <AuthModal album={album} onClose={closeAuthModal} />
+        <AuthModal 
+          album={album} 
+          onClose={closeAuthModal} 
+          onAuthSuccess={onAuthSuccess}
+        />
+      )}
+
+      {showAlbumViewer && (
+        <ModalOverlay onClick={closeAlbumViewer}>
+          <AlbumViewer 
+            album={album} 
+            name={viewerName} 
+            onClose={closeAlbumViewer} 
+          />
+        </ModalOverlay>
       )}
     </>
   );

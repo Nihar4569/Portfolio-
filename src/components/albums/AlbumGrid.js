@@ -6,16 +6,15 @@ const AlbumGrid = ({ albums }) => {
   return (
     <AlbumsContainer>
       <SectionIntro>
-        <IntroTitle>Personal Photo Albums</IntroTitle>
+        <IntroTitle>My Albums</IntroTitle>
         <IntroDescription>
-          These albums are password-protected and contain memories from my journey as a developer, student, and person.
-          You'll need the secret code to access each album.
+          Browse through my collection of photo albums. Some albums may require a secret code to access.
         </IntroDescription>
       </SectionIntro>
       
-      <GridContainer>
+      <GridContainer className="album-grid-container">
         {albums.map(album => (
-          <AlbumCard key={album.id} album={album} />
+          <AlbumCard key={album.id} album={album} className="album-card" />
         ))}
       </GridContainer>
     </AlbumsContainer>
@@ -31,6 +30,10 @@ const SectionIntro = styled.div`
   text-align: center;
   margin-bottom: 3rem;
   padding: 0 1rem;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 2rem;
+  }
 `;
 
 const IntroTitle = styled.h2`
@@ -47,6 +50,10 @@ const IntroTitle = styled.h2`
     background: linear-gradient(90deg, ${props => props.theme.primary}, ${props => props.theme.secondary});
     border-radius: 2px;
   }
+  
+  @media (max-width: 768px) {
+    font-size: 1.7rem;
+  }
 `;
 
 const IntroDescription = styled.p`
@@ -55,15 +62,31 @@ const IntroDescription = styled.p`
   margin: 0 auto;
   line-height: 1.7;
   font-size: 1.1rem;
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
 `;
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
   
-  @media (max-width: 768px) {
+  @media (max-width: 992px) {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.2rem;
+  }
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 `;
 

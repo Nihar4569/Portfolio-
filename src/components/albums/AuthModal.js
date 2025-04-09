@@ -2,12 +2,10 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../../context/ThemeContext';
 import { FiX, FiLock, FiUnlock, FiUser, FiAlertCircle } from 'react-icons/fi';
-import AlbumViewer from './AlbumViewer';
 
-const AuthModal = ({ album, onClose }) => {
+const AuthModal = ({ album, onClose, onAuthSuccess }) => {
   const [name, setName] = useState('');
   const [secretCode, setSecretCode] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { isDark } = useContext(ThemeContext);
@@ -25,7 +23,8 @@ const AuthModal = ({ album, onClose }) => {
     // Simulate API check with a timeout
     setTimeout(() => {
       if (secretCode === album.secretCode) {
-        setIsAuthenticated(true);
+        // Call the success callback with the user's name
+        onAuthSuccess(name);
         setError('');
       } else {
         setError('Incorrect secret code. Please try again.');
@@ -37,76 +36,70 @@ const AuthModal = ({ album, onClose }) => {
   return (
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()} isDark={isDark}>
-        {isAuthenticated ? (
-          <AlbumViewer album={album} name={name} onClose={onClose} />
-        ) : (
-          <>
-            <ModalHeader>
-              <ModalTitle>Access {album.title}</ModalTitle>
-              <CloseButton onClick={onClose}>
-                <FiX />
-              </CloseButton>
-            </ModalHeader>
+        <ModalHeader>
+          <ModalTitle>Access {album.title}</ModalTitle>
+          <CloseButton onClick={onClose}>
+            <FiX />
+          </CloseButton>
+        </ModalHeader>
+        
+        <ModalBody>
+          <LockIcon isDark={isDark}>
+            <FiLock />
+          </LockIcon>
+          
+          <AuthText>
+            This album is restricted. Please enter your name and the secret code to view.
+          </AuthText>
+          
+          <AuthForm onSubmit={handleSubmit}>
+            <FormGroup>
+              <InputIcon>
+                <FiUser />
+              </InputIcon>
+              <AuthInput
+                type="text"
+                placeholder="Your Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </FormGroup>
             
-            <ModalBody>
-              <LockIcon isDark={isDark}>
+            <FormGroup>
+              <InputIcon>
                 <FiLock />
-              </LockIcon>
-              
-              <AuthText>
-                This album is restricted. Please enter your name and the secret code to view.
-              </AuthText>
-              
-              <AuthForm onSubmit={handleSubmit}>
-                <FormGroup>
-                  <InputIcon>
-                    <FiUser />
-                  </InputIcon>
-                  <AuthInput
-                    type="text"
-                    placeholder="Your Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <InputIcon>
-                    <FiLock />
-                  </InputIcon>
-                  <AuthInput
-                    type="password"
-                    placeholder="Secret Code"
-                    value={secretCode}
-                    onChange={(e) => setSecretCode(e.target.value)}
-                  />
-                </FormGroup>
-                
-                {error && (
-                  <ErrorMessage>
-                    <FiAlertCircle />
-                    <span>{error}</span>
-                  </ErrorMessage>
-                )}
-                
-                <SubmitButton 
-                  type="submit" 
-                  disabled={isLoading}
-                  isDark={isDark}
-                >
-                  {isLoading ? (
-                    <LoadingSpinner />
-                  ) : (
-                    <>
-                      <FiUnlock />
-                      Unlock Album
-                    </>
-                  )}
-                </SubmitButton>
-              </AuthForm>
-            </ModalBody>
-          </>
-        )}
+              </InputIcon>
+              <AuthInput
+                type="password"
+                placeholder="Secret Code"
+                value={secretCode}
+                onChange={(e) => setSecretCode(e.target.value)}
+              />
+            </FormGroup>
+            
+            {error && (
+              <ErrorMessage>
+                <FiAlertCircle />
+                <span>{error}</span>
+              </ErrorMessage>
+            )}
+            
+            <SubmitButton 
+              type="submit" 
+              disabled={isLoading}
+              isDark={isDark}
+            >
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <>
+                  <FiUnlock />
+                  Unlock Album
+                </>
+              )}
+            </SubmitButton>
+          </AuthForm>
+        </ModalBody>
       </ModalContent>
     </ModalOverlay>
   );

@@ -1,26 +1,55 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../../context/ThemeContext';
-import { FiX, FiChevronLeft, FiChevronRight, FiMaximize, FiMinimize } from 'react-icons/fi';
+import { FiX, FiChevronLeft, FiChevronRight, FiMaximize, FiMinimize, FiLoader } from 'react-icons/fi';
+import { fetchPhotosFromDirectory } from '../../services/photoService';
 
 const AlbumViewer = ({ album, name, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [photos, setPhotos] = useState([]);
+  const [error, setError] = useState(null);
   const { isDark } = useContext(ThemeContext);
   
-  const currentPhoto = album.photos[currentIndex];
+  // Fetch photos when component mounts
+  useEffect(() => {
+    const loadPhotos = async () => {
+      try {
+        setIsLoading(true);
+        const fetchedPhotos = await fetchPhotosFromDirectory(album.photoDirectory);
+        setPhotos(fetchedPhotos);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching photos:", err);
+        setError("Failed to load photos. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadPhotos();
+  }, [album.photoDirectory]);
+  
+  // Check if we have photos to display
+  const hasPhotos = photos.length > 0;
+  const currentPhoto = hasPhotos ? photos[currentIndex] : null;
   
   const goToPrevious = (e) => {
     e.stopPropagation();
+    if (!hasPhotos) return;
+    
     setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? album.photos.length - 1 : prevIndex - 1
+      prevIndex === 0 ? photos.length - 1 : prevIndex - 1
     );
   };
   
   const goToNext = (e) => {
     e.stopPropagation();
+    if (!hasPhotos) return;
+    
     setCurrentIndex((prevIndex) => 
-      prevIndex === album.photos.length - 1 ? 0 : prevIndex + 1
+      prevIndex === photos.length - 1 ? 0 : prevIndex + 1
     );
   };
   
@@ -29,8 +58,12 @@ const AlbumViewer = ({ album, name, onClose }) => {
     setIsFullscreen(!isFullscreen);
   };
   
+  const handleContentClick = (e) => {
+    e.stopPropagation(); // Prevent clicks inside content from closing the viewer
+  };
+  
   return (
-    <ViewerContainer isFullscreen={isFullscreen}>
+    <ViewerContainer isFullscreen={isFullscreen} onClick={handleContentClick}>
       <ViewerHeader>
         <ViewerTitle>{album.title}</ViewerTitle>
         
@@ -48,28 +81,42 @@ const AlbumViewer = ({ album, name, onClose }) => {
       </ViewerHeader>
       
       <ViewerContent>
-        <NavigationButton left onClick={goToPrevious}>
-          <FiChevronLeft />
-        </NavigationButton>
-        
-        <PhotoContainer>
-          <Photo src={currentPhoto.url || "/images/placeholder/photo.jpg"} alt={currentPhoto.caption} />
-          
-          <PhotoCaption>
-            <span>{currentPhoto.caption}</span>
-            <PhotoCounter>
-              {currentIndex + 1} / {album.photos.length}
-            </PhotoCounter>
-          </PhotoCaption>
-        </PhotoContainer>
-        
-        <NavigationButton right onClick={goToNext}>
-          <FiChevronRight />
-        </NavigationButton>
+        {isLoading ? (
+          <LoadingContainer>
+            <LoadingSpinner />
+            <LoadingText>Loading photos...</LoadingText>
+          </LoadingContainer>
+        ) : error ? (
+          <ErrorContainer>
+            <ErrorMessage>{error}</ErrorMessage>
+          </ErrorContainer>
+        ) : !hasPhotos ? (
+          <ErrorContainer>
+            <ErrorMessage>No photos found in this album.</ErrorMessage>
+          </ErrorContainer>
+        ) : (
+          <>
+            <NavigationButton left onClick={goToPrevious}>
+              <FiChevronLeft />
+            </NavigationButton>
+            
+            <PhotoContainer>
+              <Photo src={currentPhoto.url || "/images/placeholder/photo.jpg"} alt="Album photo" />
+              
+              <PhotoCounter>
+                {currentIndex + 1} / {photos.length}
+              </PhotoCounter>
+            </PhotoContainer>
+            
+            <NavigationButton right onClick={goToNext}>
+              <FiChevronRight />
+            </NavigationButton>
+          </>
+        )}
       </ViewerContent>
       
       <ThumbnailsContainer>
-        {album.photos.map((photo, index) => (
+        {!isLoading && hasPhotos && photos.map((photo, index) => (
           <Thumbnail 
             key={photo.id}
             active={index === currentIndex}
@@ -98,7 +145,10 @@ const ViewerContainer = styled.div`
   z-index: ${props => props.isFullscreen ? '1010' : '1001'};
   display: flex;
   flex-direction: column;
+  max-width: ${props => props.isFullscreen ? '100%' : '900px'};
   max-height: ${props => props.isFullscreen ? '100vh' : '80vh'};
+  margin: 0 auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 `;
 
 const ViewerHeader = styled.div`
@@ -209,19 +259,11 @@ const Photo = styled.img`
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 `;
 
-const PhotoCaption = styled.div`
-  margin-top: 1rem;
-  text-align: center;
-  color: ${props => props.theme.text};
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  font-size: 1rem;
-`;
-
-const PhotoCounter = styled.span`
+const PhotoCounter = styled.div`
   color: ${props => props.theme.textSecondary};
   font-size: 0.9rem;
+  margin-top: 1rem;
+  text-align: right;
 `;
 
 const ThumbnailsContainer = styled.div`
@@ -273,6 +315,49 @@ const ThumbnailImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+`;
+
+// Add loading and error styled components
+const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+`;
+
+const LoadingSpinner = styled.div`
+  width: 40px;
+  height: 40px;
+  border: 4px solid ${props => props.theme.borderColor};
+  border-top: 4px solid ${props => props.theme.primary};
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
+const LoadingText = styled.p`
+  color: ${props => props.theme.textSecondary};
+  font-size: 1rem;
+`;
+
+const ErrorContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  padding: 2rem;
+`;
+
+const ErrorMessage = styled.p`
+  color: ${props => props.theme.error};
+  font-size: 1.1rem;
+  text-align: center;
 `;
 
 export default AlbumViewer;

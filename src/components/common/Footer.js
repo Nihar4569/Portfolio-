@@ -29,9 +29,9 @@ const Footer = () => {
                         <FooterLink>
                             <Link to="/projects">Projects</Link>
                         </FooterLink>
-                        {/* <FooterLink>
+                        <FooterLink>
                             <Link to="/albums">Photo Albums</Link>
-                        </FooterLink> */}
+                        </FooterLink>
                         <FooterLink>
                             <Link to="/contact">Contact</Link>
                         </FooterLink>
