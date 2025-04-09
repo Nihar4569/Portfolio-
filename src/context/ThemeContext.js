@@ -7,7 +7,7 @@ export const ThemeProvider = ({ children }) => {
   const [isDark, setIsDark] = useState(true); // Default to dark mode
   const [isAnimating, setIsAnimating] = useState(false);
   const [theme, setTheme] = useState(darkTheme); // Default to dark theme
-
+  
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     // Only change if explicitly set to light, otherwise stay dark
@@ -16,21 +16,28 @@ export const ThemeProvider = ({ children }) => {
       setTheme(lightTheme);
     }
   }, []);
-
+  
   const toggleTheme = () => {
+    if (isAnimating) return; // Prevent toggling during animation
+    
     setIsAnimating(true);
-    setIsDark(!isDark);
     
-    // Set theme immediately to avoid flicker
-    setTheme(isDark ? lightTheme : darkTheme);
-    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    // We need to update theme first for smoother transition
+    const newTheme = isDark ? lightTheme : darkTheme;
+    setTheme(newTheme);
     
-    // This will allow the animation to complete then turn it off
+    // Then update isDark after a slight delay
+    setTimeout(() => {
+      setIsDark(!isDark);
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    }, 100);
+    
+    // Animation duration - keep in sync with CSS animation duration
     setTimeout(() => {
       setIsAnimating(false);
-    }, 1500); // Shorter animation duration
+    }, 1500);
   };
-
+  
   return (
     <ThemeContext.Provider value={{ theme, isDark, toggleTheme, isAnimating }}>
       {children}

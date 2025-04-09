@@ -6,7 +6,7 @@ import ThemeToggle from './ThemeToggle';
 import { FiMenu, FiX, FiCode, FiHome, FiFolder, FiMail } from 'react-icons/fi';
 
 const Navbar = () => {
-  const { theme, isDark } = useContext(ThemeContext);
+  const { isDark, isAnimating } = useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
@@ -37,7 +37,7 @@ const Navbar = () => {
   }, [location]);
 
   return (
-    <NavbarContainer scrolled={scrolled} isDark={isDark}>
+    <NavbarContainer scrolled={scrolled} isDark={isDark} isAnimating={isAnimating}>
       <NavContent>
         <LogoContainer>
           <Link to="/">
@@ -110,7 +110,7 @@ const NavbarContainer = styled.nav`
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; /* High z-index to stay on top */
+  z-index: ${props => props.isAnimating ? 900 : 1000}; // Lower z-index during animations
   background: ${props => props.scrolled 
     ? props.isDark 
       ? 'rgba(13, 17, 23, 0.95)' 
@@ -127,6 +127,7 @@ const NavbarContainer = styled.nav`
   display: flex;
   align-items: center;
 `;
+
 const NavContent = styled.div`
   width: 100%;
   max-width: 1200px;

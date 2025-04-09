@@ -7,25 +7,39 @@ const ProjectCard = ({ project }) => {
   const [showDetails, setShowDetails] = useState(false);
   const { isDark } = useContext(ThemeContext);
   
-  const toggleDetails = () => {
+  const toggleDetails = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     setShowDetails(!showDetails);
   };
   
   return (
     <>
-      <Card isDark={isDark}>
+      <Card isDark={isDark} onClick={toggleDetails}>
         <CardImageContainer>
           <CardImage src={project.image || "/images/placeholder/project.jpg"} alt={project.title} />
           <CardOverlay>
             <OverlayButtons>
               {project.links.github && (
-                <OverlayButton href={project.links.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+                <OverlayButton 
+                  href={project.links.github} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  aria-label="GitHub Repository"
+                  onClick={(e) => e.stopPropagation()} // Prevent card click
+                >
                   <FiGithub />
                 </OverlayButton>
               )}
               
               {project.links.live && (
-                <OverlayButton href={project.links.live} target="_blank" rel="noopener noreferrer" aria-label="Live Demo">
+                <OverlayButton 
+                  href={project.links.live} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  aria-label="Live Demo"
+                  onClick={(e) => e.stopPropagation()} // Prevent card click
+                >
                   <FiExternalLink />
                 </OverlayButton>
               )}
@@ -88,13 +102,24 @@ const ProjectCard = ({ project }) => {
               
               <ModalButtons>
                 {project.links.github && (
-                  <ModalButton href={project.links.github} target="_blank" rel="noopener noreferrer">
+                  <ModalButton 
+                    href={project.links.github} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <FiGithub /> View Code
                   </ModalButton>
                 )}
                 
                 {project.links.live && (
-                  <ModalButton primary href={project.links.live} target="_blank" rel="noopener noreferrer">
+                  <ModalButton 
+                    primary 
+                    href={project.links.live} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <FiExternalLink /> Live Demo
                   </ModalButton>
                 )}
@@ -106,6 +131,8 @@ const ProjectCard = ({ project }) => {
     </>
   );
 };
+
+// Add styled components below
 
 // Styled Components
 const Card = styled.article`

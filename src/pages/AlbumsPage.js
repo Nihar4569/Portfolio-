@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import albums from '../data/albums';
 import AlbumGrid from '../components/albums/AlbumGrid';
 
+
 const AlbumsPage = () => {
   return (
     <PageContainer>
@@ -23,10 +24,15 @@ const AlbumsPage = () => {
 };
 
 // Styled Components
+// In AlbumsPage.js, update the existing PageContainer
 const PageContainer = styled.div`
   min-height: 100vh;
+  padding-top: 80px; // Added this line
+  
+  @media (max-width: 768px) {
+    padding-top: 70px; // Added this line
+  }
 `;
-
 const HeroSection = styled.section`
   background-color: ${props => props.theme.surface};
   padding: 8rem 0 4rem;

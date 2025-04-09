@@ -9,6 +9,7 @@ const AuthModal = ({ album, onClose }) => {
   const [secretCode, setSecretCode] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { isDark } = useContext(ThemeContext);
   
   const handleSubmit = (e) => {
@@ -19,12 +20,18 @@ const AuthModal = ({ album, onClose }) => {
       return;
     }
     
-    if (secretCode === album.secretCode) {
-      setIsAuthenticated(true);
-      setError('');
-    } else {
-      setError('Incorrect secret code. Please try again.');
-    }
+    setIsLoading(true);
+    
+    // Simulate API check with a timeout
+    setTimeout(() => {
+      if (secretCode === album.secretCode) {
+        setIsAuthenticated(true);
+        setError('');
+      } else {
+        setError('Incorrect secret code. Please try again.');
+      }
+      setIsLoading(false);
+    }, 1000);
   };
   
   return (
@@ -82,9 +89,19 @@ const AuthModal = ({ album, onClose }) => {
                   </ErrorMessage>
                 )}
                 
-                <SubmitButton type="submit" isDark={isDark}>
-                  <FiUnlock />
-                  Unlock Album
+                <SubmitButton 
+                  type="submit" 
+                  disabled={isLoading}
+                  isDark={isDark}
+                >
+                  {isLoading ? (
+                    <LoadingSpinner />
+                  ) : (
+                    <>
+                      <FiUnlock />
+                      Unlock Album
+                    </>
+                  )}
                 </SubmitButton>
               </AuthForm>
             </ModalBody>
@@ -94,6 +111,18 @@ const AuthModal = ({ album, onClose }) => {
     </ModalOverlay>
   );
 };
+
+// Keyframes for the spinner
+const rotate = `
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
 
 // Styled Components
 const ModalOverlay = styled.div`
@@ -252,10 +281,26 @@ const SubmitButton = styled.button`
     margin-right: 8px;
   }
   
-  &:hover {
+  &:hover:not(:disabled) {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
+  
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+`;
+
+const LoadingSpinner = styled.div`
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: rotate 1s linear infinite;
+  
+  ${rotate}
 `;
 
 export default AuthModal;

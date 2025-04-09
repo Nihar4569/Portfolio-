@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../../context/ThemeContext';
-import { FiLock, FiImage } from 'react-icons/fi';
+import { FiLock, FiImage, FiKey } from 'react-icons/fi';
 import AuthModal from './AuthModal';
 
 const AlbumCard = ({ album }) => {
@@ -22,21 +22,31 @@ const AlbumCard = ({ album }) => {
         <CardImageContainer>
           <CardImage src={album.coverImage || "/images/placeholder/album.jpg"} alt={album.title} />
           <CardOverlay>
-            <OverlayIcon>
-              <FiLock />
-            </OverlayIcon>
-            <OverlayText>Restricted Access</OverlayText>
+            <LockContainer>
+              <OverlayIcon>
+                <FiKey />
+              </OverlayIcon>
+              <OverlayText>Access Protected</OverlayText>
+            </LockContainer>
           </CardOverlay>
         </CardImageContainer>
         
         <CardContent>
-          <CardTitle>{album.title}</CardTitle>
+          <CardHeader>
+            <LockIcon>
+              <FiLock />
+            </LockIcon>
+            <CardTitle>{album.title}</CardTitle>
+          </CardHeader>
           <CardDescription>{album.description}</CardDescription>
           
-          <PhotoCount>
-            <FiImage />
-            <span>{album.photos.length} Photos</span>
-          </PhotoCount>
+          <CardFooter>
+            <PhotoCount>
+              <FiImage />
+              <span>{album.photos.length} Photos</span>
+            </PhotoCount>
+            <AccessButton>Enter Code</AccessButton>
+          </CardFooter>
         </CardContent>
       </Card>
       
@@ -55,6 +65,7 @@ const Card = styled.article`
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   cursor: pointer;
+  position: relative;
   
   &:hover {
     transform: translateY(-10px);
@@ -84,9 +95,11 @@ const CardOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.7)
+  );
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   opacity: 0;
@@ -101,9 +114,21 @@ const CardOverlay = styled.div`
   }
 `;
 
+const LockContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+`;
+
 const OverlayIcon = styled.div`
   font-size: 2rem;
-  color: white;
+  color: ${props => props.theme.primary};
   margin-bottom: 1rem;
 `;
 
@@ -111,15 +136,28 @@ const OverlayText = styled.p`
   color: white;
   font-size: 1rem;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 `;
 
 const CardContent = styled.div`
   padding: 1.5rem;
 `;
 
+const CardHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
+
+const LockIcon = styled.div`
+  color: ${props => props.theme.textSecondary};
+  margin-right: 0.8rem;
+  font-size: 1.2rem;
+`;
+
 const CardTitle = styled.h3`
   font-size: 1.3rem;
-  margin-bottom: 0.8rem;
   color: ${props => props.theme.text};
 `;
 
@@ -130,6 +168,12 @@ const CardDescription = styled.p`
   margin-bottom: 1.5rem;
 `;
 
+const CardFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const PhotoCount = styled.div`
   display: flex;
   align-items: center;
@@ -138,6 +182,21 @@ const PhotoCount = styled.div`
   
   svg {
     margin-right: 8px;
+  }
+`;
+
+const AccessButton = styled.button`
+  background: transparent;
+  color: ${props => props.theme.primary};
+  border: 1px solid ${props => props.theme.primary};
+  border-radius: 20px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: ${props => props.theme.primary};
+    color: white;
   }
 `;
 

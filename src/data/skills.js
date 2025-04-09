@@ -3,44 +3,44 @@ const skills = {
       {
         name: "JavaScript",
         icon: "javascript",
-        level: 85
+        level: 60
       },
       {
         name: "Java",
         icon: "java",
-        level: 90
+        level: 80
       },
       {
         name: "Python",
         icon: "python",
-        level: 75
+        level: 30
       },
       {
         name: "C/C++",
         icon: "c",
-        level: 80
+        level: 10
       }
     ],
     frameworks: [
       {
         name: "React.js",
         icon: "react",
+        level: 70
+      },
+      {
+        name: "Spring Boot",
+        icon: "spring",
         level: 85
       },
       {
         name: "Node.js",
         icon: "node",
-        level: 80
+        level: 70
       },
       {
         name: "Express.js",
         icon: "express",
-        level: 80
-      },
-      {
-        name: "Spring Boot",
-        icon: "spring",
-        level: 75
+        level: 70
       }
     ],
     databases: [

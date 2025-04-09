@@ -51,8 +51,55 @@ const Timeline = () => {
       organization: 'University Project',
       date: '2024',
       description: 'Conducted research on improving rainfall prediction accuracy using SMOTE and LSTM technologies.'
+    },
+    {
+      id: 6,
+      type: 'project',
+      icon: <FiCode />,
+      title: 'Nagrik Aur Samvidhan (Citizen & Constitution)',
+      organization: 'Personal Project',
+      date: '2023',
+      description: 'A platform designed to simplify and spread awareness about the Constitution of India using a gamified approach to make learning about constitutional rights, duties, and principles more engaging and accessible.'
+    },
+    {
+      id: 7,
+      type: 'project',
+      icon: <FiCode />,
+      title: 'Rainfall Prediction Using SMOTE and LSTM',
+      organization: 'Personal Project',
+      date: '2023',
+      description: 'A research project that improves rainfall prediction accuracy by addressing class imbalance and capturing temporal dependencies in weather data.'
+    },
+    {
+      id: 8,
+      type: 'project',
+      icon: <FiCode />,
+      title: 'Group Chat Application',
+      organization: 'Personal Project',
+      date: '2023',
+      description: 'A real-time group chat application that allows users to create groups, join them, and communicate through text and multimedia sharing.'
+    },
+    {
+      id: 9,
+      type: 'project',
+      icon: <FiCode />,
+      title: 'AI Career Navigator',
+      organization: 'Personal Project',
+      date: '2023',
+      description: 'A web-based career recommendation system that uses machine learning to provide personalized career guidance and educational pathways.'
+    },
+    {
+      id: 10,
+      type: 'project',
+      icon: <FiCode />,
+      title: 'Integrated Annual Academic Calendar',
+      organization: 'Ministry of Education',
+      date: '2022',
+      description: 'A Smart India Hackathon 2022 winning project that centralizes academic calendars for all Indian universities, promoting efficiency and uniformity in the education system.'
     }
   ];
+  
+  
   
   return (
     <TimelineContainer>
