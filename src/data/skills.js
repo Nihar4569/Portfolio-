@@ -47,7 +47,7 @@ const skills = {
       {
         name: "MongoDB",
         icon: "mongodb",
-        level: 85
+        level: 70
       },
       {
         name: "MySQL",
@@ -64,7 +64,7 @@ const skills = {
       {
         name: "Git",
         icon: "git",
-        level: 85
+        level: 60
       },
       {
         name: "VS Code",
@@ -79,19 +79,19 @@ const skills = {
       {
         name: "Cisco Packet Tracer",
         icon: "cisco",
-        level: 75
+        level: 50
       }
     ],
     other: [
       {
         name: "Firebase",
         icon: "firebase",
-        level: 80
+        level: 30
       },
       {
         name: "Socket.io",
         icon: "socketio",
-        level: 75
+        level: 10
       },
       {
         name: "REST API",
@@ -101,7 +101,7 @@ const skills = {
       {
         name: "Networking (TCP/IP)",
         icon: "network",
-        level: 80
+        level: 50
       }
     ]
   };

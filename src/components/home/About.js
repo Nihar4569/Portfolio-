@@ -72,14 +72,14 @@ const About = () => {
             
             <AboutStats>
               <StatItem>
-                <StatNumber>15+</StatNumber>
+                <StatNumber>7+</StatNumber>
                 <StatText>Projects Completed</StatText>
               </StatItem>
               
               <StatDivider />
               
               <StatItem>
-                <StatNumber>2+</StatNumber>
+                <StatNumber>3+</StatNumber>
                 <StatText>Years Coding</StatText>
               </StatItem>
               
