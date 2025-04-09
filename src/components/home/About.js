@@ -86,7 +86,7 @@ const About = () => {
               <StatDivider />
               
               <StatItem>
-                <StatNumber>5+</StatNumber>
+                <StatNumber>10+</StatNumber>
                 <StatText>Technologies</StatText>
               </StatItem>
             </AboutStats>
