@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { ThemeContext } from '../../context/ThemeContext';
 import ThemeToggle from './ThemeToggle';
-import { FiMenu, FiX, FiCode, FiHome, FiFolder, FiMail } from 'react-icons/fi';
+import { FiMenu, FiX, FiCode, FiHome, FiFolder, FiMail, FiImage } from 'react-icons/fi';
 
 const Navbar = () => {
   const { isDark, isAnimating } = useContext(ThemeContext);
@@ -68,6 +68,11 @@ const Navbar = () => {
           <NavLink active={location.pathname === '/contact'}>
             <Link to="/contact">
               <FiMail /> Contact
+            </Link>
+          </NavLink>
+          <NavLink active={location.pathname === '/albums'}>
+            <Link to="/albums">
+              <FiImage /> Albums
             </Link>
           </NavLink>
           
