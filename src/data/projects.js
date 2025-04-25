@@ -13,7 +13,7 @@ const projects = [
     techStack: ["React.js", "Spring Boot", "MongoDB Atlas", "Tailwind CSS", "REST API"],
     links: {
       github: "https://github.com/Nihar4569/FIR_VAULT_FRONTEND",
-      //live: "https://fir-tracker-demo.vercel.app/"
+      live: "https://firvault.vercel.app/"
     },
     image: "/images/projects/fir-tracker.jpg",
     featured: true
