@@ -1,137 +1,177 @@
-const projects = [
-  {
-    id: 1,
-    title: "Delhi Health Connect (CareSync)",
-    description: "A comprehensive healthcare management system designed for the Delhi Government that efficiently manages hospital resources and patient care in real-time.",
-    features: [
-      "Real-time tracking of hospital beds, patient registrations, and doctor assignments",
-      "Medicine stock management system",
-      "Transparent audit logs for monitoring key activities",
-      "Hospital verification workflow",
-      "Scalable healthcare data management"
-    ],
-    techStack: ["MongoDB", "Express.js", "React.js", "Node.js", "Spring Boot"],
-    links: {
-      github: "https://github.com/Nihar4569/CareSync--A-Hospital-Management-App",
-      live: "https://caresyncdelhi.vercel.app/"
-    },
-    image: "/images/projects/health-connect.jpg",
-    featured: true
-  },
-  {
-    id: 2,
-    title: "Nagrik Aur Samvidhan (Citizen & Constitution)",
-    description: "A platform designed to simplify and spread awareness about the Constitution of India using a gamified approach to make learning about constitutional rights, duties, and principles more engaging and accessible.",
-    features: [
-      "Gamified learning of constitutional concepts",
-      "Interactive quizzes and challenges",
-      "Simplified explanations of complex legal principles",
-      "Progress tracking and achievement system",
-      "Accessible design for users of all ages"
-    ],
-    techStack: ["React", "Node.js", "MongoDB", "Express.js", "Redux"],
-    links: {
-      github: "https://github.com/Nihar4569/Nagrik-Aur-Samvidhan-Constitutional-Literacy-Platform?tab=readme-ov-file",
-      live: "https://github.com/Nihar4569/Nagrik-Aur-Samvidhan-Constitutional-Literacy-Platform?tab=readme-ov-file"
-    },
-    image: "/images/projects/nagrik-samvidhan.jpg",
-    featured: false
-  },
-  {
-    id: 3,
-    title: "Rainfall Prediction Using SMOTE and LSTM",
-    description: "A research project that improves rainfall prediction accuracy by addressing class imbalance and capturing temporal dependencies in weather data.",
-    features: [
-      "Enhanced model sensitivity for extreme rainfall events using SMOTE",
-      "Temporal dependencies capture through LSTM architecture",
-      "Improved overall prediction accuracy",
-      "Data preprocessing and feature engineering for weather data",
-      "Comprehensive model evaluation and validation"
-    ],
-    techStack: ["Python", "TensorFlow", "Scikit-learn", "Pandas", "Matplotlib"],
-    links: {
-      github: "https://github.com/Nihar4569/An-Empirical-Study-on-Harmonizing-Classification-Precision-by-Adopting-a-SMOTE-Based-Data-Balancing-",
-      live: ""
-    },
-    image: "/images/projects/rainfall-prediction.jpg",
-    featured: false
-  },
-  {
-    id: 4,
-    title: "Classroom Management System",
-    description: "A real-time classroom communication platform that enhances the virtual learning experience with interactive features for both teachers and students.",
-    features: [
-      "Real-time screen sharing with audio functionality",
-      "Super admin controls for verifying teachers and managing access",
-      "Automatic classroom routing based on subjects",
-      "Integrated messaging and file sharing capabilities",
-      "Seamless user experience with modern UI design"
-    ],
-    techStack: ["React", "Firebase", "Chakra UI", "Node.js", "Express.js"],
-    links: {
-      github: "https://github.com/Nihar4569/ClassRoom_Management",
-      live: "https://soaclassroom.vercel.app/"
-    },
-    image: "/images/projects/classroom.jpg",
-    featured: true
-  },
-  {
-    id: 5,
-    title: "Group Chat Application",
-    description: "A real-time group chat application that allows users to create groups, join them, and communicate through text and multimedia sharing.",
-    features: [
-      "Create and join chat groups",
-      "User authentication and authorization",
-      "Real-time messaging using WebSocket",
-      "File sharing (images, PDFs, and other documents)",
-      "User presence indicators and notifications"
-    ],
-    techStack: ["React", "Node.js", "MongoDB", "Express.js"],
-    links: {
-      github: "https://github.com/Nihar4569/Chat_App",
-      live: "https://chat-app-liart-sigma.vercel.app/"
-    },
-    image: "/images/projects/group-chat.jpg",
-    featured: false
-  },
-  {
-    id: 6,
-    title: "AI Career Navigator",
-    description: "A web-based career recommendation system that uses machine learning to provide personalized career guidance and educational pathways.",
-    features: [
-      "Personalized career recommendations based on user profiles",
-      "Aptitude test module for accurate career matching",
-      "Detailed job descriptions and educational pathways",
-      "Salary insights and market trends",
-      "Educational resource recommendations"
-    ],
-    techStack: ["Python", "Flask", "MongoDB", "HTML", "CSS", "Machine Learning"],
-    links: {
-      github: "https://github.com/Nihar4569/AI-Career-Navigator",
-      live: "https://github.com/Nihar4569/AI-Career-Navigator"
-    },
-    image: "/images/projects/career-navigator.jpg",
-    featured: false
-  },
-  {
-    id: 7,
-    title: "Integrated Annual Academic Calendar",
-    description: "A Smart India Hackathon 2022 winning project that centralizes academic calendars for all Indian universities, promoting efficiency and uniformity in the education system.",
-    features: [
-      "Centralized academic schedule management",
-      "Event management system for regulatory control",
-      "University and government body collaboration tools",
-      "Real-time event updates and notifications",
-      "Compliance with educational regulations"
-    ],
-    techStack: ["HTML", "CSS", "JavaScript", "MySQL"],
-    links: {
-      github: "https://github.com/Nihar4569/academicalendar",
-      live: "http://academicalendar.kesug.com/"
-    },
-    image: "/images/projects/academic-calendar.jpg",
-    featured: true
-  }
-];
+import React from 'react';
+import styled from 'styled-components';
+import projects from '../data/projects';
+import ProjectsGrid from '../components/projects/ProjectsGrid';
+import { FiCode, FiPackage, FiExternalLink } from 'react-icons/fi';
 
-export default projects;
+
+const ProjectsPage = () => {
+  return (
+    <PageContainer>
+      <HeroSection>
+        <CodeLines />
+        <HeroContent>
+          <PageTitle>My Projects</PageTitle>
+          <PageSubtitle>Explore my work across various technologies and domains</PageSubtitle>
+          
+          <Stats>
+            <StatItem>
+              <StatValue><FiCode /> {projects.length}+</StatValue>
+              <StatLabel>Projects</StatLabel>
+            </StatItem>
+            
+            <StatDivider />
+            
+            <StatItem>
+              <StatValue><FiPackage /> 10+</StatValue>
+              <StatLabel>Technologies</StatLabel>
+            </StatItem>
+            
+            <StatDivider />
+            
+            <StatItem>
+              <StatValue>4+</StatValue>
+              <StatLabel>Hackathons</StatLabel>
+            </StatItem>
+          </Stats>
+        </HeroContent>
+      </HeroSection>
+      
+      <ProjectsSection>
+        <SectionContainer>
+          <ProjectsGrid projects={projects} />
+        </SectionContainer>
+      </ProjectsSection>
+    </PageContainer>
+  );
+};
+
+// Styled Components
+// In AlbumsPage.js, update the existing PageContainer
+const PageContainer = styled.div`
+  min-height: 100vh;
+  padding-top: 80px; // Added this line
+  
+  @media (max-width: 768px) {
+    padding-top: 70px; // Added this line
+  }
+`;
+
+const HeroSection = styled.section`
+  background-color: ${props => props.theme.surface};
+  padding: 8rem 0 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+`;
+
+const CodeLines = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: ${props => props.theme.isDark 
+    ? `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%2300e676' fill-opacity='0.05'%3E%3Cpath d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+    : `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%233498db' fill-opacity='0.04'%3E%3Cpath d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+  };
+`;
+
+const HeroContent = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 1;
+`;
+
+const PageTitle = styled.h1`
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, ${props => props.theme.primary} 0%, ${props => props.theme.secondary} 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+  }
+`;
+
+const PageSubtitle = styled.p`
+  font-size: 1.2rem;
+  color: ${props => props.theme.textSecondary};
+  max-width: 600px;
+  margin: 0 auto 2rem;
+`;
+
+const Stats = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+`;
+
+const StatItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  @media (max-width: 768px) {
+    flex-direction: row;
+    gap: 1rem;
+  }
+`;
+
+const StatValue = styled.div`
+  font-size: 2rem;
+  font-weight: 700;
+  color: ${props => props.theme.primary};
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  
+  svg {
+    font-size: 1.5rem;
+  }
+`;
+
+const StatLabel = styled.p`
+  font-size: 0.9rem;
+  color: ${props => props.theme.textSecondary};
+  margin-top: 0.5rem;
+  
+  @media (max-width: 768px) {
+    margin-top: 0;
+  }
+`;
+
+const StatDivider = styled.div`
+  width: 1px;
+  height: 50px;
+  background-color: ${props => props.theme.borderColor};
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const ProjectsSection = styled.section`
+  padding: 5rem 0;
+  background-color: ${props => props.theme.background};
+`;
+
+const SectionContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+`;
+
+export default ProjectsPage;
