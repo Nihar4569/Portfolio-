@@ -105,7 +105,7 @@ const projects = [
       "File sharing (images, PDFs, and other documents)",
       "User presence indicators and notifications"
     ],
-    techStack: ["React", "Node.js", "MongoDB", "Express.js"],
+    techStack: ["React", "Node.js", "FireBase Authentication","FireBase Realtime Database" ,"Express.js"],
     links: {
       github: "https://github.com/Nihar4569/Chat_App",
       live: "https://chat-app-liart-sigma.vercel.app/"
