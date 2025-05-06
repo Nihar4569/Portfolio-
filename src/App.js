@@ -12,6 +12,7 @@ import PageTransition from './components/common/PageTransition';
 import ThemeToggleAnimation from './components/common/ThemeToggleAnimation';
 import EnhancedAnimatedCursor from './components/common/EnhancedAnimatedCursor';
 
+
 // Pages
 import HomePage from './pages/HomePage';
 import ProjectsPage from './pages/ProjectsPage';
@@ -21,6 +22,8 @@ import NotFoundPage from './pages/NotFoundPage';
 
 // Styles
 import './styles/globals.css';
+import EnhancedTouchAnimation from './components/common/TouchAnimationEffect';
+import TouchParticleEffect from './components/common/TouchAnimationEffect';
 
 function App() {
   return (
@@ -37,6 +40,7 @@ const ThemedApp = () => {
     <StyledThemeProvider theme={theme}>
       <AppContainer>
         <EnhancedAnimatedCursor />
+        <TouchParticleEffect />
         <Router>
           <ScrollToTop />
           <Navbar />
