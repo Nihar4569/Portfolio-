@@ -10,6 +10,7 @@ import ScrollToTop from './components/common/ScrollToTop';
 import BackgroundAnimation from './components/common/BackgroundAnimation';
 import PageTransition from './components/common/PageTransition';
 import ThemeToggleAnimation from './components/common/ThemeToggleAnimation';
+import EnhancedAnimatedCursor from './components/common/EnhancedAnimatedCursor';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -35,6 +36,7 @@ const ThemedApp = () => {
   return (
     <StyledThemeProvider theme={theme}>
       <AppContainer>
+        <EnhancedAnimatedCursor />
         <Router>
           <ScrollToTop />
           <Navbar />

@@ -17,6 +17,22 @@ body {
   position: relative;
 }
 
+/* Custom cursor styles */
+.custom-cursor * {
+  cursor: none !important;
+}
+
+/* Mobile and touch devices - restore default cursor */
+@media (hover: none), (pointer: coarse) {
+  .cursor-component {
+    display: none !important;
+  }
+  
+  .custom-cursor * {
+    cursor: auto !important;
+  }
+}
+
 /* Customized scrollbar for tech feel */
 ::-webkit-scrollbar {
   width: 8px;
@@ -223,6 +239,61 @@ input, textarea {
   text-fill-color: transparent;
 }
 
+/* Keyframe animations for cursor and tech effects */
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(4px, 4px) rotate(45deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
 /* Responsive styles */
 @media (max-width: 768px) {
   .section {
@@ -243,4 +314,3 @@ input, textarea {
     padding: 0 1rem;
   }
 }
-
