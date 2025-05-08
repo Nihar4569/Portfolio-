@@ -122,8 +122,95 @@ ${formData.get('message')}
         <SectionContainer>
           <ContactGrid>
             <ContactInfoContainer>
-              {/* ... existing terminal and contact info ... */}
-            </ContactInfoContainer>
+  <Terminal isDark={isDark}>
+    <TerminalHeader>
+      <TerminalButton className="red" />
+      <TerminalButton className="yellow" />
+      <TerminalButton className="green" />
+      <TerminalTitle>nihar@portfolio ~ contact</TerminalTitle>
+    </TerminalHeader>
+    
+    <TerminalBody>
+      {terminalCommands.map((cmd, index) => (
+        <TerminalLine key={index} className={!cmd.processed ? 'current' : ''}>
+          {cmd.processed ? (
+            <>
+              <TerminalPrompt>nihar@portfolio:~$</TerminalPrompt> {cmd.text}
+            </>
+          ) : (
+            <>
+              <TerminalPrompt>nihar@portfolio:~$</TerminalPrompt> {cmd.text}
+              <TerminalCursor />
+            </>
+          )}
+        </TerminalLine>
+      ))}
+    </TerminalBody>
+  </Terminal>
+  
+  <ContactInfoList>
+    <ContactInfoItem>
+      <ContactInfoIcon isDark={isDark}>
+        <FiMail />
+      </ContactInfoIcon>
+      <ContactInfoContent>
+        <ContactInfoLabel>Email</ContactInfoLabel>
+        <ContactInfoValue>
+          <a href="mailto:nihar4569@gmail.com">nihar4569@gmail.com</a>
+        </ContactInfoValue>
+      </ContactInfoContent>
+    </ContactInfoItem>
+    
+    <ContactInfoItem>
+      <ContactInfoIcon isDark={isDark}>
+        <FiPhone />
+      </ContactInfoIcon>
+      <ContactInfoContent>
+        <ContactInfoLabel>Phone</ContactInfoLabel>
+        <ContactInfoValue>
+          <a href="tel:+916370332583">+91 6370332583</a>
+        </ContactInfoValue>
+      </ContactInfoContent>
+    </ContactInfoItem>
+    
+    <ContactInfoItem>
+      <ContactInfoIcon isDark={isDark}>
+        <FiMapPin />
+      </ContactInfoIcon>
+      <ContactInfoContent>
+        <ContactInfoLabel>Location</ContactInfoLabel>
+        <ContactInfoValue>Bhubaneswar, Odisha, India</ContactInfoValue>
+      </ContactInfoContent>
+    </ContactInfoItem>
+  </ContactInfoList>
+  
+  <SocialLinks>
+    <SocialLink 
+      href="https://github.com/Nihar4569" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      isDark={isDark}
+    >
+      <FiGithub />
+    </SocialLink>
+    
+    <SocialLink 
+      href="https://linkedin.com/in/nihar4569" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      isDark={isDark}
+    >
+      <FiLinkedin />
+    </SocialLink>
+    
+    <SocialLink 
+      href="mailto:nihar4569@gmail.com"
+      isDark={isDark}
+    >
+      <FiMail />
+    </SocialLink>
+  </SocialLinks>
+</ContactInfoContainer>
             
             <ContactFormContainer>
               <FormHeading>Send Me a Message</FormHeading>
@@ -294,7 +381,7 @@ const ContactInfoContainer = styled.div`
 `;
 
 const Terminal = styled.div`
-  background-color: ${props => props.isDark ? '#1e1e1e' : '#f1f1f1'};
+  background-color: #ffffff;
   border-radius: 10px;
   overflow: hidden;
   font-family: 'Fira Code', monospace;
@@ -303,7 +390,7 @@ const Terminal = styled.div`
 `;
 
 const TerminalHeader = styled.div`
-  background-color: ${props => props.theme.isDark ? '#323232' : '#e0e0e0'};
+  background-color: #dddddd;
   padding: 8px 15px;
   display: flex;
   align-items: center;
@@ -329,14 +416,14 @@ const TerminalButton = styled.div`
 `;
 
 const TerminalTitle = styled.div`
-  color: ${props => props.theme.isDark ? '#cccccc' : '#555555'};
+  color: #555555;
   font-size: 0.8rem;
   margin-left: 8px;
 `;
 
 const TerminalBody = styled.div`
   padding: 15px;
-  color: ${props => props.theme.isDark ? '#f0f0f0' : '#333333'};
+  color: #333333;
   font-size: 0.9rem;
   line-height: 1.6;
   max-height: 300px;
@@ -347,11 +434,11 @@ const TerminalBody = styled.div`
   }
   
   &::-webkit-scrollbar-track {
-    background: ${props => props.theme.isDark ? '#1e1e1e' : '#f1f1f1'};
+    background: #f1f1f1;
   }
   
   &::-webkit-scrollbar-thumb {
-    background: ${props => props.theme.isDark ? '#555555' : '#cccccc'};
+    background: #cccccc;
     border-radius: 4px;
   }
 `;
@@ -367,7 +454,7 @@ const TerminalLine = styled.div`
 `;
 
 const TerminalPrompt = styled.span`
-  color: ${props => props.theme.primary};
+  color: #00e676;
   margin-right: 10px;
 `;
 
@@ -375,7 +462,7 @@ const TerminalCursor = styled.span`
   display: inline-block;
   width: 8px;
   height: 15px;
-  background-color: ${props => props.theme.primary};
+  background-color: #00e676;
   animation: blink 1s infinite;
   vertical-align: middle;
   margin-left: 5px;
