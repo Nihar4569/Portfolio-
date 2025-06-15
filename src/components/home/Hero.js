@@ -82,7 +82,7 @@ const Hero = () => {
             </PrimaryButton>
             
             <SecondaryButton 
-              href="https://drive.google.com/file/d/1Hvkhwy0OAvwnX-DHe5VaVlX3Ef_PVlGH/view?usp=drive_link" 
+              href="https://drive.google.com/file/d/1-oSPx8EYVKOZaC2TJ_gwjr_dqqBFJSXS/view?usp=drive_link" 
               target='_blank'
             >
               <span>Download Resume</span> <FiDownload />
