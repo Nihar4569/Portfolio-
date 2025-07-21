@@ -29,7 +29,7 @@ const projects = [
       "Hospital verification workflow",
       "Scalable healthcare data management"
     ],
-    techStack: ["MongoDB", "Express.js", "React.js", "Node.js", "Spring Boot"],
+    techStack: ["MongoDB", "React.js", "Spring Boot"],
     links: {
       github: "https://github.com/Nihar4569/CareSync--A-Hospital-Management-App",
       live: "https://caresyncdelhi.vercel.app/"
@@ -48,7 +48,7 @@ const projects = [
       "Progress tracking and achievement system",
       "Accessible design for users of all ages"
     ],
-    techStack: ["React", "Node.js", "MongoDB", "Express.js", "Redux"],
+    techStack: ["React", "Node.js", "MongoDB", "Express.js"],
     links: {
       github: "https://github.com/Nihar4569/Nagrik-Aur-Samvidhan-Constitutional-Literacy-Platform?tab=readme-ov-file",
       live: "https://github.com/Nihar4569/Nagrik-Aur-Samvidhan-Constitutional-Literacy-Platform?tab=readme-ov-file"
@@ -105,7 +105,7 @@ const projects = [
       "File sharing (images, PDFs, and other documents)",
       "User presence indicators and notifications"
     ],
-    techStack: ["React", "Node.js", "FireBase Authentication","FireBase Realtime Database" ,"Express.js"],
+    techStack: ["React", "Node.js", "FireBase Authentication","FireBase Realtime Database"],
     links: {
       github: "https://github.com/Nihar4569/Chat_App",
       live: "https://chat-app-liart-sigma.vercel.app/"
