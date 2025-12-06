@@ -21,7 +21,7 @@ const ContactPage = () => {
   const [terminalCommands, setTerminalCommands] = useState([
     { text: 'cd /home/nihar/contact', processed: true },
     { text: 'cat contact_info.json', processed: true },
-    { text: '{"email":"nihar4569@gmail.com","phone":"+91 6370332583","location":"Bhubaneswar, Odisha, India"}', processed: true },
+    { text: '{"email":"nihar4569@gmail.com","phone":"+91 6370332583","location":"Bengaluru, Karnataka, India"}', processed: true },
     { text: 'git status', processed: true },
     { text: '# On branch main - Your contact form is ready to be filled', processed: true },
     { text: 'npm run connect', processed: false }
@@ -179,7 +179,7 @@ ${formData.get('message')}
       </ContactInfoIcon>
       <ContactInfoContent>
         <ContactInfoLabel>Location</ContactInfoLabel>
-        <ContactInfoValue>Bhubaneswar, Odisha, India</ContactInfoValue>
+        <ContactInfoValue>Bengaluru, Karnataka, India</ContactInfoValue>
       </ContactInfoContent>
     </ContactInfoItem>
   </ContactInfoList>
