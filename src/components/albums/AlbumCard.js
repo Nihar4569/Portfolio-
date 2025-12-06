@@ -131,6 +131,20 @@ const Card = styled.article`
     transform: translateY(-10px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   }
+  
+  @media (max-width: 768px) {
+    border-radius: 12px;
+    
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    &:hover {
+      transform: none;
+    }
+  }
 `;
 
 const CardImageContainer = styled.div`
@@ -202,6 +216,10 @@ const OverlayText = styled.p`
 
 const CardContent = styled.div`
   padding: 1.5rem;
+  
+  @media (max-width: 480px) {
+    padding: 1rem;
+  }
 `;
 
 const CardHeader = styled.div`
@@ -219,6 +237,10 @@ const LockIcon = styled.div`
 const CardTitle = styled.h3`
   font-size: 1.3rem;
   color: ${props => props.theme.text};
+  
+  @media (max-width: 480px) {
+    font-size: 1.1rem;
+  }
 `;
 
 const CardDescription = styled.p`
@@ -226,12 +248,19 @@ const CardDescription = styled.p`
   color: ${props => props.theme.textSecondary};
   line-height: 1.6;
   margin-bottom: 1.5rem;
+  
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const CardFooter = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 `;
 
 const PhotoCount = styled.div`
@@ -242,6 +271,10 @@ const PhotoCount = styled.div`
   
   svg {
     margin-right: 8px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
   }
 `;
 
@@ -257,6 +290,11 @@ const AccessButton = styled.button`
   &:hover {
     background: ${props => props.theme.primary};
     color: white;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
   }
 `;
 

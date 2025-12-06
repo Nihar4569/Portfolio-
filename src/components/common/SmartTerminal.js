@@ -496,6 +496,10 @@ const TerminalHeader = styled.div`
     ? 'rgba(0, 230, 118, 0.3)'
     : 'rgba(52, 152, 219, 0.3)'};
   position: relative;
+
+  @media (max-width: 768px) {
+    padding: 12px 15px;
+  }
   
   &::after {
     content: '';
@@ -525,6 +529,11 @@ const StatusDot = styled.div`
     ? '0 0 10px #00e676, 0 0 20px rgba(0, 230, 118, 0.5)' 
     : '0 0 10px #3498db, 0 0 20px rgba(52, 152, 219, 0.5)'};
   animation: ${blink} 2s ease-in-out infinite;
+
+  @media (max-width: 768px) {
+    width: 10px;
+    height: 10px;
+  }
 `;
 
 const TerminalTitle = styled.span`
@@ -536,6 +545,11 @@ const TerminalTitle = styled.span`
   text-shadow: ${({ theme }) => theme.background === '#0d1117'
     ? '0 0 10px rgba(0, 230, 118, 0.5), 0 0 20px rgba(0, 230, 118, 0.3)'
     : '0 0 10px rgba(52, 152, 219, 0.5), 0 0 20px rgba(52, 152, 219, 0.3)'};
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
 `;
 
 const HeaderButtons = styled.div`
@@ -563,6 +577,11 @@ const HeaderButton = styled.button`
     background: #27ca40;
     &:hover { background: #28cd41; transform: scale(1.2); }
   }
+
+  @media (max-width: 768px) {
+    width: 12px;
+    height: 12px;
+  }
 `;
 
 const TerminalBody = styled.div`
@@ -576,6 +595,12 @@ const TerminalBody = styled.div`
   background: ${({ theme }) => theme.background === '#0d1117'
     ? 'transparent'
     : 'rgba(255, 255, 255, 0.5)'};
+
+  @media (max-width: 768px) {
+    padding: 12px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
   
   /* Custom Scrollbar */
   &::-webkit-scrollbar {
@@ -658,6 +683,14 @@ const AsciiArt = styled.pre`
   text-shadow: ${({ theme }) => theme?.background === '#0d1117'
     ? '0 0 10px rgba(0, 230, 118, 0.5)'
     : '0 0 10px rgba(52, 152, 219, 0.5)'};
+  overflow-x: auto;
+
+  @media (max-width: 768px) {
+    font-size: 8px;
+    line-height: 1.1;
+    margin: 5px 0;
+    display: none; /* Hide ASCII art on mobile to save space */
+  };
 `;
 
 const SuggestionChips = styled.div`
@@ -692,6 +725,11 @@ const Chip = styled.button`
       ? '0 4px 15px rgba(0, 230, 118, 0.3)'
       : '0 4px 15px rgba(52, 152, 219, 0.3)'};
   }
+
+  @media (max-width: 768px) {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
 `;
 
 const TypingIndicator = styled.div`
@@ -723,6 +761,11 @@ const InputContainer = styled.div`
     ? 'rgba(0, 230, 118, 0.2)'
     : 'rgba(52, 152, 219, 0.2)'};
   gap: 10px;
+
+  @media (max-width: 768px) {
+    padding: 12px 15px;
+    gap: 8px;
+  }
 `;
 
 const InputPrefix = styled.span`
@@ -745,6 +788,10 @@ const Input = styled.input`
     color: ${({ theme }) => theme?.background === '#0d1117'
       ? 'rgba(255, 255, 255, 0.3)'
       : 'rgba(0, 0, 0, 0.3)'};
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px; /* Prevents iOS zoom on focus */
   }
 `;
 

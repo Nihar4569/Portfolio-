@@ -18,8 +18,13 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   const handleNavClick = () => {
     playNavigation();
+    closeMenu(); // Close menu after clicking a link
   };
   
   useEffect(() => {
@@ -43,6 +48,18 @@ const Navbar = () => {
     setIsOpen(false);
   }, [location]);
 
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   return (
     <NavbarContainer scrolled={scrolled} isDark={isDark} isAnimating={isAnimating}>
       <NavContent>
@@ -55,29 +72,35 @@ const Navbar = () => {
           </Link>
         </LogoContainer>
         
-        <MenuButton onClick={toggleMenu} aria-label="Toggle menu">
-          {isOpen ? <FiX /> : <FiMenu />}
-        </MenuButton>
+        {/* Mobile: Theme toggle + Hamburger menu */}
+        <MobileControls>
+          <MobileThemeToggle>
+            <ThemeToggle />
+          </MobileThemeToggle>
+          <MenuButton onClick={toggleMenu} aria-label="Toggle menu" className="menu-button">
+            {isOpen ? <FiX /> : <FiMenu />}
+          </MenuButton>
+        </MobileControls>
         
         <NavLinksDesktop>
-          <NavLink active={location.pathname === '/'}>
+          <NavLink $active={location.pathname === '/'}>
             <Link to="/" onClick={handleNavClick}>
               <FiHome /> Home
             </Link>
           </NavLink>
           
-          <NavLink active={location.pathname === '/projects'}>
+          <NavLink $active={location.pathname === '/projects'}>
             <Link to="/projects" onClick={handleNavClick}>
               <FiFolder /> Projects
             </Link>
           </NavLink>
           
-          <NavLink active={location.pathname === '/contact'}>
+          <NavLink $active={location.pathname === '/contact'}>
             <Link to="/contact" onClick={handleNavClick}>
               <FiMail /> Contact
             </Link>
           </NavLink>
-          <NavLink active={location.pathname === '/albums'}>
+          <NavLink $active={location.pathname === '/albums'}>
             <Link to="/albums" onClick={handleNavClick}>
               <FiImage /> Albums
             </Link>
@@ -88,22 +111,38 @@ const Navbar = () => {
           </ThemeToggleContainer>
         </NavLinksDesktop>
         
-        <NavLinksMobile isOpen={isOpen}>
-          <NavLinkMobile>
+        {/* Mobile Menu Overlay */}
+        <MobileMenuOverlay isOpen={isOpen} onClick={closeMenu} />
+        
+        <NavLinksMobile isOpen={isOpen} className="mobile-nav">
+          <MobileMenuHeader>
+            <MobileMenuTitle>Menu</MobileMenuTitle>
+            <CloseButton onClick={closeMenu}>
+              <FiX />
+            </CloseButton>
+          </MobileMenuHeader>
+          
+          <NavLinkMobile $active={location.pathname === '/'}>
             <Link to="/" onClick={handleNavClick}>
               <FiHome /> Home
             </Link>
           </NavLinkMobile>
           
-          <NavLinkMobile>
+          <NavLinkMobile $active={location.pathname === '/projects'}>
             <Link to="/projects" onClick={handleNavClick}>
               <FiFolder /> Projects
             </Link>
           </NavLinkMobile>
           
-          <NavLinkMobile>
+          <NavLinkMobile $active={location.pathname === '/contact'}>
             <Link to="/contact" onClick={handleNavClick}>
               <FiMail /> Contact
+            </Link>
+          </NavLinkMobile>
+          
+          <NavLinkMobile $active={location.pathname === '/albums'}>
+            <Link to="/albums" onClick={handleNavClick}>
+              <FiImage /> Albums
             </Link>
           </NavLinkMobile>
           
@@ -122,7 +161,7 @@ const NavbarContainer = styled.nav`
   top: 0;
   left: 0;
   width: 100%;
-  z-index: ${props => props.isAnimating ? 900 : 1000}; // Lower z-index during animations
+  z-index: ${props => props.isAnimating ? 900 : 1000};
   background: ${props => props.scrolled 
     ? props.isDark 
       ? 'rgba(13, 17, 23, 0.95)' 
@@ -138,6 +177,10 @@ const NavbarContainer = styled.nav`
   height: 80px;
   display: flex;
   align-items: center;
+  
+  @media (max-width: 768px) {
+    height: 70px;
+  }
 `;
 
 const NavContent = styled.div`
@@ -149,6 +192,10 @@ const NavContent = styled.div`
   justify-content: space-between;
   align-items: center;
   position: relative;
+  
+  @media (max-width: 480px) {
+    padding: 0 1rem;
+  }
 `;
 
 const LogoContainer = styled.div`
@@ -177,6 +224,23 @@ const LogoAccent = styled.span`
   color: ${props => props.theme.primary};
 `;
 
+const MobileControls = styled.div`
+  display: none;
+  align-items: center;
+  gap: 0.8rem;
+  z-index: 1001;
+  
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;
+
+const MobileThemeToggle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const MenuButton = styled.button`
   display: none;
   background: transparent;
@@ -184,10 +248,12 @@ const MenuButton = styled.button`
   font-size: 1.5rem;
   cursor: pointer;
   color: ${props => props.theme.text};
-  z-index: 1001;
+  padding: 0.5rem;
   
   @media (max-width: 768px) {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -208,8 +274,8 @@ const NavLink = styled.li`
   a {
     display: flex;
     align-items: center;
-    color: ${props => props.active ? props.theme.primary : props.theme.text};
-    font-weight: ${props => props.active ? '600' : '400'};
+    color: ${props => props.$active ? props.theme.primary : props.theme.text};
+    font-weight: ${props => props.$active ? '600' : '400'};
     transition: color 0.3s ease;
     
     svg {
@@ -226,46 +292,118 @@ const ThemeToggleContainer = styled.div`
   margin-left: 1.5rem;
 `;
 
+const MobileMenuOverlay = styled.div`
+  display: none;
+  
+  @media (max-width: 768px) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 50000;
+    opacity: ${props => props.isOpen ? 1 : 0};
+    visibility: ${props => props.isOpen ? 'visible' : 'hidden'};
+    transition: all 0.3s ease;
+  }
+`;
+
 const NavLinksMobile = styled.ul`
   display: none;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 6rem 2rem 2rem;
-  background: ${props => props.theme.surface};
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  list-style: none;
-  z-index: 1000;
-  border-radius: 0 0 20px 20px;
-  transform: ${props => props.isOpen ? 'translateY(0)' : 'translateY(-100%)'};
-  opacity: ${props => props.isOpen ? 1 : 0};
-  transition: all 0.3s ease;
   
   @media (max-width: 768px) {
     display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px;
+    max-width: 85%;
+    height: 100vh;
+    padding: 0;
+    background: ${props => props.theme.surface};
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
+    list-style: none;
+    z-index: 50001;
+    transform: ${props => props.isOpen ? 'translateX(0)' : 'translateX(100%)'};
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+  }
+`;
+
+const MobileMenuHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid ${props => props.theme.borderColor};
+  margin-bottom: 1rem;
+`;
+
+const MobileMenuTitle = styled.h3`
+  font-size: 1.2rem;
+  color: ${props => props.theme.text};
+  font-weight: 600;
+  margin: 0;
+  
+  &:after {
+    display: none;
+  }
+`;
+
+const CloseButton = styled.button`
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: ${props => props.theme.text};
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: ${props => props.theme.background};
+    color: ${props => props.theme.primary};
   }
 `;
 
 const NavLinkMobile = styled.li`
-  margin: 1rem 0;
+  margin: 0;
   
   a {
     display: flex;
     align-items: center;
-    color: ${props => props.theme.text};
-    font-size: 1.2rem;
+    padding: 1rem 1.5rem;
+    color: ${props => props.$active ? props.theme.primary : props.theme.text};
+    font-size: 1.1rem;
+    font-weight: ${props => props.$active ? '600' : '400'};
+    transition: all 0.3s ease;
+    border-left: 3px solid ${props => props.$active ? props.theme.primary : 'transparent'};
+    background: ${props => props.$active ? props.theme.background : 'transparent'};
     
     svg {
-      margin-right: 10px;
-      font-size: 1.4rem;
+      margin-right: 12px;
+      font-size: 1.3rem;
+    }
+    
+    &:hover {
+      background: ${props => props.theme.background};
+      color: ${props => props.theme.primary};
+      border-left-color: ${props => props.theme.primary};
     }
   }
 `;
 
 const ThemeToggleMobile = styled.div`
-  margin-top: 1.5rem;
+  margin-top: auto;
+  padding: 1.5rem;
+  border-top: 1px solid ${props => props.theme.borderColor};
   display: flex;
   justify-content: center;
 `;

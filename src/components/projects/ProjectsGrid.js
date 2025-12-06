@@ -110,6 +110,7 @@ const SearchInput = styled.input`
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   font-size: 1rem;
   transition: all 0.3s ease;
+  box-sizing: border-box;
   
   &:focus {
     outline: none;
@@ -120,6 +121,11 @@ const SearchInput = styled.input`
   &::placeholder {
     color: ${props => props.theme.textSecondary};
   }
+  
+  @media (max-width: 480px) {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.95rem;
+  }
 `;
 
 const FilterButtons = styled.div`
@@ -127,6 +133,10 @@ const FilterButtons = styled.div`
   flex-wrap: wrap;
   gap: 0.8rem;
   justify-content: center;
+  
+  @media (max-width: 480px) {
+    gap: 0.5rem;
+  }
 `;
 
 const FilterButton = styled.button`
@@ -143,6 +153,15 @@ const FilterButton = styled.button`
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   }
+  
+  @media (max-width: 480px) {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.8rem;
+    
+    &:hover {
+      transform: none;
+    }
+  }
 `;
 
 const ProjectsGridContainer = styled.div`
@@ -152,6 +171,12 @@ const ProjectsGridContainer = styled.div`
   
   @media (max-width: 768px) {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 `;
 

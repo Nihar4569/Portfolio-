@@ -294,6 +294,18 @@ const Terminal = styled.div`
     opacity: 1;
     transform: translateX(0);
   }
+  
+  @media (max-width: 768px) {
+    margin-bottom: 1.5rem;
+    
+    &:hover {
+      transform: none;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    border-radius: 6px;
+  }
 `;
 
 const TerminalHeader = styled.div`
@@ -301,6 +313,12 @@ const TerminalHeader = styled.div`
   padding: 8px 15px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  
+  @media (max-width: 480px) {
+    padding: 6px 10px;
+  }
 `;
 
 const TerminalButton = styled.div`
@@ -328,6 +346,11 @@ const TerminalTitle = styled.div`
   margin-left: 8px;
   display: flex;
   align-items: center;
+  
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+    margin-left: 4px;
+  }
 `;
 
 const TerminalClickHint = styled.span.attrs({ className: 'click-hint' })`
@@ -338,6 +361,12 @@ const TerminalClickHint = styled.span.attrs({ className: 'click-hint' })`
   transform: translateX(-10px);
   transition: all 0.3s ease;
   font-weight: 600;
+  
+  @media (max-width: 768px) {
+    opacity: 1;
+    transform: translateX(0);
+    font-size: 0.65rem;
+  }
 `;
 
 const TerminalBody = styled.div`
@@ -345,23 +374,47 @@ const TerminalBody = styled.div`
   color: ${props => props.theme.isDark ? '#f0f0f0' : '#333333'};
   font-size: 0.9rem;
   line-height: 1.6;
+  
+  @media (max-width: 768px) {
+    padding: 12px;
+    font-size: 0.8rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 10px;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
 `;
 
 const TerminalLine = styled.div`
   margin-bottom: 8px;
   display: flex;
   flex-wrap: wrap;
+  word-break: break-word;
 `;
 
 const TerminalPrompt = styled.span`
   color: ${props => props.theme.primary};
   margin-right: 10px;
+  white-space: nowrap;
+  
+  @media (max-width: 480px) {
+    margin-right: 6px;
+    font-size: 0.7rem;
+  }
 `;
 
 const TerminalResponse = styled.div`
   color: ${props => props.theme.isDark ? '#cccccc' : '#555555'};
   margin: 5px 0 15px 20px;
   line-height: 1.6;
+  word-break: break-word;
+  
+  @media (max-width: 480px) {
+    margin: 5px 0 12px 10px;
+    line-height: 1.5;
+  }
 `;
 
 const TerminalCursor = styled.span`

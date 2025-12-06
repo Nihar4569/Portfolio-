@@ -27,22 +27,35 @@ const AlbumsPage = () => {
 // In AlbumsPage.js, update the existing PageContainer
 const PageContainer = styled.div`
   min-height: 100vh;
-  padding-top: 80px; // Added this line
+  padding-top: 80px;
   
   @media (max-width: 768px) {
-    padding-top: 70px; // Added this line
+    padding-top: 70px;
   }
 `;
+
 const HeroSection = styled.section`
   background-color: ${props => props.theme.surface};
   padding: 8rem 0 4rem;
   text-align: center;
+  
+  @media (max-width: 768px) {
+    padding: 6rem 0 3rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 5rem 0 2rem;
+  }
 `;
 
 const HeroContent = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 0 2rem;
+  
+  @media (max-width: 480px) {
+    padding: 0 1rem;
+  }
 `;
 
 const PageTitle = styled.h1`
@@ -57,6 +70,11 @@ const PageTitle = styled.h1`
   @media (max-width: 768px) {
     font-size: 2.5rem;
   }
+  
+  @media (max-width: 480px) {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const PageSubtitle = styled.p`
@@ -64,17 +82,29 @@ const PageSubtitle = styled.p`
   color: ${props => props.theme.textSecondary};
   max-width: 600px;
   margin: 0 auto;
+  
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
 `;
 
 const AlbumsSection = styled.section`
   padding: 5rem 0;
   background-color: ${props => props.theme.background};
+  
+  @media (max-width: 768px) {
+    padding: 3rem 0;
+  }
 `;
 
 const SectionContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+  
+  @media (max-width: 480px) {
+    padding: 0 1rem;
+  }
 `;
 
 export default AlbumsPage;

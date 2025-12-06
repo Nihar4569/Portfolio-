@@ -216,11 +216,25 @@ const Card = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  cursor: pointer; // Add cursor pointer to indicate clickability
+  cursor: pointer;
   
   &:hover {
     transform: translateY(-10px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
+  
+  @media (max-width: 768px) {
+    border-radius: 12px;
+    
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
@@ -312,12 +326,20 @@ const CardContent = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  
+  @media (max-width: 480px) {
+    padding: 1rem;
+  }
 `;
 
 const CardTitle = styled.h3`
   font-size: 1.3rem;
   margin-bottom: 0.8rem;
   color: ${props => props.theme.text};
+  
+  @media (max-width: 480px) {
+    font-size: 1.1rem;
+  }
 `;
 
 const CardDescription = styled.p`
@@ -326,6 +348,11 @@ const CardDescription = styled.p`
   line-height: 1.6;
   margin-bottom: 1.5rem;
   flex-grow: 1;
+  
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const TechStack = styled.div`
@@ -341,6 +368,11 @@ const TechTag = styled.span`
   color: ${props => props.theme.text};
   font-size: 0.8rem;
   border-radius: 15px;
+  
+  @media (max-width: 480px) {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
 `;
 
 // Modal Styles
@@ -355,7 +387,16 @@ const ProjectDetailsModal = styled.div`
   justify-content: center;
   z-index: 2000;
   padding: 2rem;
-  padding-top: calc(2rem); // Add navbar height (80px) plus additional padding
+  padding-top: calc(2rem);
+  
+  @media (max-width: 768px) {
+    padding: 1rem;
+    padding-top: 1rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+  }
 `;
 
 const ModalOverlay = styled.div`
@@ -374,12 +415,12 @@ const ModalContent = styled.div`
   border-radius: 20px;
   max-width: 800px;
   width: 100%;
-  max-height: calc(100vh - 160px); // Subtract navbar height and padding
+  max-height: calc(100vh - 160px);
   overflow-y: auto;
   position: relative;
   z-index: 2002;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  margin-top: 80px; // Push down to avoid navbar overlap
+  margin-top: 80px;
   
   &::-webkit-scrollbar {
     width: 8px;
@@ -398,6 +439,18 @@ const ModalContent = styled.div`
   &::-webkit-scrollbar-thumb:hover {
     background: ${props => props.isDark ? '#777' : '#555'};
   }
+  
+  @media (max-width: 768px) {
+    border-radius: 15px;
+    max-height: calc(100vh - 120px);
+    margin-top: 60px;
+  }
+  
+  @media (max-width: 480px) {
+    border-radius: 12px;
+    max-height: calc(100vh - 40px);
+    margin-top: 20px;
+  }
 `;
 
 const ModalHeader = styled.div`
@@ -411,11 +464,29 @@ const ModalHeader = styled.div`
   border-bottom: 1px solid ${props => props.theme.borderColor};
   border-radius: 20px 20px 0 0;
   z-index: 10;
+  
+  @media (max-width: 768px) {
+    padding: 1rem 1.5rem;
+    border-radius: 15px 15px 0 0;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 1rem;
+    border-radius: 12px 12px 0 0;
+  }
 `;
 
 const ModalTitle = styled.h2`
   font-size: 1.8rem;
   color: ${props => props.theme.text};
+  
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -434,6 +505,14 @@ const CloseButton = styled.button`
 
 const ModalBody = styled.div`
   padding: 2rem;
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 1rem;
+  }
 `;
 
 const ModalImage = styled.img`
@@ -442,6 +521,11 @@ const ModalImage = styled.img`
   border-radius: 10px;
   margin-bottom: 2rem;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  
+  @media (max-width: 480px) {
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+  }
 `;
 
 const ModalDescription = styled.p`
@@ -449,6 +533,11 @@ const ModalDescription = styled.p`
   line-height: 1.7;
   color: ${props => props.theme.text};
   margin-bottom: 2rem;
+  
+  @media (max-width: 480px) {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const ModalSection = styled.div`

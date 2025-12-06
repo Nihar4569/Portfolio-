@@ -314,22 +314,34 @@ const rotate = `
 // In AlbumsPage.js, update the existing PageContainer
 const PageContainer = styled.div`
   min-height: 100vh;
-  padding-top: 80px; // Added this line
+  padding-top: 80px;
   
   @media (max-width: 768px) {
-    padding-top: 70px; // Added this line
+    padding-top: 70px;
   }
 `;
 const HeroSection = styled.section`
   background-color: ${props => props.theme.surface};
   padding: 8rem 0 4rem;
   text-align: center;
+  
+  @media (max-width: 768px) {
+    padding: 6rem 0 3rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 5rem 0 2rem;
+  }
 `;
 
 const HeroContent = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 0 2rem;
+  
+  @media (max-width: 480px) {
+    padding: 0 1rem;
+  }
 `;
 
 const PageTitle = styled.h1`
@@ -344,6 +356,11 @@ const PageTitle = styled.h1`
   @media (max-width: 768px) {
     font-size: 2.5rem;
   }
+  
+  @media (max-width: 480px) {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const PageSubtitle = styled.p`
@@ -351,17 +368,29 @@ const PageSubtitle = styled.p`
   color: ${props => props.theme.textSecondary};
   max-width: 600px;
   margin: 0 auto;
+  
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
 `;
 
 const ContactSection = styled.section`
   padding: 5rem 0;
   background-color: ${props => props.theme.background};
+  
+  @media (max-width: 768px) {
+    padding: 3rem 0;
+  }
 `;
 
 const SectionContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+  
+  @media (max-width: 480px) {
+    padding: 0 1rem;
+  }
 `;
 
 const ContactGrid = styled.div`
@@ -371,6 +400,7 @@ const ContactGrid = styled.div`
   
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 `;
 
@@ -387,6 +417,10 @@ const Terminal = styled.div`
   font-family: 'Fira Code', monospace;
   margin-bottom: 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  
+  @media (max-width: 480px) {
+    border-radius: 8px;
+  }
 `;
 
 const TerminalHeader = styled.div`
@@ -394,6 +428,10 @@ const TerminalHeader = styled.div`
   padding: 8px 15px;
   display: flex;
   align-items: center;
+  
+  @media (max-width: 480px) {
+    padding: 6px 12px;
+  }
 `;
 
 const TerminalButton = styled.div`
@@ -441,6 +479,12 @@ const TerminalBody = styled.div`
     background: #cccccc;
     border-radius: 4px;
   }
+  
+  @media (max-width: 480px) {
+    padding: 12px;
+    font-size: 0.8rem;
+    max-height: 200px;
+  }
 `;
 
 const TerminalLine = styled.div`
@@ -487,6 +531,15 @@ const ContactInfoItem = styled.li`
   &:hover {
     transform: translateY(-5px);
   }
+  
+  @media (max-width: 480px) {
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    
+    &:hover {
+      transform: none;
+    }
+  }
 `;
 
 const ContactInfoIcon = styled.div`
@@ -504,6 +557,13 @@ const ContactInfoIcon = styled.div`
   color: white;
   margin-right: 1rem;
   flex-shrink: 0;
+  
+  @media (max-width: 480px) {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    margin-right: 0.8rem;
+  }
 `;
 
 const ContactInfoContent = styled.div`
@@ -520,6 +580,7 @@ const ContactInfoValue = styled.p`
   font-size: 1.1rem;
   color: ${props => props.theme.text};
   margin: 0;
+  word-break: break-word;
   
   a {
     color: ${props => props.theme.text};
@@ -530,11 +591,21 @@ const ContactInfoValue = styled.p`
       color: ${props => props.theme.primary};
     }
   }
+  
+  @media (max-width: 480px) {
+    font-size: 0.95rem;
+  }
 `;
 
 const SocialLinks = styled.div`
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
+  
+  @media (max-width: 480px) {
+    justify-content: center;
+    gap: 0.8rem;
+  }
 `;
 
 const SocialLink = styled.a`
@@ -556,6 +627,16 @@ const SocialLink = styled.a`
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
+  
+  @media (max-width: 480px) {
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+    
+    &:hover {
+      transform: none;
+    }
+  }
 `;
 
 const ContactFormContainer = styled.div`
@@ -566,6 +647,12 @@ const ContactFormContainer = styled.div`
   
   @media (max-width: 768px) {
     padding: 2rem;
+    border-radius: 15px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 1.5rem;
+    border-radius: 12px;
   }
 `;
 
@@ -584,6 +671,11 @@ const FormHeading = styled.h2`
     height: 4px;
     background: linear-gradient(90deg, ${props => props.theme.primary}, ${props => props.theme.secondary});
     border-radius: 2px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 `;
 
@@ -618,6 +710,7 @@ const FormInput = styled.input`
   font-size: 1rem;
   transition: all 0.3s ease;
   font-family: 'Fira Code', monospace;
+  box-sizing: border-box;
   
   &:focus {
     outline: none;
@@ -628,6 +721,12 @@ const FormInput = styled.input`
   &::placeholder {
     color: ${props => props.theme.textSecondary};
     opacity: 0.7;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+    border-radius: 8px;
   }
 `;
 
@@ -643,6 +742,7 @@ const FormTextarea = styled.textarea`
   resize: vertical;
   transition: all 0.3s ease;
   font-family: 'Fira Code', monospace;
+  box-sizing: border-box;
   
   &:focus {
     outline: none;
@@ -653,6 +753,13 @@ const FormTextarea = styled.textarea`
   &::placeholder {
     color: ${props => props.theme.textSecondary};
     opacity: 0.7;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+    min-height: 120px;
+    border-radius: 8px;
   }
 `;
 

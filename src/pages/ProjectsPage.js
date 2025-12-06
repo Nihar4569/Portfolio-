@@ -166,12 +166,20 @@ const StatDivider = styled.div`
 const ProjectsSection = styled.section`
   padding: 5rem 0;
   background-color: ${props => props.theme.background};
+  
+  @media (max-width: 768px) {
+    padding: 3rem 0;
+  }
 `;
 
 const SectionContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+  
+  @media (max-width: 480px) {
+    padding: 0 1rem;
+  }
 `;
 
 export default ProjectsPage;

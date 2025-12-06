@@ -103,6 +103,14 @@ const FooterContainer = styled.footer`
   background-color: ${props => props.theme.surface};
   padding: 4rem 0 1.5rem;
   box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.05);
+  
+  @media (max-width: 768px) {
+    padding: 3rem 0 1.5rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 2rem 0 1rem;
+  }
 `;
 
 const FooterContent = styled.div`
@@ -116,6 +124,12 @@ const FooterContent = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 2rem;
+    text-align: center;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 0 1rem;
+    gap: 1.5rem;
   }
 `;
 
@@ -138,6 +152,10 @@ const FooterLogo = styled.div`
     font-size: 1.8rem;
     color: ${props => props.theme.primary};
   }
+  
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 `;
 
 const FooterAccent = styled.span`
@@ -147,6 +165,11 @@ const FooterAccent = styled.span`
 const FooterTagline = styled.p`
   color: ${props => props.theme.textSecondary};
   max-width: 300px;
+  
+  @media (max-width: 768px) {
+    max-width: 100%;
+    margin: 0 auto;
+  }
 `;
 
 const FooterHeading = styled.h3`
@@ -164,6 +187,15 @@ const FooterHeading = styled.h3`
     height: 3px;
     background-color: ${props => props.theme.primary};
     border-radius: 3px;
+  }
+  
+  @media (max-width: 768px) {
+    margin-bottom: 1.2rem;
+    
+    &:after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 `;
 
@@ -189,6 +221,13 @@ const FooterLink = styled.li`
 const SocialLinks = styled.div`
   display: flex;
   flex-direction: column;
+  
+  @media (max-width: 768px) {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
 `;
 
 const SocialLink = styled.a`
@@ -222,11 +261,14 @@ const FooterBottom = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
   
   @media (max-width: 768px) {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
+    padding: 0 1rem;
   }
 `;
 
@@ -234,6 +276,10 @@ const Copyright = styled.p`
   color: ${props => props.theme.textSecondary};
   font-size: 0.9rem;
   margin: 0;
+  
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const TerminalPrompt = styled.button`
@@ -297,6 +343,10 @@ const FooterCredits = styled.p`
   margin: 0;
   display: flex;
   align-items: center;
+  
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
 `;
 
 export default Footer;

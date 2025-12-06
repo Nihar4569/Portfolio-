@@ -81,22 +81,38 @@ const SectionContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+  
+  @media (max-width: 480px) {
+    padding: 0 1rem;
+  }
 `;
 
 const TechStackSection = styled.section`
   padding: 5rem 0;
   background-color: ${props => props.theme.background};
   text-align: center;
+  
+  @media (max-width: 768px) {
+    padding: 3rem 0;
+  }
 `;
 
 const ProjectsSection = styled.section`
   padding: 5rem 0;
   background-color: ${props => props.theme.surface};
+  
+  @media (max-width: 768px) {
+    padding: 3rem 0;
+  }
 `;
 
 const TimelineSection = styled.section`
   padding: 5rem 0;
   background-color: ${props => props.theme.background};
+  
+  @media (max-width: 768px) {
+    padding: 3rem 0;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -114,6 +130,10 @@ const SectionTitle = styled.h2`
   @media (max-width: 768px) {
     font-size: 2rem;
   }
+  
+  @media (max-width: 480px) {
+    font-size: 1.75rem;
+  }
 `;
 
 const SectionSubtitle = styled.p`
@@ -123,6 +143,15 @@ const SectionSubtitle = styled.p`
   margin: 0 auto 3rem;
   font-size: 1.1rem;
   line-height: 1.6;
+  
+  @media (max-width: 768px) {
+    margin: 0 auto 2rem;
+    font-size: 1rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 0.95rem;
+  }
 `;
 
 const ViewAllButton = styled(Link)`
@@ -170,12 +199,20 @@ const CTASection = styled.section`
     : 'rgba(46, 204, 113, 0.1)'
   } 100%);
   text-align: center;
+  
+  @media (max-width: 768px) {
+    padding: 3rem 0;
+  }
 `;
 
 const CTAContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 0 2rem;
+  
+  @media (max-width: 480px) {
+    padding: 0 1rem;
+  }
 `;
 
 const CTAContent = styled.div`
@@ -187,6 +224,12 @@ const CTAContent = styled.div`
   
   @media (max-width: 768px) {
     padding: 2rem;
+    border-radius: 15px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 1.5rem;
+    border-radius: 12px;
   }
 `;
 
@@ -198,6 +241,11 @@ const CTATitle = styled.h2`
   @media (max-width: 768px) {
     font-size: 1.8rem;
   }
+  
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const CTADescription = styled.p`
@@ -205,6 +253,11 @@ const CTADescription = styled.p`
   color: ${props => props.theme.textSecondary};
   margin-bottom: 2rem;
   line-height: 1.6;
+  
+  @media (max-width: 480px) {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const CTAButton = styled(Link)`
@@ -220,6 +273,11 @@ const CTAButton = styled(Link)`
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  @media (max-width: 480px) {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
   }
 `;
 

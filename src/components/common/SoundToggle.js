@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { useSound } from '../../context/SoundContext';
 import { FiVolume2, FiVolumeX } from 'react-icons/fi';
 
@@ -25,35 +25,9 @@ const SoundToggle = () => {
       <IconWrapper $isEnabled={soundEnabled}>
         {soundEnabled ? <FiVolume2 /> : <FiVolumeX />}
       </IconWrapper>
-      {soundEnabled && <SoundWaves />}
     </ToggleContainer>
   );
 };
-
-const pulse = keyframes`
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-`;
-
-const soundWave = keyframes`
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-`;
 
 const ToggleContainer = styled.button`
   position: fixed;
@@ -118,18 +92,7 @@ const IconWrapper = styled.div`
     ? theme.background === '#0d1117' ? '#00e676' : '#3498db'
     : theme.background === '#0d1117' ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.4)'
   };
-  transition: all 0.3s ease;
-  animation: ${({ $isEnabled }) => $isEnabled ? pulse : 'none'} 2s ease-in-out infinite;
-`;
-
-const SoundWaves = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 2px solid ${({ theme }) => theme.background === '#0d1117' ? '#00e676' : '#3498db'};
-  animation: ${soundWave} 1.5s ease-out infinite;
-  pointer-events: none;
+  transition: color 0.3s ease;
 `;
 
 export default SoundToggle;
