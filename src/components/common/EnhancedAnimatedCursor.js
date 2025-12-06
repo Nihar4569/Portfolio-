@@ -308,7 +308,7 @@ const clickEffectAnimation = keyframes`
 const CursorContainer = styled.div`
   position: fixed;
   pointer-events: none;
-  z-index: 10000;
+  z-index: 99999;
   transition: transform 0.15s ease-out;
   will-change: transform, left, top;
 `;
@@ -341,7 +341,7 @@ const Particle = styled.div`
   position: fixed;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 99998;
   transform: translate(-50%, -50%);
   box-shadow: 0 0 6px currentColor;
 `;
@@ -354,7 +354,7 @@ const ClickEffect = styled.div`
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%) scale(0.5);
-  z-index: 9998;
+  z-index: 99997;
   opacity: 1;
   animation: ${clickEffectAnimation} 0.6s forwards cubic-bezier(0.2, 0.6, 0.3, 1);
 `;
