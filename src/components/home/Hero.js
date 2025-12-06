@@ -35,10 +35,10 @@ const Hero = () => {
             <Typewriter
               options={{
                 strings: [
-                  'Software Engineer',
+                  'Software Automation Engineer @ Cisco',
                   'Full Stack Developer',
-                  'Java Developer',
-                  'Web Developer',
+                  'Java & Python Developer',
+                  'Backend Developer',
                   'Problem Solver'
                 ],
                 autoStart: true,
@@ -61,14 +61,14 @@ const Hero = () => {
                 <TerminalPrompt>nihar@portfolio:~$</TerminalPrompt> whoami
               </TerminalLine>
               <TerminalResponse>
-                A passionate software engineer specializing in full-stack development with expertise in 
-                Java, JavaScript, React, and Spring Boot. Winner of Smart India Hackathon 2022.
+                Software Automation Engineer at Cisco, specializing in full-stack development with expertise in 
+                Java, Python, Spring Boot, FastAPI, and Django. Winner of Smart India Hackathon 2022.
               </TerminalResponse>
               <TerminalLine>
                 <TerminalPrompt>nihar@portfolio:~$</TerminalPrompt> ls skills
               </TerminalLine>
               <TerminalResponse>
-                Java JavaScript React Node.js Spring-Boot MongoDB MySQL
+                Java Python Spring-Boot FastAPI Django React MongoDB SQL
               </TerminalResponse>
               <TerminalLine>
                 <TerminalPrompt>nihar@portfolio:~$</TerminalPrompt> <TerminalCursor />

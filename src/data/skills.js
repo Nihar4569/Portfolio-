@@ -1,45 +1,50 @@
 const skills = {
     programming: [
       {
-        name: "JavaScript",
-        icon: "javascript",
-        level: 60
-      },
-      {
         name: "Java",
         icon: "java",
-        level: 80
+        level: 85
       },
       {
         name: "Python",
         icon: "python",
-        level: 30
+        level: 80
       },
       {
-        name: "C/C++",
-        icon: "c",
-        level: 10
+        name: "JavaScript",
+        icon: "javascript",
+        level: 65
+      },
+      {
+        name: "SQL",
+        icon: "database",
+        level: 75
       }
     ],
     frameworks: [
-      {
-        name: "React.js",
-        icon: "react",
-        level: 70
-      },
       {
         name: "Spring Boot",
         icon: "spring",
         level: 85
       },
       {
-        name: "Node.js",
-        icon: "node",
+        name: "FastAPI",
+        icon: "fastapi",
+        level: 80
+      },
+      {
+        name: "Django",
+        icon: "django",
+        level: 75
+      },
+      {
+        name: "React.js",
+        icon: "react",
         level: 70
       },
       {
-        name: "Express.js",
-        icon: "express",
+        name: "Flask",
+        icon: "flask",
         level: 70
       }
     ],

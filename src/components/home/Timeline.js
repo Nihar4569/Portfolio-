@@ -14,70 +14,70 @@ const Timeline = () => {
       title: 'Smart India Hackathon 2022 Winner',
       organization: 'Ministry of Education',
       date: '2022',
-      description: 'Developed an integrated annual academic calendar for all Indian universities, winning the national-level hackathon.'
+      description: 'Developed an integrated annual academic calendar for all Indian universities, winning the national-level hackathon. Led the end-to-end development under intense 36-hour deadline.'
     },
     {
-      id: 9,
-      type: 'project',
-      icon: <FiCode />,
-      title: 'AI Career Navigator',
-      organization: 'Personal Project',
-      date: '2023',
-      description: 'A web-based career recommendation system that uses machine learning to provide personalized career guidance and educational pathways.'
-    },
-    {
-      id: 3,
+      id: 2,
       type: 'achievement',
       icon: <FiAward />,
       title: 'Solving For India Hackathon Winner',
       organization: 'GeeksforGeeks | AMD',
       date: '2023',
-      description: 'Selected for the East Zone regional round of the Solving For India Hackathon organized by GeeksforGeeks.'
+      description: 'Built a RAG model that retrieves relevant medical info using vector embeddings. Selected for the East Zone regional round.'
     },
     {
-      id: 8,
+      id: 3,
       type: 'project',
       icon: <FiCode />,
-      title: 'Group Chat Application',
+      title: 'Virtual Classroom',
       organization: 'Personal Project',
       date: '2023',
-      description: 'A real-time group chat application that allows users to create groups, join them, and communicate through text and multimedia sharing.'
+      description: 'Built a real-time classroom communication platform with screen sharing, automatic routing, and real-time messaging using React, Firebase, and Node.js.'
     },
     {
       id: 4,
-      type: 'project',
-      icon: <FiCode />,
-      title: 'Classroom Management System',
-      organization: 'Personal Project',
-      date: '2023',
-      description: 'Built a real-time classroom communication platform with interactive features for both teachers and students.'
-    },
-    {
-      id: 5,
-      type: 'research',
-      icon: <FiBriefcase />,
-      title: 'Rainfall Prediction Using SMOTE and LSTM',
-      organization: 'Research',
-      date: '2024',
-      description: 'Conducted research on improving rainfall prediction accuracy using SMOTE and LSTM technologies.'
-    },
-    {
-      id: 6,
-      type: 'project',
-      icon: <FiCode />,
-      title: 'Nagrik Aur Samvidhan (Citizen & Constitution)',
-      organization: 'Personal Project',
-      date: '2024',
-      description: 'A platform designed to simplify and spread awareness about the Constitution of India using a gamified approach to make learning about constitutional rights, duties, and principles more engaging and accessible.'
-    },
-    {
-      id: 9,
       type: 'project',
       icon: <FiCode />,
       title: 'Delhi Health Connect (CareSync)',
       organization: 'Personal Project',
       date: '2024',
       description: 'Developed a healthcare management system for the Delhi Government that efficiently manages hospital resources and patient care in real-time.'
+    },
+    {
+      id: 5,
+      type: 'project',
+      icon: <FiCode />,
+      title: 'FIR Vault',
+      organization: 'Personal Project',
+      date: '2024',
+      description: 'Built a scalable FIR tracking and case management system using Spring Boot, React.js, and MongoDB with role-based access control.'
+    },
+    {
+      id: 6,
+      type: 'education',
+      icon: <FiAward />,
+      title: 'B.Tech Completed',
+      organization: "Siksha 'O' Anusandhan University",
+      date: '2025',
+      description: 'Graduated with B.Tech in Computer Science and Engineering from SOA University, Bhubaneswar.'
+    },
+    {
+      id: 7,
+      type: 'work',
+      icon: <FiBriefcase />,
+      title: 'Software Developer Intern',
+      organization: 'Evolvision Technologies',
+      date: 'Jun - Oct 2025',
+      description: 'Contributed to the development of enterprise web applications using Java, Spring Boot, and REST APIs, focusing on clean, scalable code.'
+    },
+    {
+      id: 8,
+      type: 'work',
+      icon: <FiBriefcase />,
+      title: 'Software Automation Engineer',
+      organization: 'Cisco, Bengaluru',
+      date: 'Oct 2025 - Present',
+      description: 'Optimized LogIQ RAG build time by 3×–12× through embedding parallelization. Built Smart URL-cache, implemented Round-Robin scheduling, and fixed race conditions using thread-safe locking.'
     }
   ];
   

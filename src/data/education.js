@@ -5,8 +5,8 @@ const education = [
       institution: "Siksha 'O' Anusandhan University",
       location: "Bhubaneswar, Odisha",
       duration: "2021 - 2025",
-      grade: "8.24 CGPA",
-      description: "Pursuing Computer Science and Engineering with focus on software development, data structures, algorithms, and operating systems. Active member of Google Developer Student Club and coordinator of Boys Hostel with over 1200 boarders.",
+      grade: "",
+      description: "Completed Computer Science and Engineering with focus on software development, data structures, algorithms, and operating systems. Was an active member of Google Developer Student Club and coordinator of Boys Hostel with over 1200 boarders.",
       coursework: [
         "Object Oriented Programming (OOPs)",
         "Data Structures and Algorithms (DSA)",
