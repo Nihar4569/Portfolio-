@@ -1,8 +1,56 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback, useRef, memo } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../../context/ThemeContext';
-import { FiX, FiChevronLeft, FiChevronRight, FiMaximize, FiMinimize, FiLoader } from 'react-icons/fi';
+import { FiX, FiChevronLeft, FiChevronRight, FiMaximize, FiMinimize } from 'react-icons/fi';
 import { fetchPhotosFromDirectory } from '../../services/photoService';
+
+// Lazy loaded image component with loading state
+const LazyImage = memo(({ src, alt, onLoad, className }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(false);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    const img = imgRef.current;
+    if (!img) return;
+
+    // Reset state when src changes
+    setIsLoaded(false);
+    setError(false);
+
+    // Use native lazy loading
+    if (img.complete) {
+      setIsLoaded(true);
+      onLoad?.();
+    }
+  }, [src, onLoad]);
+
+  const handleLoad = () => {
+    setIsLoaded(true);
+    onLoad?.();
+  };
+
+  const handleError = () => {
+    setError(true);
+    setIsLoaded(true);
+  };
+
+  return (
+    <ImageWrapper className={className}>
+      {!isLoaded && <ImagePlaceholder />}
+      <StyledImage
+        ref={imgRef}
+        src={error ? "/images/placeholder/photo.jpg" : src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        onLoad={handleLoad}
+        onError={handleError}
+        $isLoaded={isLoaded}
+      />
+    </ImageWrapper>
+  );
+});
 
 const AlbumViewer = ({ album, name, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -12,55 +60,74 @@ const AlbumViewer = ({ album, name, onClose }) => {
   const [error, setError] = useState(null);
   const { isDark } = useContext(ThemeContext);
   
-  // Fetch photos when component mounts
+  // Fetch photos when component mounts - non-blocking
   useEffect(() => {
+    let isMounted = true;
+    
     const loadPhotos = async () => {
       try {
         setIsLoading(true);
         const fetchedPhotos = await fetchPhotosFromDirectory(album.photoDirectory);
-        setPhotos(fetchedPhotos);
-        setError(null);
+        if (isMounted) {
+          setPhotos(fetchedPhotos);
+          setError(null);
+        }
       } catch (err) {
         console.error("Error fetching photos:", err);
-        setError("Failed to load photos. Please try again later.");
+        if (isMounted) {
+          setError("Failed to load photos. Please try again later.");
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
     
-    loadPhotos();
+    // Use requestIdleCallback for non-blocking load, fallback to setTimeout
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => loadPhotos());
+    } else {
+      setTimeout(loadPhotos, 0);
+    }
+    
+    return () => { isMounted = false; };
   }, [album.photoDirectory]);
   
   // Check if we have photos to display
   const hasPhotos = photos.length > 0;
   const currentPhoto = hasPhotos ? photos[currentIndex] : null;
   
-  const goToPrevious = (e) => {
+  const goToPrevious = useCallback((e) => {
     e.stopPropagation();
     if (!hasPhotos) return;
     
     setCurrentIndex((prevIndex) => 
       prevIndex === 0 ? photos.length - 1 : prevIndex - 1
     );
-  };
+  }, [hasPhotos, photos.length]);
   
-  const goToNext = (e) => {
+  const goToNext = useCallback((e) => {
     e.stopPropagation();
     if (!hasPhotos) return;
     
     setCurrentIndex((prevIndex) => 
       prevIndex === photos.length - 1 ? 0 : prevIndex + 1
     );
-  };
+  }, [hasPhotos, photos.length]);
   
-  const toggleFullscreen = (e) => {
+  const toggleFullscreen = useCallback((e) => {
     e.stopPropagation();
     setIsFullscreen(!isFullscreen);
-  };
+  }, [isFullscreen]);
   
-  const handleContentClick = (e) => {
-    e.stopPropagation(); // Prevent clicks inside content from closing the viewer
-  };
+  const handleContentClick = useCallback((e) => {
+    e.stopPropagation();
+  }, []);
+
+  const handleThumbnailClick = useCallback((index) => {
+    setCurrentIndex(index);
+  }, []);
   
   return (
     <ViewerContainer isFullscreen={isFullscreen} onClick={handleContentClick}>
@@ -101,7 +168,11 @@ const AlbumViewer = ({ album, name, onClose }) => {
             </NavigationButton>
             
             <PhotoContainer>
-              <Photo src={currentPhoto.url || "/images/placeholder/photo.jpg"} alt="Album photo" />
+              <LazyImage 
+                src={currentPhoto.url || "/images/placeholder/photo.jpg"} 
+                alt="Album photo"
+                className="main-photo"
+              />
               
               <PhotoCounter>
                 {currentIndex + 1} / {photos.length}
@@ -120,10 +191,15 @@ const AlbumViewer = ({ album, name, onClose }) => {
           <Thumbnail 
             key={photo.id}
             active={index === currentIndex}
-            onClick={() => setCurrentIndex(index)}
+            onClick={() => handleThumbnailClick(index)}
             isDark={isDark}
           >
-            <ThumbnailImage src={photo.url || "/images/placeholder/photo.jpg"} alt={`Thumbnail ${index + 1}`} />
+            <ThumbnailImage 
+              src={photo.url || "/images/placeholder/photo.jpg"} 
+              alt={`Thumbnail ${index + 1}`}
+              loading="lazy"
+              decoding="async"
+            />
           </Thumbnail>
         ))}
       </ThumbnailsContainer>
@@ -251,12 +327,43 @@ const PhotoContainer = styled.div`
   align-items: center;
 `;
 
-const Photo = styled.img`
+// Lazy image styled components
+const ImageWrapper = styled.div`
+  position: relative;
+  max-width: 100%;
+  max-height: 60vh;
+  
+  &.main-photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+const ImagePlaceholder = styled.div`
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+  min-width: 200px;
+  min-height: 150px;
+  
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+`;
+
+const StyledImage = styled.img`
   max-width: 100%;
   max-height: 60vh;
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  opacity: ${props => props.$isLoaded ? 1 : 0};
+  transition: opacity 0.3s ease;
 `;
 
 const PhotoCounter = styled.div`

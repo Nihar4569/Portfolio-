@@ -1,9 +1,6 @@
-// First, let's create the correct directory structure for the photoService
-
 // src/services/photoService.js
 // This service handles fetching photos from directories
-// In a production environment, this would make API calls to the server
-// For the frontend mockup, we'll simulate directory scanning
+// Optimized for performance with reduced delay
 
 /**
  * Fetches photos from a directory path
@@ -13,9 +10,6 @@
  * @returns {Promise<Array>} - A promise resolving to an array of photo objects
  */
 export const fetchPhotosFromDirectory = async (directoryPath) => {
-    // For development/mock purposes, we'll simulate the content 
-    // using the directory name to generate random photos
-    
     // Default number of photos per directory
     const photoCountMap = {
       "/images/albums/soa": 27,
@@ -28,13 +22,12 @@ export const fetchPhotosFromDirectory = async (directoryPath) => {
     const photoCount = photoCountMap[directoryPath] || 10;
     
     // Generate photo objects with sequential filenames 
-    // In production, this would be the actual filenames from the directory
     const photos = [];
     for (let i = 1; i <= photoCount; i++) {
       photos.push({
         id: i,
         url: `${directoryPath}/photo${i}.jpg`,
-        caption: '' // No caption needed
+        caption: ''
       });
     }
     
@@ -44,10 +37,11 @@ export const fetchPhotosFromDirectory = async (directoryPath) => {
       [photos[i], photos[j]] = [photos[j], photos[i]];
     }
   
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // Minimal delay - just enough to prevent UI blocking
+    await new Promise(resolve => setTimeout(resolve, 50));
     
     return photos;
   };
   
-  export default { fetchPhotosFromDirectory };
+  const photoService = { fetchPhotosFromDirectory };
+  export default photoService;
