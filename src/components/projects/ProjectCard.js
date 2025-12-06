@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../../context/ThemeContext';
+import { useSound } from '../../context/SoundContext';
 import { FiGithub, FiExternalLink, FiInfo, FiX, FiEye } from 'react-icons/fi';
 
 const ProjectCard = ({ project }) => {
   const [showDetails, setShowDetails] = useState(false);
   const { isDark } = useContext(ThemeContext);
+  const { playClick, playNavigation } = useSound();
 
   // Add event listener to close modal on Escape key
   useEffect(() => {
@@ -29,12 +31,19 @@ const ProjectCard = ({ project }) => {
 
   const openDetails = (e) => {
     e.preventDefault();
+    playClick();
     setShowDetails(true);
   };
 
   const closeDetails = (e) => {
     e.preventDefault();
+    playClick();
     setShowDetails(false);
+  };
+
+  const handleLinkClick = (e) => {
+    e.stopPropagation();
+    playNavigation();
   };
 
   const preventPropagation = (e) => {
@@ -54,7 +63,7 @@ const ProjectCard = ({ project }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub Repository"
-                  onClick={preventPropagation}
+                  onClick={handleLinkClick}
                 >
                   <FiGithub />
                 </OverlayButton>
@@ -66,7 +75,7 @@ const ProjectCard = ({ project }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Live Demo"
-                  onClick={preventPropagation}
+                  onClick={handleLinkClick}
                 >
                   <FiExternalLink />
                 </OverlayButton>

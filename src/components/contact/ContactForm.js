@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../../context/ThemeContext';
+import { useSound } from '../../context/SoundContext';
 import { FiSend, FiUser, FiMail, FiMessageSquare, FiCheck, FiLoader } from 'react-icons/fi';
 
 const ContactForm = () => {
@@ -18,6 +19,7 @@ const ContactForm = () => {
   });
   
   const { isDark } = useContext(ThemeContext);
+  const { playSuccess, playError, playClick } = useSound();
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,9 +31,11 @@ const ContactForm = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
+    playClick();
     
     // Validate form
     if (!formData.name || !formData.email || !formData.message) {
+      playError();
       setFormStatus({
         submitted: false,
         submitting: false,
@@ -48,6 +52,7 @@ const ContactForm = () => {
     
     // Simulate form submission
     setTimeout(() => {
+      playSuccess();
       setFormStatus({
         submitted: true,
         submitting: false,

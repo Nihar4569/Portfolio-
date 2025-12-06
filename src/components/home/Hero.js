@@ -2,12 +2,16 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ThemeContext } from '../../context/ThemeContext';
-import { FiGithub, FiLinkedin, FiMail, FiArrowRight, FiDownload, FiCode } from 'react-icons/fi';
+import { useTerminal } from '../../context/TerminalContext';
+import { useSound } from '../../context/SoundContext';
+import { FiGithub, FiLinkedin, FiMail, FiArrowRight, FiDownload, FiCode, FiTerminal } from 'react-icons/fi';
 import Typewriter from 'typewriter-effect';
 import MatrixBackground from './MatrixBackground';
 
 const Hero = () => {
   const { isDark } = useContext(ThemeContext);
+  const { openTerminal } = useTerminal();
+  const { playClick, playNavigation } = useSound();
   const [isLoaded, setIsLoaded] = useState(false);
   
   useEffect(() => {
@@ -18,6 +22,15 @@ const Hero = () => {
     
     return () => clearTimeout(timer);
   }, []);
+
+  const handleTerminalClick = () => {
+    playClick();
+    openTerminal();
+  };
+
+  const handleButtonClick = () => {
+    playNavigation();
+  };
   
   return (
     <HeroContainer>
@@ -49,16 +62,17 @@ const Hero = () => {
             />
           </Profession>
           
-          <Terminal>
+          <Terminal onClick={handleTerminalClick} title="Click to open AI Assistant">
             <TerminalHeader>
               <TerminalButton className="red" />
               <TerminalButton className="yellow" />
               <TerminalButton className="green" />
-              <TerminalTitle>nihar@portfolio ~ terminal</TerminalTitle>
+              <TerminalTitle><FiTerminal style={{ marginRight: '6px' }} />nihar@portfolio ~ terminal</TerminalTitle>
+              <TerminalClickHint>Click to chat!</TerminalClickHint>
             </TerminalHeader>
             <TerminalBody>
               <TerminalLine>
-                <TerminalPrompt>nihar@portfolio:~$</TerminalPrompt> whoami
+                <TerminalPrompt>nihar@portfolio:~$</TerminalPrompt> Who am i
               </TerminalLine>
               <TerminalResponse>
                 Software Automation Engineer at Cisco, specializing in full-stack development with expertise in 
@@ -77,13 +91,14 @@ const Hero = () => {
           </Terminal>
           
           <HeroButtons>
-            <PrimaryButton to="/projects">
+            <PrimaryButton to="/projects" onClick={handleButtonClick}>
               <span>View Projects</span> <FiArrowRight />
             </PrimaryButton>
             
             <SecondaryButton 
               href="https://drive.google.com/file/d/1-oSPx8EYVKOZaC2TJ_gwjr_dqqBFJSXS/view?usp=drive_link" 
               target='_blank'
+              onClick={handleButtonClick}
             >
               <span>Download Resume</span> <FiDownload />
             </SecondaryButton>
@@ -265,6 +280,20 @@ const Terminal = styled.div`
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   margin-bottom: 2rem;
   font-family: 'Fira Code', monospace;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    border-color: ${props => props.theme.primary};
+  }
+  
+  &:hover .click-hint {
+    opacity: 1;
+    transform: translateX(0);
+  }
 `;
 
 const TerminalHeader = styled.div`
@@ -297,6 +326,18 @@ const TerminalTitle = styled.div`
   color: ${props => props.theme.isDark ? '#cccccc' : '#555555'};
   font-size: 0.8rem;
   margin-left: 8px;
+  display: flex;
+  align-items: center;
+`;
+
+const TerminalClickHint = styled.span.attrs({ className: 'click-hint' })`
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: ${props => props.theme.primary};
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+  font-weight: 600;
 `;
 
 const TerminalBody = styled.div`

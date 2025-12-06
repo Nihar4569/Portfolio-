@@ -2,17 +2,24 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { ThemeContext } from '../../context/ThemeContext';
+import { useSound } from '../../context/SoundContext';
 import ThemeToggle from './ThemeToggle';
 import { FiMenu, FiX, FiCode, FiHome, FiFolder, FiMail, FiImage } from 'react-icons/fi';
 
 const Navbar = () => {
   const { isDark, isAnimating } = useContext(ThemeContext);
+  const { playClick, playNavigation } = useSound();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   
   const toggleMenu = () => {
+    playClick();
     setIsOpen(!isOpen);
+  };
+
+  const handleNavClick = () => {
+    playNavigation();
   };
   
   useEffect(() => {
@@ -54,24 +61,24 @@ const Navbar = () => {
         
         <NavLinksDesktop>
           <NavLink active={location.pathname === '/'}>
-            <Link to="/">
+            <Link to="/" onClick={handleNavClick}>
               <FiHome /> Home
             </Link>
           </NavLink>
           
           <NavLink active={location.pathname === '/projects'}>
-            <Link to="/projects">
+            <Link to="/projects" onClick={handleNavClick}>
               <FiFolder /> Projects
             </Link>
           </NavLink>
           
           <NavLink active={location.pathname === '/contact'}>
-            <Link to="/contact">
+            <Link to="/contact" onClick={handleNavClick}>
               <FiMail /> Contact
             </Link>
           </NavLink>
           <NavLink active={location.pathname === '/albums'}>
-            <Link to="/albums">
+            <Link to="/albums" onClick={handleNavClick}>
               <FiImage /> Albums
             </Link>
           </NavLink>
@@ -83,19 +90,19 @@ const Navbar = () => {
         
         <NavLinksMobile isOpen={isOpen}>
           <NavLinkMobile>
-            <Link to="/">
+            <Link to="/" onClick={handleNavClick}>
               <FiHome /> Home
             </Link>
           </NavLinkMobile>
           
           <NavLinkMobile>
-            <Link to="/projects">
+            <Link to="/projects" onClick={handleNavClick}>
               <FiFolder /> Projects
             </Link>
           </NavLinkMobile>
           
           <NavLinkMobile>
-            <Link to="/contact">
+            <Link to="/contact" onClick={handleNavClick}>
               <FiMail /> Contact
             </Link>
           </NavLinkMobile>

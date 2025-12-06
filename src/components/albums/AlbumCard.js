@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../../context/ThemeContext';
+import { useSound } from '../../context/SoundContext';
 import { FiLock, FiImage, FiKey, FiUnlock } from 'react-icons/fi';
 import AuthModal from './AuthModal';
 import AlbumViewer from './AlbumViewer';
@@ -11,6 +12,7 @@ const AlbumCard = ({ album }) => {
   const [showAlbumViewer, setShowAlbumViewer] = useState(false);
   const [viewerName, setViewerName] = useState('Guest');
   const { isDark } = useContext(ThemeContext);
+  const { playClick } = useSound();
   const [photoCount, setPhotoCount] = useState(0);
   
   // Fetch photo count when component mounts
@@ -28,6 +30,7 @@ const AlbumCard = ({ album }) => {
   }, [album.photoDirectory]);
   
   const handleClick = () => {
+    playClick();
     // If album is not locked, open directly
     if (!album.lock) {
       setViewerName('Guest');
@@ -39,10 +42,12 @@ const AlbumCard = ({ album }) => {
   };
   
   const closeAuthModal = () => {
+    playClick();
     setShowAuthModal(false);
   };
   
   const closeAlbumViewer = () => {
+    playClick();
     setShowAlbumViewer(false);
   };
   

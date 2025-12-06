@@ -1,11 +1,35 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ThemeContext } from '../../context/ThemeContext';
-import { FiGithub, FiLinkedin, FiMail, FiCode, FiHeart } from 'react-icons/fi';
+import { useTerminal } from '../../context/TerminalContext';
+import { useSound } from '../../context/SoundContext';
+import { FiGithub, FiLinkedin, FiMail, FiCode, FiHeart, FiTerminal } from 'react-icons/fi';
+
+// Blinking cursor animation
+const blink = keyframes`
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+`;
+
+const glow = keyframes`
+  0%, 100% { box-shadow: 0 0 5px rgba(0, 230, 118, 0.3); }
+  50% { box-shadow: 0 0 15px rgba(0, 230, 118, 0.6), 0 0 30px rgba(0, 230, 118, 0.3); }
+`;
 
 const Footer = () => {
     const { theme } = useContext(ThemeContext);
+    const { openTerminal } = useTerminal();
+    const { playClick, playNavigation } = useSound();
+
+    const handleTerminalClick = () => {
+        playClick();
+        openTerminal();
+    };
+
+    const handleLinkClick = () => {
+        playNavigation();
+    };
 
     return (
         <FooterContainer>
@@ -24,16 +48,16 @@ const Footer = () => {
                     <FooterHeading>Quick Links</FooterHeading>
                     <FooterLinks>
                         <FooterLink>
-                            <Link to="/">Home</Link>
+                            <Link to="/" onClick={handleLinkClick}>Home</Link>
                         </FooterLink>
                         <FooterLink>
-                            <Link to="/projects">Projects</Link>
+                            <Link to="/projects" onClick={handleLinkClick}>Projects</Link>
                         </FooterLink>
                         <FooterLink>
-                            <Link to="/albums">Photo Albums</Link>
+                            <Link to="/albums" onClick={handleLinkClick}>Photo Albums</Link>
                         </FooterLink>
                         <FooterLink>
-                            <Link to="/contact">Contact</Link>
+                            <Link to="/contact" onClick={handleLinkClick}>Contact</Link>
                         </FooterLink>
                     </FooterLinks>
                 </FooterSection>
@@ -60,6 +84,12 @@ const Footer = () => {
                 <Copyright>
                     &copy; {new Date().getFullYear()} Nihar Ranjan Sahu. All rights reserved.
                 </Copyright>
+                <TerminalPrompt onClick={handleTerminalClick}>
+                    <FiTerminal />
+                    <span>nihar@portfolio</span>
+                    <span className="tilde">~</span>
+                    <span className="cursor">▋</span>
+                </TerminalPrompt>
                 <FooterCredits>
                     Made with <FiHeart style={{ color: theme.accent, margin: '0 4px', verticalAlign: 'middle' }} /> by Nihar
                 </FooterCredits>
@@ -204,6 +234,61 @@ const Copyright = styled.p`
   color: ${props => props.theme.textSecondary};
   font-size: 0.9rem;
   margin: 0;
+`;
+
+const TerminalPrompt = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: ${props => props.theme.background === '#0d1117' 
+    ? 'linear-gradient(135deg, rgba(30, 30, 46, 0.9), rgba(13, 17, 23, 0.95))' 
+    : 'linear-gradient(135deg, rgba(240, 248, 255, 0.9), rgba(248, 251, 255, 0.95))'};
+  border: 1px solid ${props => props.theme.background === '#0d1117' 
+    ? 'rgba(0, 230, 118, 0.4)' 
+    : 'rgba(52, 152, 219, 0.4)'};
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.85rem;
+  color: ${props => props.theme.background === '#0d1117' ? '#00e676' : '#3498db'};
+  transition: all 0.3s ease;
+  animation: ${glow} 3s ease-in-out infinite;
+  
+  svg {
+    font-size: 1rem;
+    color: ${props => props.theme.background === '#0d1117' ? '#00e676' : '#3498db'};
+  }
+  
+  .tilde {
+    color: ${props => props.theme.background === '#0d1117' ? '#64b5f6' : '#9b59b6'};
+  }
+  
+  .cursor {
+    color: ${props => props.theme.background === '#0d1117' ? '#00e676' : '#3498db'};
+    animation: ${blink} 1s step-end infinite;
+    font-size: 1rem;
+  }
+  
+  &:hover {
+    transform: translateY(-2px);
+    border-color: ${props => props.theme.background === '#0d1117' ? '#00e676' : '#3498db'};
+    box-shadow: ${props => props.theme.background === '#0d1117'
+      ? '0 5px 20px rgba(0, 230, 118, 0.4), 0 0 40px rgba(0, 230, 118, 0.2)'
+      : '0 5px 20px rgba(52, 152, 219, 0.4), 0 0 40px rgba(52, 152, 219, 0.2)'};
+    background: ${props => props.theme.background === '#0d1117'
+      ? 'linear-gradient(135deg, rgba(0, 230, 118, 0.1), rgba(30, 30, 46, 0.95))'
+      : 'linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(248, 251, 255, 0.95))'};
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
 `;
 
 const FooterCredits = styled.p`

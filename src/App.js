@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, ThemeContext } from './context/ThemeContext';
+import { TerminalProvider } from './context/TerminalContext';
+import { SoundProvider } from './context/SoundContext';
 import styled, { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
 // Common Components
@@ -11,6 +13,8 @@ import BackgroundAnimation from './components/common/BackgroundAnimation';
 import PageTransition from './components/common/PageTransition';
 import ThemeToggleAnimation from './components/common/ThemeToggleAnimation';
 import EnhancedAnimatedCursor from './components/common/EnhancedAnimatedCursor';
+import SmartTerminal from './components/common/SmartTerminal';
+import SoundToggle from './components/common/SoundToggle';
 
 
 // Pages
@@ -28,7 +32,11 @@ import TouchParticleEffect from './components/common/TouchAnimationEffect';
 function App() {
   return (
     <ThemeProvider>
-      <ThemedApp />
+      <TerminalProvider>
+        <SoundProvider>
+          <ThemedApp />
+        </SoundProvider>
+      </TerminalProvider>
     </ThemeProvider>
   );
 }
@@ -58,6 +66,8 @@ const ThemedApp = () => {
             </PageTransition>
           </MainContent>
           <Footer />
+          <SmartTerminal />
+          <SoundToggle />
         </Router>
       </AppContainer>
     </StyledThemeProvider>
