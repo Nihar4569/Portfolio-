@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 // Import data
 import skills from '../../data/skills';
 import projects from '../../data/projects';
-import education from '../../data/education';
 
 // Import contact service
 import { sendContactMessage } from '../../services/contactService';
@@ -295,10 +294,6 @@ const findProjectByName = (input) => {
 };
 
 // ==================== ANIMATIONS ====================
-const glowPulse = keyframes`
-  0%, 100% { box-shadow: 0 0 20px rgba(0, 230, 118, 0.3), inset 0 0 20px rgba(0, 230, 118, 0.05); }
-  50% { box-shadow: 0 0 40px rgba(0, 230, 118, 0.5), inset 0 0 30px rgba(0, 230, 118, 0.1); }
-`;
 
 const slideUp = keyframes`
   from { transform: translateY(100%); opacity: 0; }
@@ -318,11 +313,6 @@ const fadeIn = keyframes`
 const blink = keyframes`
   0%, 50% { opacity: 1; }
   51%, 100% { opacity: 0; }
-`;
-
-const typing = keyframes`
-  from { width: 0; }
-  to { width: 100%; }
 `;
 
 const scanLine = keyframes`
@@ -914,7 +904,7 @@ const TechStackText = styled.div`
 // ==================== MAIN COMPONENT ====================
 const SmartTerminal = () => {
   const { isTerminalOpen, setIsTerminalOpen } = useTerminal();
-  const { playTerminalOpen, playTerminalClose, playMessage, playClick, playSuccess, playError } = useSound();
+  const { playTerminalOpen, playTerminalClose, playMessage, playClick } = useSound();
   const [isClosing, setIsClosing] = useState(false);
   const [input, setInput] = useState('');
   const [history, setHistory] = useState([]);
@@ -967,6 +957,7 @@ const SmartTerminal = () => {
     if (isTerminalOpen && history.length === 0) {
       showWelcomeMessage();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTerminalOpen]);
 
   const showWelcomeMessage = () => {
@@ -1405,6 +1396,7 @@ const SmartTerminal = () => {
     }
 
     addOutput(response, 300 + Math.random() * 200);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addOutput, toggleTheme, navigate, isDarkMode, contactFlow.active, handleContactFlowInput]);
 
   // Response generators

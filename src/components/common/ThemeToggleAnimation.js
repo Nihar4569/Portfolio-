@@ -11,8 +11,6 @@ const ThemeToggleAnimation = () => {
   const toLight = targetTheme === 'light';
   const primaryColor = toLight ? '#3498db' : '#00bcd4';
   const secondaryColor = toLight ? '#2ecc71' : '#00e676';
-  const bgColor = toLight ? '#ffffff' : '#0d1117';
-  const textColor = toLight ? '#1a1a2e' : '#e0e0e0';
 
   // Code that "runs" during transition
   const darkModeCode = [
@@ -92,6 +90,7 @@ const ThemeToggleAnimation = () => {
       setTerminalLines([]);
       setActiveLineIndex(-1);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAnimating, animationPhase, toLight]);
 
   const renderCodeLine = useCallback((line, index) => {
@@ -387,11 +386,6 @@ const scanAnim = keyframes`
   5% { opacity: 1; }
   95% { opacity: 1; }
   100% { top: 105%; opacity: 0; }
-`;
-
-const typeIn = keyframes`
-  from { width: 0; }
-  to { width: 100%; }
 `;
 
 const glowPulse = keyframes`

@@ -5,7 +5,6 @@ import { ThemeContext } from '../../context/ThemeContext';
 const EnhancedAnimatedCursor = () => {
   const { isDark, theme } = useContext(ThemeContext);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [prevPosition, setPrevPosition] = useState({ x: 0, y: 0 });
   const [visible, setVisible] = useState(false);
   const [clicking, setClicking] = useState(false);
   const [hovering, setHovering] = useState(false);
@@ -44,7 +43,6 @@ const EnhancedAnimatedCursor = () => {
       const newX = e.clientX;
       const newY = e.clientY;
       
-      setPrevPosition(position);
       setPosition({ x: newX, y: newY });
       
       // Create particles when moving (at intervals)
@@ -286,10 +284,6 @@ const EnhancedAnimatedCursor = () => {
 };
 
 // Animations
-const pulseRing = keyframes`
-  0% { transform: scale(0.8); opacity: 1; }
-  100% { transform: scale(2.5); opacity: 0; }
-`;
 
 const clickEffectAnimation = keyframes`
   0% { 
