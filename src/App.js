@@ -26,7 +26,6 @@ import NotFoundPage from './pages/NotFoundPage';
 
 // Styles
 import './styles/globals.css';
-import EnhancedTouchAnimation from './components/common/TouchAnimationEffect';
 import TouchParticleEffect from './components/common/TouchAnimationEffect';
 
 function App() {

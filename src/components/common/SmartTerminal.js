@@ -1118,7 +1118,6 @@ const SmartTerminal = () => {
             { type: 'highlight', content: "You can also type 'edit' to start over." }
           ];
         }
-        break;
 
       default:
         setContactFlow({ active: false, step: null, data: { name: '', email: '', message: '' } });
