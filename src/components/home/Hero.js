@@ -96,7 +96,7 @@ const Hero = () => {
             </PrimaryButton>
             
             <SecondaryButton 
-              href="https://drive.google.com/file/d/1-oSPx8EYVKOZaC2TJ_gwjr_dqqBFJSXS/view?usp=drive_link" 
+              href="https://drive.google.com/file/d/1krDwYK_T5IyZ-5tpyuMF4j229gFR8asJ/view?usp=sharing" 
               target='_blank'
               onClick={handleButtonClick}
             >
