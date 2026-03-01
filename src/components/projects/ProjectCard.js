@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../../context/ThemeContext';
 import { useSound } from '../../context/SoundContext';
-import { FiGithub, FiExternalLink, FiInfo, FiX, FiEye } from 'react-icons/fi';
+import { FiGithub, FiExternalLink, FiX, FiEye } from 'react-icons/fi';
 
 const ProjectCard = ({ project }) => {
   const [showDetails, setShowDetails] = useState(false);

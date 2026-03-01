@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext, useEffect } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import styled from 'styled-components';
 import emailjs from '@emailjs/browser';
 import { ThemeContext } from '../context/ThemeContext';
@@ -292,23 +292,6 @@ ${formData.get('message')}
 };
 
 // Keyframes
-const blink = `
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-`;
-
-const rotate = `
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-`;
 
 // Styled Components
 // In AlbumsPage.js, update the existing PageContainer

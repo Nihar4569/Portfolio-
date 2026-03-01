@@ -9,60 +9,15 @@ const Timeline = () => {
   const events = [
     {
       id: 1,
-      type: 'achievement',
-      icon: <FiAward />,
-      title: 'Smart India Hackathon 2022 – National Winner',
-      organization: 'Ministry of Education (Problem ID: DR717)',
-      date: '2022',
-      description: 'Won the national-level hackathon by developing an integrated annual academic calendar for all Indian universities. Led end-to-end development under intense 36-hour deadline.'
+      type: 'work',
+      icon: <FiBriefcase />,
+      title: 'Software Engineer',
+      organization: 'Cisco, Bengaluru',
+      date: 'Oct 2025 - Present',
+      description: 'Achieved 97% reduction in model initialization time (22min → 32s) through parallelization. Architected LangGraph-based multi-agent automation platform with ReAct reasoning and Webex Adaptive Card workflows.'
     },
     {
       id: 2,
-      type: 'achievement',
-      icon: <FiAward />,
-      title: 'Solving For India Hackathon',
-      organization: 'GeeksforGeeks × AMD',
-      date: '2023',
-      description: 'Built a RAG model that retrieves relevant medical information using vector embeddings. Selected for the East Zone regional round.'
-    },
-    {
-      id: 3,
-      type: 'project',
-      icon: <FiCode />,
-      title: 'Virtual Classroom',
-      organization: 'Personal Project',
-      date: '2023',
-      description: 'Built a real-time classroom communication platform with screen sharing, automatic routing, and real-time messaging using React, Firebase, and Node.js.'
-    },
-    {
-      id: 4,
-      type: 'project',
-      icon: <FiCode />,
-      title: 'CareSync – Healthcare Management',
-      organization: 'Personal Project',
-      date: '2024',
-      description: 'Designed a scalable healthcare system with real-time bed tracking, patient registration, doctor assignment, and RBAC with audit logging for government use cases.'
-    },
-    {
-      id: 5,
-      type: 'project',
-      icon: <FiCode />,
-      title: 'FIR Vault – Case Management',
-      organization: 'Personal Project',
-      date: '2024',
-      description: 'Developed a backend-driven FIR tracking system with structured record management across jurisdictions, RBAC, and MVC architecture using Spring Boot and MongoDB.'
-    },
-    {
-      id: 6,
-      type: 'education',
-      icon: <FiAward />,
-      title: 'B.Tech in Computer Science',
-      organization: "Siksha 'O' Anusandhan, Bhubaneswar",
-      date: '2021 - 2025',
-      description: 'Graduated with B.Tech in Computer Science and Engineering. Active member of Google Developer Student Club and Hostel Coordinator for 1200+ boarders.'
-    },
-    {
-      id: 7,
       type: 'work',
       icon: <FiBriefcase />,
       title: 'Software Developer Intern',
@@ -71,13 +26,58 @@ const Timeline = () => {
       description: 'Reduced dashboard load time from ~8s to ~2s by consolidating API calls. Implemented Redis caching for frequently accessed data. Built enterprise apps with Java, Spring Boot, and REST APIs.'
     },
     {
+      id: 3,
+      type: 'education',
+      icon: <FiAward />,
+      title: 'B.Tech in Computer Science',
+      organization: "Siksha 'O' Anusandhan, Bhubaneswar",
+      date: '2021 - 2025',
+      description: 'Graduated with B.Tech in Computer Science and Engineering. Active member of Google Developer Student Club and Hostel Coordinator for 1200+ boarders.'
+    },
+    {
+      id: 4,
+      type: 'project',
+      icon: <FiCode />,
+      title: 'FIR Vault – Case Management',
+      organization: 'Personal Project',
+      date: '2024',
+      description: 'Developed a backend-driven FIR tracking system with structured record management across jurisdictions, RBAC, and MVC architecture using Spring Boot and MongoDB.'
+    },
+    {
+      id: 5,
+      type: 'project',
+      icon: <FiCode />,
+      title: 'CareSync – Healthcare Management',
+      organization: 'Personal Project',
+      date: '2024',
+      description: 'Designed a scalable healthcare system with real-time bed tracking, patient registration, doctor assignment, and RBAC with audit logging for government use cases.'
+    },
+    {
+      id: 6,
+      type: 'achievement',
+      icon: <FiAward />,
+      title: 'Solving For India Hackathon',
+      organization: 'GeeksforGeeks × AMD',
+      date: '2023',
+      description: 'Built a RAG model that retrieves relevant medical information using vector embeddings. Selected for the East Zone regional round.'
+    },
+    {
+      id: 7,
+      type: 'project',
+      icon: <FiCode />,
+      title: 'Virtual Classroom',
+      organization: 'Personal Project',
+      date: '2023',
+      description: 'Built a real-time classroom communication platform with screen sharing, automatic routing, and real-time messaging using React, Firebase, and Node.js.'
+    },
+    {
       id: 8,
-      type: 'work',
-      icon: <FiBriefcase />,
-      title: 'Software Engineer',
-      organization: 'Cisco, Bengaluru',
-      date: 'Oct 2025 - Present',
-      description: 'Achieved 97% reduction in model initialization time (22min → 32s) through parallelization. Architected LangGraph-based multi-agent automation platform with ReAct reasoning and Webex Adaptive Card workflows.'
+      type: 'achievement',
+      icon: <FiAward />,
+      title: 'Smart India Hackathon 2022 – National Winner',
+      organization: 'Ministry of Education (Problem ID: DR717)',
+      date: '2022',
+      description: 'Won the national-level hackathon by developing an integrated annual academic calendar for all Indian universities. Led end-to-end development under intense 36-hour deadline.'
     }
   ];
   

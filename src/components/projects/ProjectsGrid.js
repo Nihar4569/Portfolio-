@@ -14,6 +14,7 @@ const ProjectsGrid = ({ projects }) => {
   
   useEffect(() => {
     filterProjects(activeFilter, searchQuery);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeFilter, searchQuery, projects]);
   
   const filterProjects = (filter, query) => {

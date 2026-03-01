@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import projects from '../data/projects';
 import ProjectsGrid from '../components/projects/ProjectsGrid';
-import { FiCode, FiPackage, FiExternalLink } from 'react-icons/fi';
+import { FiCode, FiPackage } from 'react-icons/fi';
 
 
 const ProjectsPage = () => {

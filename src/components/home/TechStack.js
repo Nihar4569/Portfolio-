@@ -6,8 +6,7 @@ import skills from '../../data/skills';
 // Import tech logos
 import { 
   FaJava, FaJs, FaPython, FaReact, FaNodeJs, 
-  FaDatabase, FaServer, FaGitAlt, FaHtml5, FaCss3Alt, 
-  FaDocker, FaBrain, FaCogs
+  FaDatabase, FaServer, FaGitAlt, FaBrain, FaCogs
 } from 'react-icons/fa';
 import { SiSpringboot, SiMongodb, SiMysql, SiExpress, SiSocketdotio, SiFirebase, SiRedis, SiFlask, SiFastapi } from 'react-icons/si';
 

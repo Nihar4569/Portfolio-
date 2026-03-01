@@ -287,8 +287,6 @@ class SoundGenerator {
     if (!this.initialized) return;
     this.resume();
 
-    const osc = this.audioContext.createOscillator();
-    const gain = this.audioContext.createGain();
     const noise = this.createNoiseBuffer(0.02);
     
     // White noise component for key click
