@@ -1,16 +1,16 @@
 const projects = [
   {
     id: 1,
-    title: "FIR Vault",
-    description: "A web-based application designed to improve efficiency and accountability in managing First Information Reports (FIRs), replacing traditional manual documentation with digital processes to enhance transparency and accelerate case resolution.",
+    title: "FIR Vault – Case Management System",
+    description: "A backend-driven FIR tracking and case management system supporting structured record management across multiple jurisdictions with secure, permission-driven workflows.",
     features: [
       "Multi-portal architecture with User, Police, Station, and Admin interfaces",
+      "Role-based access control (RBAC) for citizens, police personnel, and administrators",
+      "Structured backend services using MVC architecture for modular, scalable code",
       "Real-time FIR tracking and status updates for complainants",
-      "Case management workflow from submission to resolution",
-      "Officer assignment and case progress tracking",
-      "Centralized database for improved resource allocation"
+      "Case management workflow from submission to resolution"
     ],
-    techStack: ["React.js", "Spring Boot", "MongoDB Atlas", "Tailwind CSS", "REST API"],
+    techStack: ["Spring Boot", "React.js", "MongoDB Atlas", "REST APIs"],
     links: {
       github: "https://github.com/Nihar4569/FIR_VAULT_FRONTEND",
       live: "https://firvault.vercel.app/"
@@ -20,16 +20,16 @@ const projects = [
   },
   {
     id: 2,
-    title: "Delhi Health Connect (CareSync)",
-    description: "A comprehensive healthcare management system designed for the Delhi Government that efficiently manages hospital resources and patient care in real-time.",
+    title: "CareSync – Healthcare Management Platform",
+    description: "A scalable healthcare management system supporting real-time bed tracking, patient registration, doctor assignment, and inventory management designed for government use cases.",
     features: [
       "Real-time tracking of hospital beds, patient registrations, and doctor assignments",
-      "Medicine stock management system",
-      "Transparent audit logs for monitoring key activities",
-      "Hospital verification workflow",
-      "Scalable healthcare data management"
+      "Role-based access control (RBAC) and audit logging for secure workflows",
+      "Modular REST APIs using Spring Boot for maintainable backend architecture",
+      "Medicine stock and inventory management system",
+      "Operational transparency with comprehensive audit trails"
     ],
-    techStack: ["MongoDB", "React.js", "Spring Boot"],
+    techStack: ["Java", "Spring Boot", "MongoDB", "React"],
     links: {
       github: "https://github.com/Nihar4569/CareSync--A-Hospital-Management-App",
       live: "https://caresyncdelhi.vercel.app/"

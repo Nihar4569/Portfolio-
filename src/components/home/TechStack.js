@@ -7,13 +7,22 @@ import skills from '../../data/skills';
 import { 
   FaJava, FaJs, FaPython, FaReact, FaNodeJs, 
   FaDatabase, FaServer, FaGitAlt, FaHtml5, FaCss3Alt, 
-  FaDocker
+  FaDocker, FaBrain, FaCogs
 } from 'react-icons/fa';
-import { SiSpringboot, SiMongodb, SiMysql, SiExpress, SiSocketdotio, SiFirebase } from 'react-icons/si';
+import { SiSpringboot, SiMongodb, SiMysql, SiExpress, SiSocketdotio, SiFirebase, SiRedis, SiFlask, SiFastapi } from 'react-icons/si';
 
 const TechStack = () => {
   const [activeCategory, setActiveCategory] = useState('programming');
   const { isDark } = useContext(ThemeContext);
+  
+  const categoryLabels = {
+    programming: 'Languages',
+    frameworks: 'Frameworks',
+    databases: 'Databases',
+    aiLlm: 'AI & LLM',
+    tools: 'Tools',
+    other: 'Other'
+  };
   
   const getIcon = (iconName, size = '2.5rem') => {
     const iconProps = { size, style: { marginBottom: '10px' } };
@@ -35,7 +44,14 @@ const TechStack = () => {
       case 'socketio': return <SiSocketdotio {...iconProps} />;
       case 'api': return <FaServer {...iconProps} />;
       case 'network': return <span style={{ ...iconProps.style, fontSize: size, fontWeight: 'bold' }}>TCP/IP</span>;
-      default: return null;
+      case 'redis': return <SiRedis {...iconProps} />;
+      case 'flask': return <SiFlask {...iconProps} />;
+      case 'fastapi': return <SiFastapi {...iconProps} />;
+      case 'ai': return <FaBrain {...iconProps} />;
+      case 'database': return <FaDatabase {...iconProps} />;
+      case 'thread': return <FaCogs {...iconProps} />;
+      case 'design': return <FaCogs {...iconProps} />;
+      default: return <FaDatabase {...iconProps} />;
     }
   };
 
@@ -49,7 +65,7 @@ const TechStack = () => {
             onClick={() => setActiveCategory(category)}
             isDark={isDark}
           >
-            {category.charAt(0).toUpperCase() + category.slice(1)}
+            {categoryLabels[category] || category.charAt(0).toUpperCase() + category.slice(1)}
           </CategoryButton>
         ))}
       </Categories>

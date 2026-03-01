@@ -3,110 +3,122 @@ const skills = {
       {
         name: "Java",
         icon: "java",
-        level: 85
+        level: 90
       },
       {
         name: "Python",
         icon: "python",
-        level: 80
+        level: 85
       },
       {
         name: "JavaScript",
         icon: "javascript",
-        level: 65
+        level: 75
       },
       {
         name: "SQL",
         icon: "database",
-        level: 75
+        level: 80
       }
     ],
     frameworks: [
       {
         name: "Spring Boot",
         icon: "spring",
-        level: 85
+        level: 90
       },
       {
         name: "FastAPI",
         icon: "fastapi",
-        level: 80
-      },
-      {
-        name: "Django",
-        icon: "django",
-        level: 75
-      },
-      {
-        name: "React.js",
-        icon: "react",
-        level: 70
+        level: 85
       },
       {
         name: "Flask",
         icon: "flask",
-        level: 70
+        level: 80
+      },
+      {
+        name: "React.js",
+        icon: "react",
+        level: 75
       }
     ],
     databases: [
       {
         name: "MongoDB",
         icon: "mongodb",
-        level: 70
+        level: 85
       },
       {
-        name: "MySQL",
+        name: "SQL",
         icon: "mysql",
+        level: 85
+      },
+      {
+        name: "Milvus",
+        icon: "database",
+        level: 75
+      },
+      {
+        name: "Redis",
+        icon: "redis",
+        level: 70
+      }
+    ],
+    aiLlm: [
+      {
+        name: "LangGraph",
+        icon: "ai",
+        level: 85
+      },
+      {
+        name: "LangChain",
+        icon: "ai",
+        level: 85
+      },
+      {
+        name: "ReAct Pattern",
+        icon: "ai",
         level: 80
       },
       {
-        name: "Oracle SQL",
-        icon: "oracle",
-        level: 75
+        name: "StateGraph",
+        icon: "ai",
+        level: 80
       }
     ],
     tools: [
       {
         name: "Git",
         icon: "git",
-        level: 60
+        level: 80
+      },
+      {
+        name: "REST APIs",
+        icon: "api",
+        level: 90
       },
       {
         name: "VS Code",
         icon: "vscode",
         level: 90
-      },
-      {
-        name: "Eclipse",
-        icon: "eclipse",
-        level: 80
-      },
-      {
-        name: "Cisco Packet Tracer",
-        icon: "cisco",
-        level: 50
       }
     ],
     other: [
       {
-        name: "Firebase",
-        icon: "firebase",
-        level: 30
-      },
-      {
-        name: "Socket.io",
-        icon: "socketio",
-        level: 10
-      },
-      {
-        name: "REST API",
-        icon: "api",
+        name: "Multi-threading",
+        icon: "thread",
         level: 85
       },
       {
-        name: "Networking (TCP/IP)",
-        icon: "network",
-        level: 50
+        name: "System Design",
+        icon: "design",
+        level: 75
+      },
+      {
+        name: "Firebase",
+        icon: "firebase",
+        level: 70
       }
     ]
   };

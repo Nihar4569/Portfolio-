@@ -24,16 +24,15 @@ const About = () => {
           
           <AboutInfo>
             <AboutText>
-              I'm a Software Automation Engineer at Cisco, Bengaluru, specializing in Full Stack Development 
-              with a strong foundation in Java, Python, and web technologies. I completed my B.Tech in Computer Science
-              from Siksha 'O' Anusandhan University in 2025, and I'm passionate about building impactful applications that
-              solve real-world problems.
+              I'm a Software Engineer at Cisco, Bengaluru, specializing in building scalable backend systems 
+              and AI-powered automation platforms. With expertise in Java, Python, and modern LLM frameworks, 
+              I architect solutions that deliver measurable impact—like achieving 97% reduction in model initialization time.
             </AboutText>
             
             <AboutText>
-              As a winner of the Smart India Hackathon 2022, I thrive in challenging environments and 
-              am constantly looking to expand my knowledge and skills. At Cisco, I work on optimizing 
-              RAG systems and building scalable backend services using FastAPI and Django.
+              As a National Winner of Smart India Hackathon 2022 (Ministry of Education), I thrive in 
+              high-pressure environments and love solving complex problems. Currently, I'm building 
+              LangGraph-based multi-agent systems with ReAct reasoning patterns and human-in-the-loop validation at Cisco.
             </AboutText>
             
             <SkillBoxes>
@@ -42,7 +41,7 @@ const About = () => {
                   <FiCode />
                 </SkillIcon>
                 <SkillTitle>Languages</SkillTitle>
-                <SkillList>Java, Python, JavaScript, SQL</SkillList>
+                <SkillList>Java, Python, JavaScript</SkillList>
               </SkillBox>
               
               <SkillBox>
@@ -50,7 +49,7 @@ const About = () => {
                   <FiServer />
                 </SkillIcon>
                 <SkillTitle>Backend</SkillTitle>
-                <SkillList>Spring Boot, FastAPI, Django, Flask</SkillList>
+                <SkillList>Spring Boot, FastAPI, Flask, REST APIs</SkillList>
               </SkillBox>
               
               <SkillBox>
@@ -58,15 +57,15 @@ const About = () => {
                   <FiDatabase />
                 </SkillIcon>
                 <SkillTitle>Database</SkillTitle>
-                <SkillList>MongoDB, MySQL, SQL</SkillList>
+                <SkillList>MongoDB, SQL, Milvus</SkillList>
               </SkillBox>
               
               <SkillBox>
                 <SkillIcon>
                   <FiLayout />
                 </SkillIcon>
-                <SkillTitle>Others</SkillTitle>
-                <SkillList>React, Git, REST APIs, Firebase</SkillList>
+                <SkillTitle>AI & LLM</SkillTitle>
+                <SkillList>LangGraph, LangChain, ReAct Pattern</SkillList>
               </SkillBox>
             </SkillBoxes>
             

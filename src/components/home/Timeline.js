@@ -11,19 +11,19 @@ const Timeline = () => {
       id: 1,
       type: 'achievement',
       icon: <FiAward />,
-      title: 'Smart India Hackathon 2022 Winner',
-      organization: 'Ministry of Education',
+      title: 'Smart India Hackathon 2022 – National Winner',
+      organization: 'Ministry of Education (Problem ID: DR717)',
       date: '2022',
-      description: 'Developed an integrated annual academic calendar for all Indian universities, winning the national-level hackathon. Led the end-to-end development under intense 36-hour deadline.'
+      description: 'Won the national-level hackathon by developing an integrated annual academic calendar for all Indian universities. Led end-to-end development under intense 36-hour deadline.'
     },
     {
       id: 2,
       type: 'achievement',
       icon: <FiAward />,
-      title: 'Solving For India Hackathon Winner',
-      organization: 'GeeksforGeeks | AMD',
+      title: 'Solving For India Hackathon',
+      organization: 'GeeksforGeeks × AMD',
       date: '2023',
-      description: 'Built a RAG model that retrieves relevant medical info using vector embeddings. Selected for the East Zone regional round.'
+      description: 'Built a RAG model that retrieves relevant medical information using vector embeddings. Selected for the East Zone regional round.'
     },
     {
       id: 3,
@@ -38,28 +38,28 @@ const Timeline = () => {
       id: 4,
       type: 'project',
       icon: <FiCode />,
-      title: 'Delhi Health Connect (CareSync)',
+      title: 'CareSync – Healthcare Management',
       organization: 'Personal Project',
       date: '2024',
-      description: 'Developed a healthcare management system for the Delhi Government that efficiently manages hospital resources and patient care in real-time.'
+      description: 'Designed a scalable healthcare system with real-time bed tracking, patient registration, doctor assignment, and RBAC with audit logging for government use cases.'
     },
     {
       id: 5,
       type: 'project',
       icon: <FiCode />,
-      title: 'FIR Vault',
+      title: 'FIR Vault – Case Management',
       organization: 'Personal Project',
       date: '2024',
-      description: 'Built a scalable FIR tracking and case management system using Spring Boot, React.js, and MongoDB with role-based access control.'
+      description: 'Developed a backend-driven FIR tracking system with structured record management across jurisdictions, RBAC, and MVC architecture using Spring Boot and MongoDB.'
     },
     {
       id: 6,
       type: 'education',
       icon: <FiAward />,
-      title: 'B.Tech Completed',
-      organization: "Siksha 'O' Anusandhan University",
-      date: '2025',
-      description: 'Graduated with B.Tech in Computer Science and Engineering from SOA University, Bhubaneswar.'
+      title: 'B.Tech in Computer Science',
+      organization: "Siksha 'O' Anusandhan, Bhubaneswar",
+      date: '2021 - 2025',
+      description: 'Graduated with B.Tech in Computer Science and Engineering. Active member of Google Developer Student Club and Hostel Coordinator for 1200+ boarders.'
     },
     {
       id: 7,
@@ -68,16 +68,16 @@ const Timeline = () => {
       title: 'Software Developer Intern',
       organization: 'Evolvision Technologies',
       date: 'Jun - Oct 2025',
-      description: 'Contributed to the development of enterprise web applications using Java, Spring Boot, and REST APIs, focusing on clean, scalable code.'
+      description: 'Reduced dashboard load time from ~8s to ~2s by consolidating API calls. Implemented Redis caching for frequently accessed data. Built enterprise apps with Java, Spring Boot, and REST APIs.'
     },
     {
       id: 8,
       type: 'work',
       icon: <FiBriefcase />,
-      title: 'Software Automation Engineer',
+      title: 'Software Engineer',
       organization: 'Cisco, Bengaluru',
       date: 'Oct 2025 - Present',
-      description: 'Optimized LogIQ RAG build time by 3×–12× through embedding parallelization. Built Smart URL-cache, implemented Round-Robin scheduling, and fixed race conditions using thread-safe locking.'
+      description: 'Achieved 97% reduction in model initialization time (22min → 32s) through parallelization. Architected LangGraph-based multi-agent automation platform with ReAct reasoning and Webex Adaptive Card workflows.'
     }
   ];
   

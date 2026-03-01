@@ -48,11 +48,11 @@ const Hero = () => {
             <Typewriter
               options={{
                 strings: [
-                  'Software Automation Engineer @ Cisco',
+                  'Software Engineer @ Cisco',
                   'Full Stack Developer',
+                  'AI & LLM Systems Engineer',
                   'Java & Python Developer',
-                  'Backend Developer',
-                  'Problem Solver'
+                  'Backend Developer'
                 ],
                 autoStart: true,
                 loop: true,
@@ -72,17 +72,17 @@ const Hero = () => {
             </TerminalHeader>
             <TerminalBody>
               <TerminalLine>
-                <TerminalPrompt>nihar@portfolio:~$</TerminalPrompt> Who am i
+                <TerminalPrompt>nihar@portfolio:~$</TerminalPrompt> whoami
               </TerminalLine>
               <TerminalResponse>
-                Software Automation Engineer at Cisco, specializing in full-stack development with expertise in 
-                Java, Python, Spring Boot, FastAPI, and Django. Winner of Smart India Hackathon 2022.
+                Software Engineer at Cisco, Bengaluru. Building AI-powered automation platforms with 
+                LangGraph multi-agent systems. SIH 2022 National Winner.
               </TerminalResponse>
               <TerminalLine>
                 <TerminalPrompt>nihar@portfolio:~$</TerminalPrompt> ls skills
               </TerminalLine>
               <TerminalResponse>
-                Java Python Spring-Boot FastAPI Django React MongoDB SQL
+                Java Python LangGraph LangChain Spring-Boot FastAPI React MongoDB Milvus
               </TerminalResponse>
               <TerminalLine>
                 <TerminalPrompt>nihar@portfolio:~$</TerminalPrompt> <TerminalCursor />
@@ -111,6 +111,10 @@ const Hero = () => {
             
             <SocialLink href="https://linkedin.com/in/nihar4569" target="_blank" rel="noopener noreferrer">
               <FiLinkedin />
+            </SocialLink>
+            
+            <SocialLink href="https://leetcode.com/u/nihar4569/" target="_blank" rel="noopener noreferrer">
+              <FiCode />
             </SocialLink>
             
             <SocialLink href="mailto:nihar4569@gmail.com">

@@ -62,12 +62,12 @@ const HomePage = () => {
       <CTASection>
         <CTAContainer>
           <CTAContent>
-            <CTATitle>Need a passionate developer for your project?</CTATitle>
+            <CTATitle>Let's Build Something Amazing Together</CTATitle>
             <CTADescription>
-              I'm currently available for freelance work, internships, and full-time opportunities.
-              Let's discuss how I can help bring your vision to life!
+              Currently working as a Software Engineer at Cisco, I'm always open to discussing 
+              interesting projects, collaborations, or just connecting with fellow developers!
             </CTADescription>
-            <CTAButton to="/contact">Contact Me</CTAButton>
+            <CTAButton to="/contact">Get In Touch</CTAButton>
           </CTAContent>
         </CTAContainer>
       </CTASection>

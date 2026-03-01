@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { ThemeContext } from '../../context/ThemeContext';
 import { useTerminal } from '../../context/TerminalContext';
 import { useSound } from '../../context/SoundContext';
-import { FiGithub, FiLinkedin, FiMail, FiCode, FiHeart, FiTerminal } from 'react-icons/fi';
+import { FiGithub, FiLinkedin, FiMail, FiCode, FiHeart, FiTerminal, FiExternalLink } from 'react-icons/fi';
+import { SiLeetcode } from 'react-icons/si';
 
 // Blinking cursor animation
 const blink = keyframes`
@@ -70,6 +71,9 @@ const Footer = () => {
                         </SocialLink>
                         <SocialLink href="https://linkedin.com/in/nihar4569" target="_blank" rel="noopener noreferrer">
                             <FiLinkedin /> LinkedIn
+                        </SocialLink>
+                        <SocialLink href="https://leetcode.com/u/nihar4569/" target="_blank" rel="noopener noreferrer">
+                            <SiLeetcode /> LeetCode
                         </SocialLink>
                         <SocialLink href="mailto:nihar4569@gmail.com">
                             <FiMail /> Email
