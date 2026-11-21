@@ -8,7 +8,7 @@
 - Match the wider 110% desktop reference at default browser zoom. The hero fills the first desktop viewport below the header so About starts on scroll. Keep the compact layout for short laptops and a stacked layout on phones.
 - Preserve the original coding loader and its route-specific messages. Each full page navigation eases the outgoing page away, shows the loader, and reveals the ready page. Respect reduced motion and keep same-page interactions immediate.
 - Keep opt-in interaction sounds and the functional portfolio terminal. Show project, technology, and hackathon counts on Projects.
-- Keep the Tech Stack from `8e91177` with category buttons, compact icon cards, an All Technologies list, and a case-study link per category. Use two columns for the icon cards on phones.
+- Use the selected Four-group overview for Tech Stack. Display AI systems, Backend, Languages, and Data & tools together. Keep technology lists free of project names, descriptions, and links.
 - Show every featured project on Home and the full catalog on Projects. The whole project card opens its details, with separate source and demo links.
 - Keep project facts in `src/data/projects.js` and profile facts in `src/data/profile.js`. Ground each crew member's Gemini answers in those sources. Use a Gemini Free Tier project, keep its key server-side, and fall back to curated answers on errors or quota limits.
 - Send conversational questions, including greetings, to Gemini with the selected guide and a short turn history. Keep source links tied to published portfolio data. Keep all routes, navigation, and overlays usable at phone, tablet, and desktop sizes, including short landscape viewports.
