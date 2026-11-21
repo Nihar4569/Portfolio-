@@ -34,9 +34,7 @@ const HomePage = () => {
           <SectionSubtitle>
             AI automation, search infrastructure, and backend architecture.
           </SectionSubtitle>
-          <CrewNote guide="atlas">
-            Nihar built FIR Vault with separate portals for citizens, police, and admins, each with its own permissions.
-          </CrewNote>
+          <CrewNote guide="atlas">FIR Vault and CareSync use role-based access to solve different problems. I can walk you through the tradeoffs.</CrewNote>
           <ProjectsGrid projects={featuredProjects} />
           <ViewAllButton to="/projects">
             <span>View all {projects.length} projects</span> <FiArrowRight aria-hidden="true" />
@@ -50,9 +48,7 @@ const HomePage = () => {
           <SectionSubtitle>
             Key milestones and achievements in my development career
           </SectionSubtitle>
-          <CrewNote guide="byte">
-            At Cisco, parallel processing, caching, and thread-safe state helped Nihar bring model initialization from 22 minutes to about 32 seconds.
-          </CrewNote>
+          <CrewNote guide="byte">At Cisco, model initialization went from 22 minutes to about 32 seconds. Ask how parallel processing and caching helped.</CrewNote>
           <Timeline />
         </SectionContainer>
       </TimelineSection>

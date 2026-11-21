@@ -23,6 +23,7 @@
 .crew-launcher img,
 .crew-chat-header img,
 .crew-note img,
+.tech-stack-guide img,
 .portfolio-project-art[data-art="crew"] img,
 .portfolio-workflow-step img {
   filter: url("#portfolio-blue-light");
@@ -125,7 +126,15 @@
 .portfolio-about-portrait figcaption svg { color: var(--portfolio-accent); flex: none; }
 .portfolio-about-copy > p { font-size: clamp(0.93rem, 1.25vw, 1.05rem); color: var(--portfolio-muted); }
 .portfolio-about-copy > p:first-child { color: var(--portfolio-text); }
-.portfolio-about-copy .crew-note { margin-block-end: 0; }
+.portfolio-about-specialties {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 20px;
+}
+.portfolio-about-specialties > div { border-top: 1px solid var(--portfolio-line); padding: 13px 0; }
+.portfolio-about-specialties dt { display: flex; align-items: center; gap: 7px; font-size: 0.9rem; font-weight: 600; }
+.portfolio-about-specialties dt svg { flex: none; color: var(--portfolio-accent); }
+.portfolio-about-specialties dd { margin: 5px 0 0; color: var(--portfolio-muted); font-size: 0.82rem; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
