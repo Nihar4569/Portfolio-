@@ -1,5 +1,40 @@
 const projects = [
   {
+    id: 9,
+    title: 'AI Automation Platform',
+    shortTitle: 'AI automation',
+    category: 'AI systems at Cisco',
+    description: 'A LangGraph workflow for routing engineering requests, coordinating specialist agents, and involving engineers in decisions that change system state.',
+    techStack: ['Python', 'LangGraph', 'LangChain', 'ReAct', 'FastAPI'],
+    features: [
+      'A supervisor classifies requests and routes them to specialist workers based on intent and confidence.',
+      'Specialist agents use ReAct reasoning and controlled tool execution.',
+      'Webex Adaptive Cards connect human decisions with backend workflows for actions that change system state.',
+      'Parallel processing, caching, and thread-safe state management improve the distributed embedding pipeline.',
+    ],
+    outcome: 'Model initialization fell from 22 minutes to roughly 32 seconds. Embedding pipeline performance improved by 3×–12×.',
+    links: {},
+    guide: 'pip',
+    featured: true,
+  },
+  {
+    id: 10,
+    title: 'Course Search API',
+    shortTitle: 'Course Search API',
+    category: 'Search infrastructure',
+    description: 'A Spring Boot and Elasticsearch service for searching courses by text, refining results with filters, and suggesting titles as users type.',
+    techStack: ['Java', 'Spring Boot', 'Elasticsearch', 'Docker'],
+    features: [
+      'Full-text search over course titles and descriptions, with category, age, price, and date filters.',
+      'Pagination and sorting by upcoming dates or price.',
+      'A suggestions endpoint for partial course titles.',
+      'A sample course index and Docker Compose setup for local development.',
+    ],
+    links: { github: 'https://github.com/Nihar4569/Elasticsearch-course-search' },
+    guide: 'byte',
+    featured: true,
+  },
+  {
     id: 1,
     title: "FIR Vault – Case Management System",
     description: "A backend-driven FIR tracking and case management system supporting structured record management across multiple jurisdictions with secure, permission-driven workflows.",
@@ -15,7 +50,7 @@ const projects = [
       github: "https://github.com/Nihar4569/FIR_VAULT_FRONTEND",
       live: "https://firvault.vercel.app/"
     },
-    image: "/images/projects/fir-tracker.jpg",
+    image: "/images/projects/fir-tracker.avif",
     featured: true
   },
   {
@@ -34,7 +69,7 @@ const projects = [
       github: "https://github.com/Nihar4569/CareSync--A-Hospital-Management-App",
       live: "https://caresyncdelhi.vercel.app/"
     },
-    image: "/images/projects/health-connect.jpg",
+    image: "/images/projects/health-connect.avif",
     featured: true
   },
   {
@@ -53,7 +88,7 @@ const projects = [
       github: "https://github.com/Nihar4569/Nagrik-Aur-Samvidhan-Constitutional-Literacy-Platform?tab=readme-ov-file",
       live: "https://github.com/Nihar4569/Nagrik-Aur-Samvidhan-Constitutional-Literacy-Platform?tab=readme-ov-file"
     },
-    image: "/images/projects/nagrik-samvidhan.jpg",
+    image: "/images/projects/nagrik-samvidhan.avif",
     featured: false
   },
   {
@@ -72,7 +107,7 @@ const projects = [
       github: "https://github.com/Nihar4569/An-Empirical-Study-on-Harmonizing-Classification-Precision-by-Adopting-a-SMOTE-Based-Data-Balancing-",
       live: ""
     },
-    image: "/images/projects/rainfall-prediction.jpg",
+    image: "/images/projects/rainfall-prediction.avif",
     featured: false
   },
   {
@@ -91,7 +126,7 @@ const projects = [
       github: "https://github.com/Nihar4569/ClassRoom_Management",
       live: "https://soaclassroom.vercel.app/"
     },
-    image: "/images/projects/classroom.jpg",
+    image: "/images/projects/classroom.avif",
     featured: true
   },
   {
@@ -110,7 +145,7 @@ const projects = [
       github: "https://github.com/Nihar4569/Chat_App",
       live: "https://chat-app-liart-sigma.vercel.app/"
     },
-    image: "/images/projects/group-chat.jpg",
+    image: "/images/projects/group-chat.avif",
     featured: false
   },
   {
@@ -129,7 +164,7 @@ const projects = [
       github: "https://github.com/Nihar4569/AI-Career-Navigator",
       live: "https://github.com/Nihar4569/AI-Career-Navigator"
     },
-    image: "/images/projects/career-navigator.jpg",
+    image: "/images/projects/career-navigator.avif",
     featured: false
   },
   {
@@ -148,9 +183,17 @@ const projects = [
       github: "https://github.com/Nihar4569/academicalendar",
       live: "http://academicalendar.kesug.com/"
     },
-    image: "/images/projects/academic-calendar.jpg",
+    image: "/images/projects/academic-calendar.avif",
     featured: false
   }
 ];
+
+export function technologyLabel(technology) {
+  return technology === 'React.js' ? 'React' : technology;
+}
+
+export function projectTechnologies(items) {
+  return [...new Set(items.flatMap(({ techStack }) => techStack.map(technologyLabel)))].sort();
+}
 
 export default projects;

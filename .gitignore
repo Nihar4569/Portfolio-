@@ -11,6 +11,10 @@
 
 # production
 /build
+/dist
+/.vercel
+.env.*
+!.env.example
 
 # misc
 .DS_Store

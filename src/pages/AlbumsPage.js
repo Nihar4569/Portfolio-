@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import albums from '../data/albums';
 import AlbumGrid from '../components/albums/AlbumGrid';
+import { PageContainer } from '../styles/SharedComponents';
 
 
 const AlbumsPage = () => {
@@ -24,16 +25,6 @@ const AlbumsPage = () => {
 };
 
 // Styled Components
-// In AlbumsPage.js, update the existing PageContainer
-const PageContainer = styled.div`
-  min-height: 100vh;
-  padding-top: 80px;
-  
-  @media (max-width: 768px) {
-    padding-top: 70px;
-  }
-`;
-
 const HeroSection = styled.section`
   background-color: ${props => props.theme.surface};
   padding: 8rem 0 4rem;
@@ -44,7 +35,7 @@ const HeroSection = styled.section`
   }
   
   @media (max-width: 480px) {
-    padding: 5rem 0 2rem;
+    padding: 3rem 0 2rem;
   }
 `;
 
@@ -61,11 +52,9 @@ const HeroContent = styled.div`
 const PageTitle = styled.h1`
   font-size: 3rem;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, ${props => props.theme.primary} 0%, ${props => props.theme.secondary} 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-fill-color: transparent;
+  color: ${props => props.theme.text};
+  letter-spacing: -0.06em;
+  line-height: 1.08;
   
   @media (max-width: 768px) {
     font-size: 2.5rem;
@@ -93,7 +82,7 @@ const AlbumsSection = styled.section`
   background-color: ${props => props.theme.background};
   
   @media (max-width: 768px) {
-    padding: 3rem 0;
+    padding: 2rem 0 3rem;
   }
 `;
 

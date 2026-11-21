@@ -1,36 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ThemeContext } from '../../context/ThemeContext';
-import { useSound } from '../../context/SoundContext';
 import { FiLock, FiImage, FiKey, FiUnlock } from 'react-icons/fi';
 import AuthModal from './AuthModal';
 import AlbumViewer from './AlbumViewer';
-import ModalOverlay from './ModalOverlay';
 
 const AlbumCard = ({ album }) => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showAlbumViewer, setShowAlbumViewer] = useState(false);
   const [viewerName, setViewerName] = useState('Guest');
-  const { isDark } = useContext(ThemeContext);
-  const { playClick } = useSound();
-  const [photoCount, setPhotoCount] = useState(0);
-  
-  // Fetch photo count when component mounts
-  useEffect(() => {
-    // This is a simplified approach - in production you would
-    // call an API to get the actual photo count
-    const photoCountMap = {
-      "/images/albums/soa": 27,
-      "/images/albums/sih": 8,
-      "/images/albums/school-memories": 12,
-      "/images/albums/hometown": 20
-    };
-    
-    setPhotoCount(photoCountMap[album.photoDirectory] || 10);
-  }, [album.photoDirectory]);
   
   const handleClick = () => {
-    playClick();
     // If album is not locked, open directly
     if (!album.lock) {
       setViewerName('Guest');
@@ -42,12 +21,10 @@ const AlbumCard = ({ album }) => {
   };
   
   const closeAuthModal = () => {
-    playClick();
     setShowAuthModal(false);
   };
   
   const closeAlbumViewer = () => {
-    playClick();
     setShowAlbumViewer(false);
   };
   
@@ -60,9 +37,11 @@ const AlbumCard = ({ album }) => {
   
   return (
     <>
-      <Card onClick={handleClick} isDark={isDark}>
+      <Card onClick={handleClick} data-sound="click">
         <CardImageContainer>
-          <CardImage src={album.coverImage || "/images/placeholder/album.jpg"} alt={album.title} />
+          {album.coverImage
+            ? <CardImage src={album.coverImage} alt="" loading="lazy" decoding="async" />
+            : <FiImage aria-hidden="true" />}
           <CardOverlay>
             <LockContainer>
               <OverlayIcon>
@@ -85,11 +64,11 @@ const AlbumCard = ({ album }) => {
           <CardDescription>{album.description}</CardDescription>
           
           <CardFooter>
-            <PhotoCount>
+            {!!album.photoCount && <PhotoCount>
               <FiImage />
-              <span>{photoCount} Photos</span>
-            </PhotoCount>
-            <AccessButton>
+              <span>{album.photoCount} Photos</span>
+            </PhotoCount>}
+            <AccessButton type="button" aria-label={`${album.lock ? 'Enter code for' : 'View'} ${album.title}`}>
               {album.lock ? 'Enter Code' : 'View Album'}
             </AccessButton>
           </CardFooter>
@@ -105,13 +84,7 @@ const AlbumCard = ({ album }) => {
       )}
 
       {showAlbumViewer && (
-        <ModalOverlay onClick={closeAlbumViewer}>
-          <AlbumViewer 
-            album={album} 
-            name={viewerName} 
-            onClose={closeAlbumViewer} 
-          />
-        </ModalOverlay>
+        <AlbumViewer album={album} name={viewerName} onClose={closeAlbumViewer} />
       )}
     </>
   );
@@ -149,8 +122,13 @@ const Card = styled.article`
 
 const CardImageContainer = styled.div`
   position: relative;
-  padding-top: 66.67%; // 3:2 aspect ratio
+  aspect-ratio: 3 / 2;
+  display: grid;
+  place-items: center;
   overflow: hidden;
+  background: ${props => props.theme.codeBackground};
+  color: ${props => props.theme.textSecondary};
+  font-size: 2rem;
 `;
 
 const CardImage = styled.img`
@@ -236,6 +214,7 @@ const LockIcon = styled.div`
 
 const CardTitle = styled.h3`
   font-size: 1.3rem;
+  overflow-wrap: anywhere;
   color: ${props => props.theme.text};
   
   @media (max-width: 480px) {
@@ -279,6 +258,7 @@ const PhotoCount = styled.div`
 `;
 
 const AccessButton = styled.button`
+  min-height: 44px;
   background: transparent;
   color: ${props => props.theme.primary};
   border: 1px solid ${props => props.theme.primary};
@@ -289,7 +269,7 @@ const AccessButton = styled.button`
   
   &:hover {
     background: ${props => props.theme.primary};
-    color: white;
+    color: ${props => props.theme.buttonText};
   }
   
   @media (max-width: 480px) {

@@ -1,7 +1,8 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import emailjs from '@emailjs/browser';
-import { ThemeContext } from '../context/ThemeContext';
+import { useSound } from '../context/SoundContext';
+import { PageContainer } from '../styles/SharedComponents';
 import { 
   FiMail, FiMapPin, FiPhone, 
   FiGithub, FiLinkedin, FiSend, 
@@ -9,7 +10,7 @@ import {
 } from 'react-icons/fi';
 
 const ContactPage = () => {
-  const { isDark } = useContext(ThemeContext);
+  const { playSound } = useSound();
   const form = useRef();
   
   const [formStatus, setFormStatus] = useState({
@@ -77,6 +78,7 @@ ${formData.get('message')}
     )
     .then((response) => {
       console.log('SUCCESS!', response);
+      playSound('success');
       
       setFormStatus({
         submitted: true,
@@ -94,6 +96,7 @@ ${formData.get('message')}
       form.current.reset();
     }, (error) => {
       console.log('FAILED...', error);
+      playSound('error');
       
       setFormStatus({
         submitted: false,
@@ -122,7 +125,7 @@ ${formData.get('message')}
         <SectionContainer>
           <ContactGrid>
             <ContactInfoContainer>
-  <Terminal isDark={isDark}>
+  <Terminal>
     <TerminalHeader>
       <TerminalButton className="red" />
       <TerminalButton className="yellow" />
@@ -150,7 +153,7 @@ ${formData.get('message')}
   
   <ContactInfoList>
     <ContactInfoItem>
-      <ContactInfoIcon isDark={isDark}>
+      <ContactInfoIcon>
         <FiMail />
       </ContactInfoIcon>
       <ContactInfoContent>
@@ -162,7 +165,7 @@ ${formData.get('message')}
     </ContactInfoItem>
     
     <ContactInfoItem>
-      <ContactInfoIcon isDark={isDark}>
+      <ContactInfoIcon>
         <FiPhone />
       </ContactInfoIcon>
       <ContactInfoContent>
@@ -174,7 +177,7 @@ ${formData.get('message')}
     </ContactInfoItem>
     
     <ContactInfoItem>
-      <ContactInfoIcon isDark={isDark}>
+      <ContactInfoIcon>
         <FiMapPin />
       </ContactInfoIcon>
       <ContactInfoContent>
@@ -189,7 +192,6 @@ ${formData.get('message')}
       href="https://github.com/Nihar4569" 
       target="_blank" 
       rel="noopener noreferrer"
-      isDark={isDark}
     >
       <FiGithub />
     </SocialLink>
@@ -198,14 +200,12 @@ ${formData.get('message')}
       href="https://linkedin.com/in/nihar4569" 
       target="_blank" 
       rel="noopener noreferrer"
-      isDark={isDark}
     >
       <FiLinkedin />
     </SocialLink>
     
     <SocialLink 
       href="mailto:nihar4569@gmail.com"
-      isDark={isDark}
     >
       <FiMail />
     </SocialLink>
@@ -216,11 +216,11 @@ ${formData.get('message')}
               <FormHeading>Send Me a Message</FormHeading>
               
               {formStatus.error && (
-                <FormError>{formStatus.error}</FormError>
+                <FormError role="alert">{formStatus.error}</FormError>
               )}
               
               {formStatus.submitted ? (
-                <SuccessMessage isDark={isDark}>
+                <SuccessMessage role="status">
                   <FiTerminal />
                   <span>Thank you for your message! I'll get back to you soon.</span>
                 </SuccessMessage>
@@ -232,6 +232,7 @@ ${formData.get('message')}
                       type="text"
                       id="user_name"
                       name="user_name"
+                      autoComplete="name"
                       placeholder="Your Name"
                       required
                     />
@@ -243,6 +244,7 @@ ${formData.get('message')}
                       type="email"
                       id="user_email"
                       name="user_email"
+                      autoComplete="email"
                       placeholder="Your Email"
                       required
                     />
@@ -268,7 +270,7 @@ ${formData.get('message')}
                     />
                   </FormGroup>
                   
-                  <SubmitButton type="submit" disabled={formStatus.submitting} isDark={isDark}>
+                  <SubmitButton type="submit" disabled={formStatus.submitting}>
                     {formStatus.submitting ? (
                       <>
                         <LoadingSpinner />
@@ -294,15 +296,6 @@ ${formData.get('message')}
 // Keyframes
 
 // Styled Components
-// In AlbumsPage.js, update the existing PageContainer
-const PageContainer = styled.div`
-  min-height: 100vh;
-  padding-top: 80px;
-  
-  @media (max-width: 768px) {
-    padding-top: 70px;
-  }
-`;
 const HeroSection = styled.section`
   background-color: ${props => props.theme.surface};
   padding: 8rem 0 4rem;
@@ -313,7 +306,7 @@ const HeroSection = styled.section`
   }
   
   @media (max-width: 480px) {
-    padding: 5rem 0 2rem;
+    padding: 3rem 0 2rem;
   }
 `;
 
@@ -330,11 +323,9 @@ const HeroContent = styled.div`
 const PageTitle = styled.h1`
   font-size: 3rem;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, ${props => props.theme.primary} 0%, ${props => props.theme.secondary} 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-fill-color: transparent;
+  color: ${props => props.theme.text};
+  letter-spacing: -0.06em;
+  line-height: 1.08;
   
   @media (max-width: 768px) {
     font-size: 2.5rem;
@@ -362,7 +353,7 @@ const ContactSection = styled.section`
   background-color: ${props => props.theme.background};
   
   @media (max-width: 768px) {
-    padding: 3rem 0;
+    padding: 2rem 0;
   }
 `;
 
@@ -378,11 +369,11 @@ const SectionContainer = styled.div`
 
 const ContactGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
   gap: 3rem;
   
   @media (max-width: 992px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 2rem;
   }
 `;
@@ -394,7 +385,8 @@ const ContactInfoContainer = styled.div`
 `;
 
 const Terminal = styled.div`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.codeBackground};
+  border: 1px solid ${props => props.theme.borderColor};
   border-radius: 10px;
   overflow: hidden;
   font-family: 'Fira Code', monospace;
@@ -407,7 +399,8 @@ const Terminal = styled.div`
 `;
 
 const TerminalHeader = styled.div`
-  background-color: #dddddd;
+  background-color: ${props => props.theme.cardBackground};
+  border-bottom: 1px solid ${props => props.theme.borderColor};
   padding: 8px 15px;
   display: flex;
   align-items: center;
@@ -437,31 +430,18 @@ const TerminalButton = styled.div`
 `;
 
 const TerminalTitle = styled.div`
-  color: #555555;
+  color: ${props => props.theme.textSecondary};
   font-size: 0.8rem;
   margin-left: 8px;
 `;
 
 const TerminalBody = styled.div`
   padding: 15px;
-  color: #333333;
+  color: ${props => props.theme.text};
   font-size: 0.9rem;
   line-height: 1.6;
   max-height: 300px;
   overflow-y: auto;
-  
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: #cccccc;
-    border-radius: 4px;
-  }
   
   @media (max-width: 480px) {
     padding: 12px;
@@ -481,7 +461,7 @@ const TerminalLine = styled.div`
 `;
 
 const TerminalPrompt = styled.span`
-  color: #00e676;
+  color: ${props => props.theme.primary};
   margin-right: 10px;
 `;
 
@@ -489,8 +469,8 @@ const TerminalCursor = styled.span`
   display: inline-block;
   width: 8px;
   height: 15px;
-  background-color: #00e676;
-  animation: blink 1s infinite;
+  background-color: ${props => props.theme.primary};
+
   vertical-align: middle;
   margin-left: 5px;
 `;
@@ -529,15 +509,12 @@ const ContactInfoIcon = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 10px;
-  background: ${props => props.isDark 
-    ? 'linear-gradient(135deg, #00bcd4, #00e676)' 
-    : 'linear-gradient(135deg, #3498db, #2ecc71)'
-  };
+  background: ${props => props.theme.buttonBackground};
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  color: white;
+  color: ${props => props.theme.buttonText};
   margin-right: 1rem;
   flex-shrink: 0;
   
@@ -551,6 +528,7 @@ const ContactInfoIcon = styled.div`
 
 const ContactInfoContent = styled.div`
   flex-grow: 1;
+  min-width: 0;
 `;
 
 const ContactInfoLabel = styled.h4`
@@ -563,7 +541,7 @@ const ContactInfoValue = styled.p`
   font-size: 1.1rem;
   color: ${props => props.theme.text};
   margin: 0;
-  word-break: break-word;
+  overflow-wrap: anywhere;
   
   a {
     color: ${props => props.theme.text};
@@ -595,15 +573,12 @@ const SocialLink = styled.a`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: ${props => props.isDark 
-    ? 'linear-gradient(135deg, #00bcd4, #00e676)' 
-    : 'linear-gradient(135deg, #3498db, #2ecc71)'
-  };
+  background: ${props => props.theme.buttonBackground};
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  color: white;
+  color: ${props => props.theme.buttonText};
   transition: all 0.3s ease;
   
   &:hover {
@@ -708,7 +683,6 @@ const FormInput = styled.input`
   
   @media (max-width: 480px) {
     padding: 0.8rem;
-    font-size: 0.95rem;
     border-radius: 8px;
   }
 `;
@@ -740,7 +714,6 @@ const FormTextarea = styled.textarea`
   
   @media (max-width: 480px) {
     padding: 0.8rem;
-    font-size: 0.95rem;
     min-height: 120px;
     border-radius: 8px;
   }
@@ -751,11 +724,8 @@ const SubmitButton = styled.button`
   padding: 1rem;
   border-radius: 10px;
   border: none;
-  background: ${props => props.isDark 
-    ? 'linear-gradient(135deg, #00bcd4, #00e676)' 
-    : 'linear-gradient(135deg, #3498db, #2ecc71)'
-  };
-  color: white;
+  background: ${props => props.theme.buttonBackground};
+  color: ${props => props.theme.buttonText};
   font-size: 1rem;
   font-weight: 600;
   display: flex;
@@ -782,9 +752,9 @@ const SubmitButton = styled.button`
 const LoadingSpinner = styled.div`
   width: 20px;
   height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid currentColor;
   border-radius: 50%;
-  border-top-color: white;
+  border-top-color: transparent;
   animation: rotate 1s linear infinite;
   margin-right: 10px;
 `;
@@ -799,24 +769,22 @@ const FormError = styled.div`
 `;
 
 const SuccessMessage = styled.div`
-  padding: 2rem;
+  padding: clamp(0.75rem, 3vw, 2rem);
   border-radius: 10px;
-  background: ${props => props.isDark 
-    ? 'linear-gradient(135deg, rgba(0, 188, 212, 0.1), rgba(0, 230, 118, 0.1))' 
-    : 'linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1))'
-  };
-  border: 1px solid ${props => props.isDark ? '#00bcd4' : '#3498db'};
+  background: ${props => props.theme.codeBackground};
+  border: 1px solid ${props => props.theme.primary};
   display: flex;
   align-items: center;
   
   svg {
+    flex: none;
     width: 50px;
     height: 50px;
     margin-right: 1rem;
     padding: 10px;
     border-radius: 50%;
-    background-color: ${props => props.isDark ? '#00e676' : '#2ecc71'};
-    color: white;
+    background-color: ${props => props.theme.buttonBackground};
+    color: ${props => props.theme.buttonText};
   }
   
   span {

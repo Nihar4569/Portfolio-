@@ -1,12 +1,10 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLayoutEffect } from 'react';
 
 // This component automatically scrolls to the top when the route changes
-const ScrollToTop = () => {
-  const { pathname } = useLocation();
+const ScrollToTop = ({ pathname }) => {
   
-  useEffect(() => {
-    window.scrollTo(0, 0);
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [pathname]);
   
   return null;

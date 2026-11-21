@@ -4,18 +4,25 @@ const TerminalContext = createContext();
 
 export const TerminalProvider = ({ children }) => {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+  const [opening, setOpening] = useState(null);
 
-  const openTerminal = () => setIsTerminalOpen(true);
+  const openTerminal = (guide = 'scout', question = '') => {
+    setOpening({ mode: 'chat', guide, question });
+    setIsTerminalOpen(true);
+  };
+  const openShell = () => {
+    setOpening({ mode: 'shell', guide: 'scout' });
+    setIsTerminalOpen(true);
+  };
   const closeTerminal = () => setIsTerminalOpen(false);
-  const toggleTerminal = () => setIsTerminalOpen(prev => !prev);
 
   return (
     <TerminalContext.Provider value={{ 
       isTerminalOpen, 
+      opening,
       openTerminal, 
-      closeTerminal, 
-      toggleTerminal,
-      setIsTerminalOpen
+      openShell,
+      closeTerminal
     }}>
       {children}
     </TerminalContext.Provider>

@@ -1,25 +1,13 @@
-// src/services/photoService.js
-// This service handles fetching photos from directories
-// Optimized for performance with reduced delay
+import albums from '../data/albums.js';
 
 /**
- * Fetches photos from a directory path
- * This is a mock implementation for development - in production this would be a server API call
+ * Lists photos and thumbnails for an album included in the portfolio build.
  * 
  * @param {string} directoryPath - The path to the photo directory
  * @returns {Promise<Array>} - A promise resolving to an array of photo objects
  */
 export const fetchPhotosFromDirectory = async (directoryPath) => {
-    // Default number of photos per directory
-    const photoCountMap = {
-      "/images/albums/soa": 27,
-      "/images/albums/sih": 8,
-      "/images/albums/school-memories": 12,
-      "/images/albums/hometown": 20
-    };
-    
-    // Get number of photos for this directory or use default of 10
-    const photoCount = photoCountMap[directoryPath] || 10;
+    const photoCount = albums.find((album) => album.photoDirectory === directoryPath)?.photoCount ?? 0;
     
     // Generate photo objects with sequential filenames 
     const photos = [];
@@ -27,6 +15,7 @@ export const fetchPhotosFromDirectory = async (directoryPath) => {
       photos.push({
         id: i,
         url: `${directoryPath}/photo${i}.jpg`,
+        thumbnail: `${directoryPath}/thumbnails/photo${i}.avif`,
         caption: ''
       });
     }
@@ -37,9 +26,6 @@ export const fetchPhotosFromDirectory = async (directoryPath) => {
       [photos[i], photos[j]] = [photos[j], photos[i]];
     }
   
-    // Minimal delay - just enough to prevent UI blocking
-    await new Promise(resolve => setTimeout(resolve, 50));
-    
     return photos;
   };
   

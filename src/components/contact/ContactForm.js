@@ -1,6 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ThemeContext } from '../../context/ThemeContext';
 import { useSound } from '../../context/SoundContext';
 import { FiSend, FiUser, FiMail, FiMessageSquare, FiCheck, FiLoader } from 'react-icons/fi';
 
@@ -18,8 +17,7 @@ const ContactForm = () => {
     error: null
   });
   
-  const { isDark } = useContext(ThemeContext);
-  const { playSuccess, playError, playClick } = useSound();
+  const { playSound } = useSound();
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,11 +29,10 @@ const ContactForm = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    playClick();
     
     // Validate form
     if (!formData.name || !formData.email || !formData.message) {
-      playError();
+      playSound('error');
       setFormStatus({
         submitted: false,
         submitting: false,
@@ -52,7 +49,7 @@ const ContactForm = () => {
     
     // Simulate form submission
     setTimeout(() => {
-      playSuccess();
+      playSound('success');
       setFormStatus({
         submitted: true,
         submitting: false,
@@ -87,7 +84,7 @@ const ContactForm = () => {
       )}
       
       {formStatus.submitted ? (
-        <SuccessMessage isDark={isDark}>
+        <SuccessMessage>
           <FiCheck />
           <span>Thank you for your message! I'll get back to you soon.</span>
         </SuccessMessage>
@@ -158,7 +155,7 @@ const ContactForm = () => {
             />
           </FormGroup>
           
-          <SubmitButton type="submit" disabled={formStatus.submitting} isDark={isDark}>
+          <SubmitButton type="submit" disabled={formStatus.submitting}>
             {formStatus.submitting ? (
               <>
                 <LoadingIcon>
@@ -266,11 +263,8 @@ const SubmitButton = styled.button`
   padding: 1rem;
   border-radius: 10px;
   border: none;
-  background: ${props => props.isDark 
-    ? 'linear-gradient(135deg, #00bcd4, #00e676)' 
-    : 'linear-gradient(135deg, #3498db, #2ecc71)'
-  };
-  color: white;
+  background: ${props => props.theme.buttonBackground};
+  color: ${props => props.theme.buttonText};
   font-size: 1rem;
   font-weight: 600;
   display: flex;
@@ -321,11 +315,8 @@ const FormError = styled.div`
 const SuccessMessage = styled.div`
   padding: 2rem;
   border-radius: 10px;
-  background: ${props => props.isDark 
-    ? 'linear-gradient(135deg, rgba(0, 188, 212, 0.1), rgba(0, 230, 118, 0.1))' 
-    : 'linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1))'
-  };
-  border: 1px solid ${props => props.isDark ? '#00bcd4' : '#3498db'};
+  background: ${props => props.theme.codeBackground};
+  border: 1px solid ${props => props.theme.primary};
   display: flex;
   align-items: center;
   
@@ -335,8 +326,8 @@ const SuccessMessage = styled.div`
     margin-right: 1rem;
     padding: 10px;
     border-radius: 50%;
-    background-color: ${props => props.isDark ? '#00e676' : '#2ecc71'};
-    color: white;
+    background-color: ${props => props.theme.buttonBackground};
+    color: ${props => props.theme.buttonText};
   }
   
   span {

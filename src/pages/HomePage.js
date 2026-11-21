@@ -9,6 +9,7 @@ import About from '../components/home/About';
 import TechStack from '../components/home/TechStack';
 import ProjectsGrid from '../components/projects/ProjectsGrid';
 import Timeline from '../components/home/Timeline';
+import CrewNote from '../components/home/CrewNote';
 import { PageContainer } from '../styles/SharedComponents';
 
 
@@ -17,7 +18,7 @@ import projects from '../data/projects';
 
 const HomePage = () => {
   // Filter featured projects for homepage
-  const featuredProjects = projects.filter(project => project.featured);
+  const featuredProjects = projects.filter(project => project.featured).slice(0, 3);
   
   return (
     <>
@@ -32,16 +33,18 @@ const HomePage = () => {
           <SectionSubtitle>
             The technologies and tools that power my development workflow
           </SectionSubtitle>
+          <CrewNote guide="pip">Explore how LangGraph connects specialist agents, tools, and human review in Nihar’s work.</CrewNote>
           <TechStack />
         </SectionContainer>
       </TechStackSection>
       
-      <ProjectsSection>
+      <ProjectsSection id="featured-work">
         <SectionContainer>
           <SectionTitle>Featured Projects</SectionTitle>
           <SectionSubtitle>
-            Some of my most impactful work, from healthcare management systems to hackathon winners
+            AI automation, search infrastructure, and backend architecture.
           </SectionSubtitle>
+          <CrewNote guide="atlas">FIR Vault and CareSync use role-based access to solve different problems. I can walk you through the tradeoffs.</CrewNote>
           <ProjectsGrid projects={featuredProjects} />
           <ViewAllButton to="/projects">
             <span>View All Projects</span> <FiArrowRight />
@@ -55,6 +58,7 @@ const HomePage = () => {
           <SectionSubtitle>
             Key milestones and achievements in my development career
           </SectionSubtitle>
+          <CrewNote guide="byte">At Cisco, model initialization went from 22 minutes to about 32 seconds. Ask how parallel processing and caching helped.</CrewNote>
           <Timeline />
         </SectionContainer>
       </TimelineSection>
@@ -98,6 +102,7 @@ const TechStackSection = styled.section`
 `;
 
 const ProjectsSection = styled.section`
+  scroll-margin-top: var(--portfolio-header-height);
   padding: 5rem 0;
   background-color: ${props => props.theme.surface};
   
@@ -121,11 +126,10 @@ const SectionTitle = styled.h2`
   margin-bottom: 1rem;
   position: relative;
   display: inline-block;
-  background: linear-gradient(90deg, ${props => props.theme.primary}, ${props => props.theme.secondary});
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-fill-color: transparent;
+  color: ${props => props.theme.text};
+  letter-spacing: -0.05em;
+  line-height: 1.12;
+  font-weight: 600;
   
   @media (max-width: 768px) {
     font-size: 2rem;
@@ -179,7 +183,7 @@ const ViewAllButton = styled(Link)`
   
   &:hover {
     background-color: ${props => props.theme.primary};
-    color: white;
+    color: ${props => props.theme.buttonText};
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     
@@ -191,13 +195,8 @@ const ViewAllButton = styled(Link)`
 
 const CTASection = styled.section`
   padding: 5rem 0;
-  background: linear-gradient(135deg, ${props => props.theme.isDark 
-    ? 'rgba(0, 230, 118, 0.1)' 
-    : 'rgba(52, 152, 219, 0.1)'
-  } 0%, ${props => props.theme.isDark 
-    ? 'rgba(33, 150, 243, 0.1)' 
-    : 'rgba(46, 204, 113, 0.1)'
-  } 100%);
+  background: ${props => props.theme.surface};
+  border-top: 1px solid ${props => props.theme.borderColor};
   text-align: center;
   
   @media (max-width: 768px) {
@@ -264,7 +263,7 @@ const CTAButton = styled(Link)`
   display: inline-block;
   padding: 1rem 2.5rem;
   background: linear-gradient(135deg, ${props => props.theme.primary} 0%, ${props => props.theme.secondary} 100%);
-  color: white;
+  color: ${props => props.theme.buttonText};
   font-weight: 600;
   border-radius: 8px;
   transition: all 0.3s ease;

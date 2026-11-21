@@ -1,6 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ThemeContext } from '../../context/ThemeContext';
 import skills from '../../data/skills';
 
 // Import tech logos
@@ -12,8 +11,6 @@ import { SiSpringboot, SiMongodb, SiMysql, SiExpress, SiSocketdotio, SiFirebase,
 
 const TechStack = () => {
   const [activeCategory, setActiveCategory] = useState('programming');
-  const { isDark } = useContext(ThemeContext);
-  
   const categoryLabels = {
     programming: 'Languages',
     frameworks: 'Frameworks',
@@ -60,9 +57,10 @@ const TechStack = () => {
         {Object.keys(skills).map(category => (
           <CategoryButton 
             key={category}
-            active={activeCategory === category}
+            $active={activeCategory === category}
+            aria-pressed={activeCategory === category}
             onClick={() => setActiveCategory(category)}
-            isDark={isDark}
+
           >
             {categoryLabels[category] || category.charAt(0).toUpperCase() + category.slice(1)}
           </CategoryButton>
@@ -71,15 +69,9 @@ const TechStack = () => {
       
       <SkillsContainer>
         {skills[activeCategory].map((skill, index) => (
-          <SkillCard key={index} isDark={isDark}>
+          <SkillCard key={index}>
             <SkillIcon>{getIcon(skill.icon)}</SkillIcon>
             <SkillName>{skill.name}</SkillName>
-            <SkillLevel>
-              <LevelBar>
-                <FilledLevel level={skill.level} isDark={isDark} />
-              </LevelBar>
-              <LevelPercentage>{skill.level}%</LevelPercentage>
-            </SkillLevel>
           </SkillCard>
         ))}
       </SkillsContainer>
@@ -88,7 +80,7 @@ const TechStack = () => {
         <CloudTitle>All Technologies</CloudTitle>
         <CloudContainer>
           {Object.values(skills).flat().map((skill, index) => (
-            <CloudItem key={index} level={skill.level} isDark={isDark}>
+            <CloudItem key={index} level={skill.level}>
               {getIcon(skill.icon, '1.8rem')}
               <CloudItemName>{skill.name}</CloudItemName>
             </CloudItem>
@@ -103,58 +95,36 @@ const TechStack = () => {
 const TechStackContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding-inline: clamp(0rem, 5vw - 1.75rem, 2rem);
 `;
 
 const Categories = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 3rem;
+  gap: clamp(0.5rem, 2vw, 1rem);
+  margin-bottom: clamp(1.5rem, 4vw, 3rem);
 `;
 
 const CategoryButton = styled.button`
-  padding: 0.7rem 1.5rem;
-  background-color: ${props => props.active 
-    ? props.isDark
-      ? 'linear-gradient(135deg, #00bcd4, #00e676)'
-      : 'linear-gradient(135deg, #3498db, #2ecc71)'
-    : props.theme.cardBackground
-  };
-  color: ${props => props.active ? 'white' : props.theme.text};
-  border: none;
-  border-radius: 30px;
-  font-weight: ${props => props.active ? '600' : '400'};
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: ${props => props.active 
-    ? '0 10px 20px rgba(0, 0, 0, 0.1)' 
-    : '0 5px 15px rgba(0, 0, 0, 0.05)'
-  };
-  
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  ${props => props.active && `
-    background: ${props.isDark 
-      ? 'linear-gradient(135deg, #00bcd4, #00e676)' 
-      : 'linear-gradient(135deg, #3498db, #2ecc71)'
-    };
-  `}
+  padding: 0.7rem 1.35rem;
+  min-height: 44px;
+  background-color: ${props => props.$active ? props.theme.buttonBackground : props.theme.cardBackground};
+  color: ${props => props.$active ? props.theme.buttonText : props.theme.text};
+  border: 1px solid ${props => props.$active ? props.theme.primary : props.theme.inputBorder};
+  border-radius: 24px;
+  font: 500 0.87rem 'Poppins', sans-serif;
+  &:hover { border-color: ${props => props.theme.primary}; }
 `;
 
 const SkillsContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-bottom: 4rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: clamp(0.85rem, 3vw, 2rem);
 `;
 
 const SkillCard = styled.div`
+  border: 1px solid ${props => props.theme.borderColor};
   background-color: ${props => props.theme.cardBackground};
   border-radius: 10px;
   padding: 2rem;
@@ -169,7 +139,7 @@ const SkillCard = styled.div`
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     
     svg, span {
-      color: ${props => props.isDark ? '#00bcd4' : '#3498db'};
+      color: ${props => props.theme.primary};
     }
   }
 `;
@@ -187,37 +157,8 @@ const SkillName = styled.h3`
   text-align: center;
 `;
 
-const SkillLevel = styled.div`
-  width: 100%;
-`;
-
-const LevelBar = styled.div`
-  height: 10px;
-  background-color: ${props => props.theme.borderColor};
-  border-radius: 5px;
-  overflow: hidden;
-  margin-bottom: 0.5rem;
-`;
-
-const FilledLevel = styled.div`
-  height: 100%;
-  width: ${props => props.level}%;
-  background: ${props => props.isDark 
-    ? 'linear-gradient(90deg, #00bcd4, #00e676)' 
-    : 'linear-gradient(90deg, #3498db, #2ecc71)'
-  };
-  border-radius: 5px;
-  transition: width 1s ease;
-`;
-
-const LevelPercentage = styled.div`
-  font-size: 0.9rem;
-  text-align: right;
-  color: ${props => props.theme.textSecondary};
-`;
-
 const SkillsCloud = styled.div`
-  margin-top: 4rem;
+  margin-top: clamp(2rem, 5vw, 4rem);
   text-align: center;
 `;
 
@@ -243,8 +184,8 @@ const CloudContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.5rem;
-  padding: 2rem;
+  gap: clamp(0.35rem, 2vw, 1.5rem);
+  padding: clamp(0.75rem, 4vw, 2rem);
   background-color: ${props => props.theme.cardBackground};
   border-radius: 15px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
@@ -262,7 +203,7 @@ const CloudItem = styled.div`
   
   &:hover {
     transform: scale(1.2);
-    color: ${props => props.isDark ? '#00bcd4' : '#3498db'};
+    color: ${props => props.theme.primary};
     opacity: 1;
   }
   

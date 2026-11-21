@@ -1,14 +1,13 @@
-import React, { useState, useContext } from 'react';
+import React, { useId, useState } from 'react';
 import styled from 'styled-components';
-import { ThemeContext } from '../../context/ThemeContext';
 import { FiX, FiLock, FiUnlock, FiUser, FiAlertCircle } from 'react-icons/fi';
+import ModalOverlay from './ModalOverlay';
 
 const AuthModal = ({ album, onClose, onAuthSuccess }) => {
   const [name, setName] = useState('');
   const [secretCode, setSecretCode] = useState('');
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const { isDark } = useContext(ThemeContext);
+  const id = useId();
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,146 +17,105 @@ const AuthModal = ({ album, onClose, onAuthSuccess }) => {
       return;
     }
     
-    setIsLoading(true);
-    
-    // Simulate API check with a timeout
-    setTimeout(() => {
-      if (secretCode === album.secretCode) {
-        // Call the success callback with the user's name
-        onAuthSuccess(name);
-        setError('');
-      } else {
-        setError('Incorrect secret code. Please try again.');
-      }
-      setIsLoading(false);
-    }, 1000);
+    if (secretCode !== album.secretCode) {
+      setError('Incorrect secret code. Please try again.');
+      return;
+    }
+    e.currentTarget.closest('dialog').close();
+    onAuthSuccess(name.trim());
   };
   
   return (
-    <ModalOverlay onClick={onClose}>
-      <ModalContent onClick={(e) => e.stopPropagation()} isDark={isDark}>
-        <ModalHeader>
-          <ModalTitle>Access {album.title}</ModalTitle>
-          <CloseButton onClick={onClose}>
-            <FiX />
-          </CloseButton>
-        </ModalHeader>
-        
-        <ModalBody>
-          <LockIcon isDark={isDark}>
-            <FiLock />
-          </LockIcon>
-          
-          <AuthText>
-            This album is restricted. Please enter your name and the secret code to view.
-          </AuthText>
-          
-          <AuthForm onSubmit={handleSubmit}>
-            <FormGroup>
-              <InputIcon>
-                <FiUser />
-              </InputIcon>
-              <AuthInput
-                type="text"
-                placeholder="Your Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </FormGroup>
-            
-            <FormGroup>
-              <InputIcon>
-                <FiLock />
-              </InputIcon>
-              <AuthInput
-                type="password"
-                placeholder="Secret Code"
-                value={secretCode}
-                onChange={(e) => setSecretCode(e.target.value)}
-              />
-            </FormGroup>
-            
-            {error && (
-              <ErrorMessage>
-                <FiAlertCircle />
-                <span>{error}</span>
-              </ErrorMessage>
-            )}
-            
-            <SubmitButton 
-              type="submit" 
-              disabled={isLoading}
-              isDark={isDark}
-            >
-              {isLoading ? (
-                <LoadingSpinner />
-              ) : (
-                <>
-                  <FiUnlock />
-                  Unlock Album
-                </>
-              )}
-            </SubmitButton>
-          </AuthForm>
-        </ModalBody>
-      </ModalContent>
+    <ModalOverlay labelledBy={`${id}-title`} onClose={onClose} narrow>
+      <ModalHeader>
+        <ModalTitle id={`${id}-title`}>Access {album.title}</ModalTitle>
+        <form method="dialog">
+          <CloseButton type="submit" aria-label="Close album access"><FiX aria-hidden="true" /></CloseButton>
+        </form>
+      </ModalHeader>
+
+      <ModalBody>
+        <LockIcon>
+          <FiLock />
+        </LockIcon>
+
+        <AuthText>
+          This album is restricted. Please enter your name and the secret code to view.
+        </AuthText>
+
+        <AuthForm onSubmit={handleSubmit}>
+          <FormGroup>
+            <label className="portfolio-visually-hidden" htmlFor={`${id}-name`}>Your name</label>
+            <InputIcon>
+              <FiUser />
+            </InputIcon>
+            <AuthInput
+              id={`${id}-name`}
+              type="text"
+              placeholder="Your Name"
+              autoComplete="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <label className="portfolio-visually-hidden" htmlFor={`${id}-code`}>Secret code</label>
+            <InputIcon>
+              <FiLock />
+            </InputIcon>
+            <AuthInput
+              id={`${id}-code`}
+              type="password"
+              placeholder="Secret Code"
+              value={secretCode}
+              onChange={(e) => setSecretCode(e.target.value)}
+            />
+          </FormGroup>
+
+          {error && (
+            <ErrorMessage role="alert">
+              <FiAlertCircle />
+              <span>{error}</span>
+            </ErrorMessage>
+          )}
+
+          <SubmitButton type="submit">
+            <FiUnlock aria-hidden="true" /> Unlock Album
+          </SubmitButton>
+        </AuthForm>
+      </ModalBody>
     </ModalOverlay>
   );
 };
 
-// Keyframes for the spinner
-const rotate = `
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-`;
-
 // Styled Components
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 2rem;
-`;
-
-const ModalContent = styled.div`
-  background-color: ${props => props.theme.cardBackground};
-  border-radius: 20px;
-  max-width: 500px;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  z-index: 1001;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-`;
-
 const ModalHeader = styled.div`
-  padding: 1.5rem 2rem;
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  padding: 0.75rem clamp(1rem, 4vw, 2rem);
+  background: ${props => props.theme.cardBackground};
   border-bottom: 1px solid ${props => props.theme.borderColor};
   display: flex;
+  gap: 0.5rem;
   justify-content: space-between;
   align-items: center;
 `;
 
 const ModalTitle = styled.h2`
-  font-size: 1.5rem;
+  margin: 0;
+  font-size: clamp(1.05rem, 3.6vw, 1.5rem);
   color: ${props => props.theme.text};
+  overflow-wrap: anywhere;
 `;
 
 const CloseButton = styled.button`
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   background: transparent;
   border: none;
   color: ${props => props.theme.textSecondary};
@@ -172,33 +130,32 @@ const CloseButton = styled.button`
 `;
 
 const ModalBody = styled.div`
-  padding: 2rem;
+  padding: clamp(1rem, 4vw, 2rem);
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const LockIcon = styled.div`
-  width: 80px;
-  height: 80px;
+  width: clamp(46px, 13vw, 80px);
+  aspect-ratio: 1;
   border-radius: 50%;
-  background: ${props => props.isDark 
-    ? 'linear-gradient(135deg, #00bcd4, #00e676)' 
-    : 'linear-gradient(135deg, #3498db, #2ecc71)'
-  };
+  background: ${props => props.theme.buttonBackground};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
-  color: white;
+  font-size: clamp(1.4rem, 5vw, 2.5rem);
+  color: ${props => props.theme.buttonText};
   margin-bottom: 1.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+  @media (max-height: 480px) { display: none; }
 `;
 
 const AuthText = styled.p`
   text-align: center;
   color: ${props => props.theme.textSecondary};
-  margin-bottom: 2rem;
+  margin-bottom: clamp(1rem, 3vw, 2rem);
   line-height: 1.6;
 `;
 
@@ -208,7 +165,7 @@ const AuthForm = styled.form`
 
 const FormGroup = styled.div`
   position: relative;
-  margin-bottom: 1.5rem;
+  margin-bottom: clamp(0.75rem, 3vw, 1.5rem);
 `;
 
 const InputIcon = styled.div`
@@ -257,11 +214,8 @@ const SubmitButton = styled.button`
   padding: 1rem;
   border-radius: 10px;
   border: none;
-  background: ${props => props.isDark 
-    ? 'linear-gradient(135deg, #00bcd4, #00e676)' 
-    : 'linear-gradient(135deg, #3498db, #2ecc71)'
-  };
-  color: white;
+  background: ${props => props.theme.buttonBackground};
+  color: ${props => props.theme.buttonText};
   font-size: 1rem;
   font-weight: 600;
   display: flex;
@@ -274,26 +228,10 @@ const SubmitButton = styled.button`
     margin-right: 8px;
   }
   
-  &:hover:not(:disabled) {
+  &:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
-  
-  &:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-`;
-
-const LoadingSpinner = styled.div`
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: white;
-  animation: rotate 1s linear infinite;
-  
-  ${rotate}
 `;
 
 export default AuthModal;

@@ -1,7 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
-
 :root {
   --transition-speed: 0.3s;
+  color-scheme: dark light;
+  color: #f4f4f2;
+  background-color: #060a0e;
+  --color-primary: #3addfa;
+  --color-secondary: #71bbf5;
+  --color-on-primary: #051921;
+  accent-color: var(--color-primary);
+}
+
+:root[data-theme="dark"] { color-scheme: dark; }
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  color: #152b3a;
+  background-color: #f2f7fb;
+  --color-primary: #005e85;
+  --color-secondary: #266785;
+  --color-on-primary: #f8fdff;
 }
 
 * {
@@ -61,32 +77,9 @@ html, body {
   }
 }
 
-/* Customized scrollbar for tech feel */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-primary, #00e676);
-  border-radius: 4px;
-  transition: background 0.3s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-secondary, #2196f3);
-}
-
-/* Tech-style text selection */
 ::selection {
-  background: var(--color-primary, #00e676);
-  color: #fff;
-  text-shadow: 0 0 5px rgba(0, 230, 118, 0.7);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
 }
 
 code, pre, .monospace {
@@ -96,18 +89,6 @@ code, pre, .monospace {
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
   position: relative;
-}
-
-/* Tech-style heading decoration */
-h1::after, h2::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  height: 3px;
-  width: 60px;
-  background: linear-gradient(90deg, var(--color-primary, #00e676), transparent);
-  border-radius: 3px;
 }
 
 p {
@@ -129,7 +110,7 @@ a::after {
   left: 0;
   width: 0;
   height: 1px;
-  background: var(--color-primary, #00e676);
+  background: var(--color-primary);
   transition: width 0.3s ease;
 }
 
@@ -146,22 +127,6 @@ button, .button {
   transition: all var(--transition-speed) ease;
   position: relative;
   overflow: hidden;
-}
-
-/* Button hover effect */
-button::before, .button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-}
-
-button:hover::before, .button:hover::before {
-  left: 100%;
 }
 
 ul, ol {
@@ -219,12 +184,12 @@ input, textarea {
   left: -2px;
   right: -2px;
   height: 2px;
-  background: linear-gradient(90deg, var(--color-primary, #00e676), var(--color-secondary, #2196f3));
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
 }
 
 /* Cyberpunk/Tech style glow */
 .tech-glow {
-  box-shadow: 0 0 15px var(--color-primary, #00e676);
+  box-shadow: 0 0 15px var(--color-primary);
 }
 
 .theme-transition {
@@ -245,7 +210,7 @@ input, textarea {
 /* Terminal-style text block */
 .terminal-text {
   background: rgba(0, 0, 0, 0.7);
-  border: 1px solid var(--color-primary, #00e676);
+  border: 1px solid var(--color-primary);
   border-radius: 5px;
   padding: 15px;
   font-family: 'Fira Code', monospace;
@@ -254,13 +219,13 @@ input, textarea {
 
 .terminal-text::before {
   content: '$';
-  color: var(--color-primary, #00e676);
+  color: var(--color-primary);
   margin-right: 10px;
 }
 
 /* Tech-style gradient text */
 .gradient-text {
-  background: linear-gradient(90deg, var(--color-primary, #00e676), var(--color-secondary, #2196f3));
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

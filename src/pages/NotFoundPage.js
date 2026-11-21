@@ -1,39 +1,31 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { PageContainer } from '../styles/SharedComponents';
 import { Link } from 'react-router-dom';
-import { ThemeContext } from '../context/ThemeContext';
+import { useReducedMotion } from 'framer-motion';
 import { FiHome, FiCode, FiAlertTriangle } from 'react-icons/fi';
 
 
 const NotFoundPage = () => {
-  const { isDark } = useContext(ThemeContext);
-  const [countdown, setCountdown] = useState(10);
   const [typedText, setTypedText] = useState('');
+  const reducedMotion = useReducedMotion();
   const errorText = '4:04 Page Not Found - Error: The requested resource could not be located on this server.';
-  
-  // Countdown effect
-  useEffect(() => {
-    if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [countdown]);
   
   // Typing effect
   useEffect(() => {
-    if (typedText.length < errorText.length) {
+    if (!reducedMotion && typedText.length < errorText.length) {
       const timer = setTimeout(() => {
         setTypedText(errorText.substring(0, typedText.length + 1));
       }, 50);
       return () => clearTimeout(timer);
     }
-  }, [typedText]);
+  }, [reducedMotion, typedText]);
   
   return (
     <PageContainer>
       <GlitchOverlay />
       <ContentContainer>
-        <ErrorCode isDark={isDark}>404</ErrorCode>
+        <ErrorCode>404</ErrorCode>
         
         <TerminalWindow>
           <TerminalHeader>
@@ -59,19 +51,9 @@ const NotFoundPage = () => {
             </TerminalLine>
             
             <TerminalLine>
-              <TerminalPrompt>$</TerminalPrompt> ERROR: {typedText}
-              <TerminalCursor visible={typedText.length < errorText.length} />
+              <TerminalPrompt>$</TerminalPrompt> ERROR: {reducedMotion ? errorText : typedText}
+              <TerminalCursor $visible={!reducedMotion && typedText.length < errorText.length} />
             </TerminalLine>
-            
-            <TerminalLine>
-              <TerminalPrompt>$</TerminalPrompt> Redirecting to homepage in {countdown} seconds...
-            </TerminalLine>
-            
-            {countdown === 0 && (
-              <TerminalLine>
-                <TerminalPrompt>$</TerminalPrompt> <TerminalSuccess>Redirect initialized!</TerminalSuccess>
-              </TerminalLine>
-            )}
           </TerminalBody>
         </TerminalWindow>
         
@@ -138,16 +120,6 @@ const blink = keyframes`
 `;
 
 // Styled Components
-// In AlbumsPage.js, update the existing PageContainer
-const PageContainer = styled.div`
-  min-height: 100vh;
-  padding-top: 80px; // Added this line
-  
-  @media (max-width: 768px) {
-    padding-top: 70px; // Added this line
-  }
-`;
-
 const GlitchOverlay = styled.div`
   position: absolute;
   top: 0;
@@ -161,13 +133,14 @@ const GlitchOverlay = styled.div`
   );
   background-size: 100% 4px;
   pointer-events: none;
-  animation: ${scanline} 8s linear infinite;
+  @media (prefers-reduced-motion: no-preference) { animation: ${scanline} 3s linear; }
   opacity: 0.3;
 `;
 
 const ContentContainer = styled.div`
-  max-width: 800px;
-  width: 100%;
+  width: min(800px, calc(100% - 2rem));
+  margin-inline: auto;
+  padding-block: clamp(1rem, 4svh, 3rem) 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -175,15 +148,13 @@ const ContentContainer = styled.div`
 `;
 
 const ErrorCode = styled.h1`
-  font-size: 10rem;
+  font-size: clamp(4rem, 1rem + 13vw, 10rem);
   font-weight: 900;
-  margin: 0 0 2rem;
+  line-height: 1.05;
+  margin: 0 0 clamp(1rem, 4svh, 2rem);
   position: relative;
   color: transparent;
-  background: ${props => props.isDark
-    ? 'linear-gradient(135deg, #00e676, #2196f3)'
-    : 'linear-gradient(135deg, #3498db, #2ecc71)'
-  };
+  background: ${props => props.theme.primary};
   -webkit-background-clip: text;
   background-clip: text;
   
@@ -194,35 +165,29 @@ const ErrorCode = styled.h1`
     left: 0;
     width: 100%;
     height: 100%;
-    background: ${props => props.isDark
-      ? 'linear-gradient(135deg, #00e676, #2196f3)'
-      : 'linear-gradient(135deg, #3498db, #2ecc71)'
-    };
+    background: ${props => props.theme.primary};
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
   
   &::before {
-    text-shadow: 2px 0 #00e676;
-    animation: ${glitch} 3s infinite linear;
+    text-shadow: 2px 0 ${props => props.theme.primary};
+    @media (prefers-reduced-motion: no-preference) { animation: ${glitch} 2s linear; }
     opacity: 0.3;
   }
   
   &::after {
-    text-shadow: -2px 0 #2196f3;
-    animation: ${glitch} 2s infinite linear reverse;
+    text-shadow: -2px 0 ${props => props.theme.secondary};
+    @media (prefers-reduced-motion: no-preference) { animation: ${glitch} 2s linear reverse; }
     opacity: 0.3;
   }
   
-  @media (max-width: 768px) {
-    font-size: 6rem;
-  }
 `;
 
 const TerminalWindow = styled.div`
   width: 100%;
-  background-color: ${props => props.theme.isDark ? '#1e1e1e' : '#f1f1f1'};
+  background-color: ${props => props.theme.codeBackground};
   border-radius: 10px;
   overflow: hidden;
   font-family: 'Fira Code', monospace;
@@ -231,7 +196,7 @@ const TerminalWindow = styled.div`
 `;
 
 const TerminalHeader = styled.div`
-  background-color: ${props => props.theme.isDark ? '#323232' : '#e0e0e0'};
+  background-color: ${props => props.theme.cardBackground};
   padding: 8px 15px;
   display: flex;
   align-items: center;
@@ -244,7 +209,7 @@ const TerminalButton = styled.div`
   margin-right: 8px;
   
   &.red {
-    background-color: #ff5f56;
+    background-color: ${props => props.theme.error};
   }
   
   &.yellow {
@@ -252,19 +217,20 @@ const TerminalButton = styled.div`
   }
   
   &.green {
-    background-color: #27c93f;
+    background-color: ${props => props.theme.success};
   }
 `;
 
 const TerminalTitle = styled.div`
-  color: ${props => props.theme.isDark ? '#cccccc' : '#555555'};
+  color: ${props => props.theme.textSecondary};
   font-size: 0.8rem;
   margin-left: 8px;
+  overflow-wrap: anywhere;
 `;
 
 const TerminalBody = styled.div`
   padding: 15px;
-  color: ${props => props.theme.isDark ? '#f0f0f0' : '#333333'};
+  color: ${props => props.theme.text};
   font-size: 0.9rem;
   line-height: 1.6;
 `;
@@ -281,15 +247,11 @@ const TerminalPrompt = styled.span`
 `;
 
 const TerminalError = styled.span`
-  color: #ff5f56;
-`;
-
-const TerminalSuccess = styled.span`
-  color: #27c93f;
+  color: ${props => props.theme.error};
 `;
 
 const TerminalCursor = styled.span`
-  display: ${props => props.visible ? 'inline-block' : 'none'};
+  display: ${props => props.$visible ? 'inline-block' : 'none'};
   width: 8px;
   height: 15px;
   background-color: ${props => props.theme.primary};
@@ -303,7 +265,7 @@ const MessageBox = styled.div`
   align-items: center;
   background-color: ${props => props.theme.cardBackground};
   border-radius: 10px;
-  padding: 1.5rem;
+  padding: clamp(0.85rem, 3vw, 1.5rem);
   margin-bottom: 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -347,7 +309,7 @@ const HomeButton = styled(Link)`
   justify-content: center;
   padding: 1rem 2rem;
   background: linear-gradient(135deg, ${props => props.theme.primary} 0%, ${props => props.theme.secondary} 100%);
-  color: white;
+  color: ${props => props.theme.buttonText};
   font-weight: 600;
   border-radius: 8px;
   transition: all 0.3s ease;
@@ -384,7 +346,7 @@ const ProjectsButton = styled(Link)`
   
   &:hover {
     background: ${props => props.theme.primary};
-    color: white;
+    color: ${props => props.theme.buttonText};
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }

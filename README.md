@@ -1,39 +1,36 @@
 # Nihar Ranjan Sahu's Portfolio
 
-A modern, unique portfolio website built with React, showcasing my projects, skills, and experience as a software engineer.
+A React and Vite portfolio showcasing my projects, skills, and experience as a software engineer.
 
 ## Features
 
-- **Responsive Design**: Optimized for all devices (desktop, tablet, and mobile)
-- **Dark/Light Mode**: Interactive theme toggle with custom animations
-- **Project Showcase**: Display all my projects with filtering capabilities
-- **Protected Albums**: Password-protected photo galleries
-- **Interactive UI**: Modern UI elements with animations and transitions
-- **Contact Form**: Easy way for potential employers to get in touch
+- Searchable project archive with deep-linked case studies.
+- Four interactive crew guides with portfolio answers, sources, and project comparisons.
+- A portfolio terminal with commands such as `ls projects`, `open course search`, and `ask How does AI automation work?`.
+- AI automation walkthrough that shows routing, tool selection, and engineer review.
+- Light and dark themes, reduced-motion support, photo albums, and contact.
 
 ## Technologies Used
 
-- React.js
+- React and Vite
 - Styled Components
 - React Router
 - Framer Motion
 - React Icons
-- React TsParticles
-- Typewriter Effect
+- Gemini (optional server-side enhancement)
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v14.0.0 or higher)
-- npm (v6.0.0 or higher)
+- Node.js 20.19 or later and npm
 
 ### Installation
 
 1. Clone the repository
    ```
-   git clone https://github.com/yourusername/portfolio.git
-   cd portfolio
+   git clone https://github.com/Nihar4569/Portfolio-.git
+   cd Portfolio-
    ```
 
 2. Install dependencies
@@ -41,12 +38,14 @@ A modern, unique portfolio website built with React, showcasing my projects, ski
    npm install
    ```
 
-3. Start the development server
+3. Run the development server
    ```
-   npm start
+   npm run dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) to view the website in your browser
+4. Open the local URL printed by Vite.
+
+`npm test` checks Scout's retrieval, follow-up behavior, and API.
 
 ## Project Structure
 
@@ -100,25 +99,19 @@ nihar-portfolio/
 ### Adding New Albums
 
 1. Open `src/data/albums.js`
-2. Add a new album object to the array with the following structure:
+2. Add a new album with its cover, directory, and photo count.
    ```javascript
    {
      id: "album-id",
      title: "Album Title",
      description: "Album description",
-     coverImage: "/images/albums/album-cover.jpg",
-     secretCode: "yourpassword",
-     photos: [
-       {
-         id: 1,
-         url: "/images/albums/album-id/photo1.jpg",
-         caption: "Photo caption"
-       },
-       // More photos...
-     ]
+     coverImage: "/images/albums/album-id/cover.avif",
+     photoDirectory: "/images/albums/album-id",
+     photoCount: 1,
+     lock: false
    }
    ```
-3. Add the album cover and photos to the appropriate folders in `public/images/albums/`
+3. Add sequential `photo1.jpg`, `photo2.jpg`, and so on to the album directory in `public/images/albums/`. Place a small AVIF for each photo in `thumbnails/` with the matching filename, such as `thumbnails/photo1.avif`.
 
 ### Changing Theme Colors
 
@@ -126,33 +119,25 @@ To customize the theme colors, edit the color variables in `src/styles/theme.js`
 
 ```javascript
 // Light theme colors
-primary: '#3498db',
-secondary: '#2ecc71',
+primary: '#005e85',
+secondary: '#266785',
 // ...
 
 // Dark theme colors
-primary: '#00bcd4',
-secondary: '#00e676',
+primary: '#3addfa',
+secondary: '#71bbf5',
 // ...
 ```
 
 ## Deployment
 
-### Build for Production
+The Vercel configuration uses the Vite preset and builds to `dist/client` with `npm run build`. Vercel serves `api/crew.js` as a Node function. Locally, `npm run preview` serves the same build with the API available.
 
-```
-npm run build
-```
+The frontend calls `/api/crew` on the same domain for every chat question, including greetings. Each crew member answers in their own specialty, with the last three exchanges and public facts from `src/data/projects.js` and `src/data/profile.js`. The server resolves source IDs to portfolio links. If Gemini is unavailable, the chat uses curated answers marked **Portfolio notes**. The function applies request limits and short-lived caching within each running instance.
 
-This creates an optimized production build in the `build` folder that can be deployed to any static hosting service.
+Set `GEMINI_KEY` in the Vercel Preview environment or in an ignored local `.env.local` based on `.env.example`. Existing `GEMINI_API_KEY` settings also work. Keep the key server-side. The default is `gemini-3.5-flash-lite` and `GEMINI_MODEL` can select `gemini-3.1-flash-lite`. Use a key from a [Google AI Studio Free Tier project](https://aistudio.google.com/docs/billing) for free-tier pricing. The function sends the question, recent conversation, and public portfolio facts to Gemini. It uses no external search or model tools.
 
-### Hosting Suggestions
-
-- Vercel
-- Netlify
-- GitHub Pages
-- Firebase Hosting
-- AWS Amplify
+Project previews use `vercel.json` to select Vite and build to `dist/client`. The static pages and the crew function live in the same Vercel project.
 
 ## License
 

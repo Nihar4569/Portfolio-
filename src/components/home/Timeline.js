@@ -1,10 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { ThemeContext } from '../../context/ThemeContext';
 import { FiAward, FiBriefcase, FiCode, FiCalendar } from 'react-icons/fi';
 
 const Timeline = () => {
-  const { isDark } = useContext(ThemeContext);
   
   const events = [
     {
@@ -86,8 +84,8 @@ const Timeline = () => {
   return (
     <TimelineContainer>
       {events.map((event, index) => (
-        <TimelineItem key={event.id} isLeft={index % 2 === 0} isDark={isDark}>
-          <TimelineContent isLeft={index % 2 === 0}>
+        <TimelineItem key={event.id} $isLeft={index % 2 === 0}>
+          <TimelineContent $isLeft={index % 2 === 0}>
             <TimelineDate>
               <FiCalendar /> {event.date}
             </TimelineDate>
@@ -96,11 +94,11 @@ const Timeline = () => {
             <TimelineDescription>{event.description}</TimelineDescription>
           </TimelineContent>
           
-          <TimelineDot type={event.type} isDark={isDark}>
+          <TimelineDot>
             {event.icon}
           </TimelineDot>
           
-          <TimelineLine isDark={isDark} isLast={index === events.length - 1} />
+          <TimelineLine $isLast={index === events.length - 1} />
         </TimelineItem>
       ))}
     </TimelineContainer>
@@ -118,7 +116,7 @@ const TimelineContainer = styled.div`
 const TimelineItem = styled.div`
   position: relative;
   display: flex;
-  justify-content: ${props => props.isLeft ? 'flex-start' : 'flex-end'};
+  justify-content: ${props => props.$isLeft ? 'flex-start' : 'flex-end'};
   padding: 2rem 0;
   width: 100%;
   
@@ -146,7 +144,7 @@ const TimelineContent = styled.div`
     content: '';
     position: absolute;
     top: 20px;
-    ${props => props.isLeft ? 'right: -10px' : 'left: -10px'};
+    ${props => props.$isLeft ? 'right: -10px' : 'left: -10px'};
     width: 20px;
     height: 20px;
     background-color: ${props => props.theme.cardBackground};
@@ -210,21 +208,9 @@ const TimelineDot = styled.div`
   font-size: 1.2rem;
   z-index: 2;
   
-  background: ${props => {
-    switch(props.type) {
-      case 'education':
-        return props.isDark ? 'linear-gradient(135deg, #00bcd4, #00e676)' : 'linear-gradient(135deg, #3498db, #2ecc71)';
-      case 'achievement':
-        return props.isDark ? 'linear-gradient(135deg, #f39c12, #e74c3c)' : 'linear-gradient(135deg, #f1c40f, #e74c3c)';
-      case 'project':
-        return props.isDark ? 'linear-gradient(135deg, #9c27b0, #673ab7)' : 'linear-gradient(135deg, #9b59b6, #3498db)';
-      case 'research':
-        return props.isDark ? 'linear-gradient(135deg, #4caf50, #8bc34a)' : 'linear-gradient(135deg, #27ae60, #2ecc71)';
-      default:
-        return props.isDark ? 'linear-gradient(135deg, #00bcd4, #00e676)' : 'linear-gradient(135deg, #3498db, #2ecc71)';
-    }
-  }};
-  color: white;
+  background: ${props => props.theme.codeBackground};
+  color: ${props => props.theme.primary};
+  border: 1px solid ${props => props.theme.inputBorder};
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   
   @media (max-width: 768px) {
@@ -236,10 +222,10 @@ const TimelineDot = styled.div`
 const TimelineLine = styled.div`
   position: absolute;
   top: 0;
-  bottom: ${props => props.isLast ? '50%' : '0'};
+  bottom: ${props => props.$isLast ? '50%' : '0'};
   left: 50%;
   width: 3px;
-  background: ${props => props.isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'};
+  background: ${props => props.theme.borderColor};
   transform: translateX(-50%);
   
   @media (max-width: 768px) {

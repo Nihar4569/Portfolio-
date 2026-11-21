@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content" />
+    <meta name="theme-color" content="#060a0e" />
+    <meta name="color-scheme" content="dark light" />
+    <script>
+      let scheme = 'dark';
+      try {
+        if (localStorage.getItem('theme') === 'light') scheme = 'light';
+      } catch {}
+      document.documentElement.dataset.theme = scheme;
+      document.querySelector('meta[name="color-scheme"]').content = scheme;
+      if (scheme === 'light') document.querySelector('meta[name="theme-color"]').content = '#f2f7fb';
+    </script>
+    <meta name="description" content="Nihar Ranjan Sahu, Software Engineer at Cisco. Explore his work in AI automation, backend systems, and search, or ask Scout about a project." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>Nihar Ranjan Sahu | Software Engineer</title>
+  </head>
+  <body>
+    <noscript>Nihar Ranjan Sahu, Software Engineer. Email <a href="mailto:nihar4569@gmail.com">nihar4569@gmail.com</a>.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/index.js"></script>
+  </body>
+</html>

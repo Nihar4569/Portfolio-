@@ -1,21 +1,16 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { ThemeContext } from '../../context/ThemeContext';
-import { useSound } from '../../context/SoundContext';
 import ThemeToggle from './ThemeToggle';
 import { FiMenu, FiX, FiCode, FiHome, FiFolder, FiMail, FiImage } from 'react-icons/fi';
 
 const Navbar = () => {
-  const { isDark, isAnimating } = useContext(ThemeContext);
-  const { playClick, playNavigation } = useSound();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   
   const toggleMenu = () => {
-    playClick();
-    setIsOpen(!isOpen);
+    setIsOpen((open) => !open);
   };
 
   const closeMenu = () => {
@@ -23,7 +18,6 @@ const Navbar = () => {
   };
 
   const handleNavClick = () => {
-    playNavigation();
     closeMenu(); // Close menu after clicking a link
   };
   
@@ -36,7 +30,8 @@ const Navbar = () => {
       }
     };
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -50,18 +45,22 @@ const Navbar = () => {
 
   // Prevent body scroll when menu is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+    if (!isOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    const desktop = window.matchMedia('(min-width: 769px)');
+    function closeOnDesktop(event) {
+      if (event.matches) setIsOpen(false);
     }
+    document.body.style.overflow = 'hidden';
+    desktop.addEventListener('change', closeOnDesktop);
     return () => {
-      document.body.style.overflow = 'unset';
+      desktop.removeEventListener('change', closeOnDesktop);
+      document.body.style.overflow = previousOverflow;
     };
   }, [isOpen]);
 
   return (
-    <NavbarContainer scrolled={scrolled} isDark={isDark} isAnimating={isAnimating}>
+    <NavbarContainer $scrolled={scrolled}>
       <NavContent>
         <LogoContainer>
           <Link to="/">
@@ -77,7 +76,8 @@ const Navbar = () => {
           <MobileThemeToggle>
             <ThemeToggle />
           </MobileThemeToggle>
-          <MenuButton onClick={toggleMenu} aria-label="Toggle menu" className="menu-button">
+          <MenuButton type="button" onClick={toggleMenu} aria-expanded={isOpen}
+            aria-controls="portfolio-mobile-menu" aria-label="Toggle menu" className="menu-button">
             {isOpen ? <FiX /> : <FiMenu />}
           </MenuButton>
         </MobileControls>
@@ -112,12 +112,12 @@ const Navbar = () => {
         </NavLinksDesktop>
         
         {/* Mobile Menu Overlay */}
-        <MobileMenuOverlay isOpen={isOpen} onClick={closeMenu} />
+        <MobileMenuOverlay $isOpen={isOpen} onClick={closeMenu} />
         
-        <NavLinksMobile isOpen={isOpen} className="mobile-nav">
+        <NavLinksMobile id="portfolio-mobile-menu" $isOpen={isOpen} className="mobile-nav">
           <MobileMenuHeader>
             <MobileMenuTitle>Menu</MobileMenuTitle>
-            <CloseButton onClick={closeMenu}>
+            <CloseButton type="button" onClick={closeMenu} aria-label="Close menu">
               <FiX />
             </CloseButton>
           </MobileMenuHeader>
@@ -161,26 +161,17 @@ const NavbarContainer = styled.nav`
   top: 0;
   left: 0;
   width: 100%;
-  z-index: ${props => props.isAnimating ? 900 : 1000};
-  background: ${props => props.scrolled 
-    ? props.isDark 
-      ? 'rgba(13, 17, 23, 0.95)' 
-      : 'rgba(240, 248, 255, 0.95)'
-    : props.isDark
-      ? 'rgba(13, 17, 23, 0.7)'
-      : 'rgba(240, 248, 255, 0.7)'};
+  z-index: 1000;
+  background: ${props => props.theme.navBackground};
+  border-bottom: 1px solid ${props => props.$scrolled ? props.theme.borderColor : 'transparent'};
   backdrop-filter: blur(10px);
-  box-shadow: ${props => props.scrolled 
+  box-shadow: ${props => props.$scrolled
     ? '0 4px 20px rgba(0, 0, 0, 0.1)' 
     : 'none'};
   transition: all 0.3s ease;
-  height: 80px;
+  min-height: var(--portfolio-header-height);
   display: flex;
   align-items: center;
-  
-  @media (max-width: 768px) {
-    height: 70px;
-  }
 `;
 
 const NavContent = styled.div`
@@ -192,6 +183,11 @@ const NavContent = styled.div`
   justify-content: space-between;
   align-items: center;
   position: relative;
+
+  @media (min-width: 1200px) {
+    max-width: 82.5rem;
+    padding-inline: 2.2rem;
+  }
   
   @media (max-width: 480px) {
     padding: 0 1rem;
@@ -212,6 +208,11 @@ const Logo = styled.div`
     margin-right: 8px;
     font-size: 1.8rem;
     color: ${props => props.theme.primary};
+  }
+
+  @media (min-width: 1200px) {
+    font-size: 1.65rem;
+    svg { font-size: 1.98rem; margin-right: 0.55rem; }
   }
 `;
 
@@ -262,6 +263,10 @@ const NavLinksDesktop = styled.ul`
   align-items: center;
   list-style: none;
   margin: 0;
+
+  @media (min-width: 1200px) {
+    font-size: 1.1rem;
+  }
   
   @media (max-width: 768px) {
     display: none;
@@ -269,7 +274,7 @@ const NavLinksDesktop = styled.ul`
 `;
 
 const NavLink = styled.li`
-  margin: 0 1rem;
+  margin: 0 1em;
   
   a {
     display: flex;
@@ -279,7 +284,7 @@ const NavLink = styled.li`
     transition: color 0.3s ease;
     
     svg {
-      margin-right: 6px;
+      margin-right: 0.375em;
     }
     
     &:hover {
@@ -289,7 +294,7 @@ const NavLink = styled.li`
 `;
 
 const ThemeToggleContainer = styled.div`
-  margin-left: 1.5rem;
+  margin-left: 1.5em;
 `;
 
 const MobileMenuOverlay = styled.div`
@@ -301,12 +306,12 @@ const MobileMenuOverlay = styled.div`
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
     z-index: 50000;
-    opacity: ${props => props.isOpen ? 1 : 0};
-    visibility: ${props => props.isOpen ? 'visible' : 'hidden'};
+    opacity: ${props => props.$isOpen ? 1 : 0};
+    visibility: ${props => props.$isOpen ? 'visible' : 'hidden'};
     transition: all 0.3s ease;
   }
 `;
@@ -322,15 +327,19 @@ const NavLinksMobile = styled.ul`
     right: 0;
     width: 280px;
     max-width: 85%;
-    height: 100vh;
-    padding: 0;
+    height: 100dvh;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) 0;
     background: ${props => props.theme.surface};
     box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
     list-style: none;
     z-index: 50001;
-    transform: ${props => props.isOpen ? 'translateX(0)' : 'translateX(100%)'};
-    transition: transform 0.3s ease;
+    visibility: ${props => props.$isOpen ? 'visible' : 'hidden'};
+    transform: ${props => props.$isOpen ? 'translateX(0)' : 'translateX(100%)'};
+    @media (prefers-reduced-motion: no-preference) {
+      transition: transform 0.25s ease;
+    }
     overflow-y: auto;
+    overscroll-behavior: contain;
   }
 `;
 

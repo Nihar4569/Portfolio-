@@ -1,0 +1,268 @@
+.portrait-hero {
+  --hero-bg: var(--portfolio-bg);
+  --hero-text: var(--portfolio-text);
+  --hero-muted: var(--portfolio-muted);
+  --hero-accent: var(--portfolio-accent);
+  --hero-line: var(--portfolio-line);
+  --hero-tile: var(--portfolio-code);
+  --hero-content-width: 77.5rem;
+  --hero-gutter: 2rem;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  min-block-size: calc(100vh - var(--portfolio-header-height));
+  min-block-size: calc(100svh - var(--portfolio-header-height));
+  padding: clamp(28px, 6svh, 72px) max(var(--hero-gutter), calc((100% - var(--hero-content-width)) / 2)) 32px;
+  background: var(--hero-bg);
+  color: var(--hero-text);
+}
+
+.portrait-hero-inner {
+  min-height: min(675px, 72svh);
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: "intro photo" "actions photo";
+  align-items: center;
+  column-gap: clamp(36px, 7vw, 106px);
+}
+
+.portrait-hero-intro { grid-area: intro; align-self: end; padding-top: 28px; }
+.portrait-hero-role {
+  font: 500 clamp(0.77rem, 1.1vw, 0.94rem) 'Fira Code', monospace;
+  letter-spacing: 0.035em;
+  color: var(--hero-accent);
+  margin: 0 0 19px;
+}
+.portrait-hero-role span { color: var(--hero-muted); }
+
+.portrait-hero h1 {
+  font-size: clamp(2.65rem, 6.3vw, 5.8rem);
+  font-weight: 600;
+  letter-spacing: -0.079em;
+  line-height: 0.98;
+  margin: 0;
+}
+.portrait-hero h1::after { content: none; }
+
+.portrait-hero-bio {
+  max-width: 31ch;
+  margin: 23px 0 0;
+  font-size: clamp(1rem, 1.5vw, 1.28rem);
+  line-height: 1.55;
+  color: var(--hero-muted);
+}
+
+.portrait-hero-stage {
+  grid-area: photo;
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  padding: 10px 15px 17px;
+  align-self: center;
+  display: grid;
+  justify-items: center;
+  background: radial-gradient(ellipse at 54% 46%, var(--portfolio-portrait-glow) 0%, transparent 69%);
+}
+
+.portrait-hero-photo {
+  display: block;
+  width: min(100%, clamp(250px, 51svh, 437px));
+  height: auto;
+  object-fit: contain;
+  aspect-ratio: 3 / 4;
+  mask-image: linear-gradient(#000 68%, transparent 96%);
+}
+
+.portrait-hero-crew {
+  display: flex;
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(-64px, -6.4svh, -36px);
+  gap: clamp(5px, 1vw, 13px);
+}
+
+.portrait-hero-crew button {
+  width: clamp(52px, 5.1vw, 72px);
+  min-height: 54px;
+  padding: 3px 2px 5px;
+  display: grid;
+  justify-items: center;
+  border: 1px solid transparent;
+  background: none;
+  border-radius: 9px;
+  color: var(--hero-muted);
+  font: 500 0.66rem 'Fira Code', monospace;
+  cursor: pointer;
+}
+
+.portrait-hero-crew img { max-width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; }
+.portrait-hero-crew button:hover { color: var(--hero-accent); border-color: var(--hero-line); }
+.portrait-hero-actions { grid-area: actions; align-self: start; margin-top: 28px; }
+
+.portrait-hero-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px 20px;
+}
+.portrait-hero-links a {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--hero-text);
+  font-size: 0.91rem;
+  text-decoration: none;
+  min-height: 46px;
+}
+.portrait-hero-links a:not(.portrait-hero-primary):hover { color: var(--hero-accent); }
+.portrait-hero-links .portrait-hero-primary {
+  background: var(--hero-accent);
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: var(--portfolio-button-text);
+  font-weight: 600;
+}
+.portrait-hero-primary:hover { filter: brightness(1.1); }
+
+.portrait-hero-ask {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  text-align: left;
+  gap: 11px;
+  width: min(380px, 100%);
+  margin-top: 22px;
+  padding: 12px;
+  color: var(--hero-text);
+  background: var(--hero-tile);
+  border: 1px solid var(--hero-line);
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+}
+.portrait-hero-ask > span:nth-child(2) { min-width: 0; }
+.portrait-hero-ask:hover { border-color: var(--hero-accent); }
+.portrait-hero-prompt { color: var(--hero-accent); font: 500 1.1rem 'Fira Code', monospace; }
+.portrait-hero-ask strong { display: block; font-size: 0.79rem; font-weight: 600; }
+.portrait-hero-ask code { display: block; color: var(--hero-muted); font-size: 0.73rem; }
+.portrait-hero-ask > svg { color: var(--hero-accent); }
+.portrait-hero-socials { display: flex; gap: 4px; margin: 8px 0 0 -8px; }
+.portrait-hero-socials a {
+  display: inline-grid;
+  place-items: center;
+  min-height: 44px;
+  min-width: 44px;
+  color: var(--hero-muted);
+}
+.portrait-hero-socials a:hover { color: var(--hero-accent); }
+
+.portrait-hero-scroll {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  min-height: 44px;
+  gap: 8px;
+  padding-inline: 6px;
+  margin-left: -6px;
+  text-decoration: none;
+  color: var(--hero-muted);
+  font: 500 0.72rem 'Fira Code', monospace;
+}
+
+.portrait-hero :focus-visible { outline: 2px solid var(--hero-accent); outline-offset: 3px; }
+.portrait-hero-scroll:hover { color: var(--hero-accent); }
+
+@media (min-width: 1200px) and (min-height: 761px) {
+  .portrait-hero {
+    --hero-content-width: 85.25rem;
+    --hero-gutter: 2.2rem;
+    padding-bottom: 2.2rem;
+  }
+
+  .portrait-hero-inner { min-height: min(46.4rem, 72svh); column-gap: clamp(36px, 7vw, 7.3rem); }
+  .portrait-hero-intro { padding-top: 31px; }
+  .portrait-hero-role { font-size: clamp(0.84rem, 1.1vw, 1.035rem); margin-bottom: 21px; }
+  .portrait-hero h1 { font-size: clamp(2.9rem, calc(1rem + 5.4vw), 6.38rem); }
+  .portrait-hero-bio { margin-top: 25px; font-size: clamp(1.05rem, 1.5vw, 1.41rem); }
+
+  .portrait-hero-stage { padding: 11px 17px 19px; }
+  .portrait-hero-photo { width: min(100%, clamp(275px, 51svh, 481px)); }
+  .portrait-hero-crew { margin-top: clamp(-70px, -6.4svh, -40px); gap: clamp(6px, 1vw, 14px); }
+  .portrait-hero-crew button { width: clamp(57px, 5.1vw, 79px); min-height: 60px; font-size: 0.725rem; }
+  .portrait-hero-crew img { width: 66px; }
+
+  .portrait-hero-actions { margin-top: 31px; }
+  .portrait-hero-links { gap: 10px 22px; }
+  .portrait-hero-links a { min-height: 51px; font-size: 1rem; }
+  .portrait-hero-links .portrait-hero-primary { padding-inline: 18px; }
+  .portrait-hero-ask {
+    grid-template-columns: 37px minmax(0, 1fr) auto;
+    gap: 12px;
+    width: min(418px, 100%);
+    margin-top: 24px;
+    padding: 13px;
+    font-size: 1.1rem;
+  }
+  .portrait-hero-prompt { font-size: 1.21rem; }
+  .portrait-hero-ask strong { font-size: 0.87rem; }
+  .portrait-hero-ask code { font-size: 0.8rem; }
+  .portrait-hero-socials a { min-width: 48px; min-height: 48px; }
+  .portrait-hero-scroll { min-height: 48px; font-size: 0.79rem; }
+}
+
+@media (max-width: 768px) {
+  .portrait-hero { display: block; min-block-size: auto; padding: 39px 24px 13px; }
+  .portrait-hero-inner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas: "intro" "photo" "actions";
+    gap: 13px;
+  }
+  .portrait-hero-intro { padding-top: 0; text-align: center; }
+  .portrait-hero-role { margin-bottom: 14px; }
+  .portrait-hero h1 { max-width: 14ch; margin-inline: auto; font-size: clamp(2.7rem, 8vw, 4.4rem); line-height: 1.02; }
+  .portrait-hero-bio { font-size: 0.98rem; margin: 15px auto 0; }
+  .portrait-hero-stage { padding: 0; }
+  .portrait-hero-photo { width: min(100%, 306px); }
+  .portrait-hero-crew { margin-top: -48px; }
+  .portrait-hero-actions { margin-top: 10px; }
+  .portrait-hero-links, .portrait-hero-socials { justify-content: center; margin-left: 0; }
+  .portrait-hero-ask { margin: 15px auto 0; }
+  .portrait-hero-scroll { display: table; margin: 8px auto 0; padding-top: 12px; }
+}
+
+@media (min-width: 769px) and (max-height: 760px) {
+  .portrait-hero { padding-block: 18px 10px; }
+  .portrait-hero-inner { grid-template-rows: auto auto; }
+  .portrait-hero-photo { width: min(100%, clamp(225px, 46svh, 437px)); }
+  .portrait-hero h1 { font-size: clamp(3rem, 5.9vw, 5rem); }
+  .portrait-hero-role { margin-bottom: 13px; }
+  .portrait-hero-bio { margin-top: 14px; }
+  .portrait-hero-intro { padding-top: 0; }
+  .portrait-hero-actions { margin-top: 19px; }
+  .portrait-hero-ask { margin-top: 13px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes portfolio-arrive {
+    from { opacity: 0; translate: 0 14px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+  .portrait-hero-intro, .portrait-hero-actions { animation: portfolio-arrive 650ms ease-out both; }
+  .portrait-hero-actions { animation-delay: 110ms; }
+  .portrait-hero-photo {
+    animation: portfolio-arrive 950ms ease-out both;
+    transform: translate(var(--portrait-x, 0), var(--portrait-y, 0)) rotate(var(--portrait-angle, 0deg));
+    transition: transform 500ms cubic-bezier(0.2, 0.75, 0.2, 1);
+  }
+  .portrait-hero-crew button { animation: portfolio-arrive 620ms ease-out 380ms both; }
+  .portrait-hero-crew button:nth-child(2) { animation-delay: 480ms; }
+  .portrait-hero-crew button:nth-child(3) { animation-delay: 580ms; }
+  .portrait-hero-crew button:nth-child(4) { animation-delay: 680ms; }
+  .portrait-hero-crew img { transition: transform 260ms ease-out; }
+  .portrait-hero-crew button:hover img, .portrait-hero-crew button:focus-visible img { transform: translateY(-4px) rotate(-4deg); }
+  .portrait-hero-crew button:focus-visible { animation: none; }
+}
