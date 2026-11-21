@@ -36,19 +36,6 @@
       animation-range: entry 0% entry 85%;
     }
 
-    .portfolio-navbar::after {
-      content: '';
-      position: absolute;
-      inset: auto 0 -1px;
-      height: 2px;
-      background: var(--portfolio-accent);
-      scale: 0 1;
-      transform-origin: left center;
-      pointer-events: none;
-      animation: scroll-line auto linear both;
-      animation-timeline: scroll(root block);
-    }
-
     .portrait-hero {
       view-timeline-name: --portrait-scroll;
     }
@@ -57,11 +44,6 @@
       animation: portrait-light auto linear both;
       animation-timeline: --portrait-scroll;
       animation-range: exit 0% exit 100%;
-    }
-
-    @keyframes scroll-line {
-      from { scale: 0 1; }
-      to { scale: 1 1; }
     }
 
     @keyframes portrait-light {

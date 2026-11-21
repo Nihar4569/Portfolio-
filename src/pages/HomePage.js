@@ -26,7 +26,16 @@ const HomePage = () => {
       
       <About />
       
-      <TechStack />
+      <TechStackSection>
+        <SectionContainer>
+          <SectionTitle>Tech Stack</SectionTitle>
+          <SectionSubtitle>
+            The technologies and tools that power my development workflow
+          </SectionSubtitle>
+          <CrewNote guide="pip">Explore how LangGraph connects specialist agents, tools, and human review in Nihar’s work.</CrewNote>
+          <TechStack />
+        </SectionContainer>
+      </TechStackSection>
       
       <ProjectsSection id="featured-work">
         <SectionContainer>
@@ -78,6 +87,16 @@ const SectionContainer = styled.div`
   
   @media (max-width: 480px) {
     padding: 0 1rem;
+  }
+`;
+
+const TechStackSection = styled.section`
+  padding: 5rem 0;
+  background-color: ${props => props.theme.background};
+  text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 3rem 0;
   }
 `;
 
