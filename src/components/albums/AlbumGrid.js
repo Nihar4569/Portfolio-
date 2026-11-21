@@ -5,7 +5,7 @@ import AlbumCard from './AlbumCard';
 const AlbumGrid = ({ albums }) => {
   return (
     <AlbumsContainer>
-      <SectionIntro>
+      <SectionIntro data-scroll-reveal="rise">
         <IntroTitle>My Albums</IntroTitle>
         <IntroDescription>
           Browse through my collection of photo albums. Some albums may require a secret code to access.

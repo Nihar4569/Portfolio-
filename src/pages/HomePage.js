@@ -16,10 +16,9 @@ import { PageContainer } from '../styles/SharedComponents';
 // Data
 import projects from '../data/projects';
 
+const featuredProjects = projects.filter((project) => project.featured);
+
 const HomePage = () => {
-  // Filter featured projects for homepage
-  const featuredProjects = projects.filter(project => project.featured).slice(0, 3);
-  
   return (
     <>
     <PageContainer>
@@ -27,34 +26,25 @@ const HomePage = () => {
       
       <About />
       
-      <TechStackSection>
-        <SectionContainer>
-          <SectionTitle>Tech Stack</SectionTitle>
-          <SectionSubtitle>
-            The technologies and tools that power my development workflow
-          </SectionSubtitle>
-          <CrewNote guide="pip">Explore how LangGraph connects specialist agents, tools, and human review in Nihar’s work.</CrewNote>
-          <TechStack />
-        </SectionContainer>
-      </TechStackSection>
+      <TechStack />
       
       <ProjectsSection id="featured-work">
         <SectionContainer>
-          <SectionTitle>Featured Projects</SectionTitle>
+          <SectionTitle data-scroll-reveal="rise">Featured Projects</SectionTitle>
           <SectionSubtitle>
             AI automation, search infrastructure, and backend architecture.
           </SectionSubtitle>
           <CrewNote guide="atlas">FIR Vault and CareSync use role-based access to solve different problems. I can walk you through the tradeoffs.</CrewNote>
           <ProjectsGrid projects={featuredProjects} />
           <ViewAllButton to="/projects">
-            <span>View All Projects</span> <FiArrowRight />
+            <span>View all {projects.length} projects</span> <FiArrowRight aria-hidden="true" />
           </ViewAllButton>
         </SectionContainer>
       </ProjectsSection>
       
       <TimelineSection>
         <SectionContainer>
-          <SectionTitle>My Journey</SectionTitle>
+          <SectionTitle data-scroll-reveal="rise">My Journey</SectionTitle>
           <SectionSubtitle>
             Key milestones and achievements in my development career
           </SectionSubtitle>
@@ -65,7 +55,7 @@ const HomePage = () => {
       
       <CTASection>
         <CTAContainer>
-          <CTAContent>
+          <CTAContent data-scroll-reveal="depth">
             <CTATitle>Let's Build Something Amazing Together</CTATitle>
             <CTADescription>
               Currently working as a Software Engineer at Cisco, I'm always open to discussing 
@@ -88,16 +78,6 @@ const SectionContainer = styled.div`
   
   @media (max-width: 480px) {
     padding: 0 1rem;
-  }
-`;
-
-const TechStackSection = styled.section`
-  padding: 5rem 0;
-  background-color: ${props => props.theme.background};
-  text-align: center;
-  
-  @media (max-width: 768px) {
-    padding: 3rem 0;
   }
 `;
 

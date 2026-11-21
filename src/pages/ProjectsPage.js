@@ -15,7 +15,7 @@ export default function ProjectsPage() {
   return (
     <PageContainer>
       <section className="portfolio-projects-page" aria-labelledby="projects-heading">
-        <header className="portfolio-projects-heading">
+        <header className="portfolio-projects-heading" data-scroll-reveal="rise">
           <h1 id="projects-heading">Projects</h1>
           <p>Explore my work across various technologies and domains</p>
           <dl className="portfolio-project-stats">

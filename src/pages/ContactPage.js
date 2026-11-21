@@ -1,8 +1,10 @@
 import React, { useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import emailjs from '@emailjs/browser';
 import { useSound } from '../context/SoundContext';
+import { profile } from '../data/profile';
 import { PageContainer } from '../styles/SharedComponents';
+import { contactMessage } from '../utils/contactMessage';
 import { 
   FiMail, FiMapPin, FiPhone, 
   FiGithub, FiLinkedin, FiSend, 
@@ -11,111 +13,59 @@ import {
 
 const ContactPage = () => {
   const { playSound } = useSound();
-  const form = useRef();
-  
-  const [formStatus, setFormStatus] = useState({
-    submitted: false,
-    submitting: false,
-    error: null
-  });
+  const sending = useRef(false);
+  const [formStatus, setFormStatus] = useState('idle');
   
   const [terminalCommands, setTerminalCommands] = useState([
     { text: 'cd /home/nihar/contact', processed: true },
     { text: 'cat contact_info.json', processed: true },
     { text: '{"email":"nihar4569@gmail.com","phone":"+91 6370332583","location":"Bengaluru, Karnataka, India"}', processed: true },
     { text: 'git status', processed: true },
-    { text: '# On branch main - Your contact form is ready to be filled', processed: true },
+    { text: '# Contact form ready', processed: true },
     { text: 'npm run connect', processed: false }
   ]);
   
-  const sendEmail = (e) => {
-    e.preventDefault();
-    
-    // Start submission process
-    setFormStatus({
-      submitted: false,
-      submitting: true,
-      error: null
-    });
-    
-    // Add terminal command
-    setTerminalCommands([
-      ...terminalCommands,
-      { text: 'Sending message...', processed: true }
-    ]);
-    
-    // Add timestamp to the form data
-    const timestamp = new Date().toLocaleString();
-    const formData = new FormData(form.current);
-    formData.append('timestamp', timestamp);
-    
-    // Create template params object with all form data including timestamp
-    // Combine all information into the message field
-    const combinedMessage = `
-Name: ${formData.get('user_name')}
-Email: ${formData.get('user_email')}
-Subject: ${formData.get('subject') || 'N/A'}
-Timestamp: ${timestamp}
+  async function sendEmail(event) {
+    event.preventDefault();
+    if (sending.current) return;
 
-Message:
-${formData.get('message')}
-`;
-    
-    const templateParams = {
-      user_name: formData.get('user_name'),
-      user_email: formData.get('user_email'),
-      subject: formData.get('subject') || 'New Contact Form Submission',
-      message: combinedMessage,
-      timestamp: timestamp
-    };
+    const form = event.currentTarget;
+    const fields = new FormData(form);
+    for (const [name, prompt] of [['user_name', 'Enter your name.'], ['message', 'Enter a message.']]) {
+      if (String(fields.get(name) ?? '').trim()) continue;
+      const input = form.elements.namedItem(name);
+      input.setCustomValidity(prompt);
+      input.reportValidity();
+      return;
+    }
 
-    // Send email using EmailJS with template params
-    emailjs.send(
-      process.env.REACT_APP_EMAILJS_SERVICE_ID, 
-      process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
-      templateParams,
-      process.env.REACT_APP_EMAILJS_PUBLIC_KEY
-    )
-    .then((response) => {
-      console.log('SUCCESS!', response);
+    sending.current = true;
+    setFormStatus('sending');
+    setTerminalCommands((previous) => [...previous, { text: 'Sending message…', processed: true }]);
+
+    try {
+      await emailjs.send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        contactMessage(fields),
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY,
+      );
+      setFormStatus('sent');
       playSound('success');
-      
-      setFormStatus({
-        submitted: true,
-        submitting: false,
-        error: null
-      });
-      
-      // Add success message to terminal
-      setTerminalCommands(prev => [
-        ...prev,
-        { text: '✓ Message sent successfully!', processed: true }
-      ]);
-      
-      // Reset form
-      form.current.reset();
-    }, (error) => {
-      console.log('FAILED...', error);
+      setTerminalCommands((previous) => [...previous, { text: '✓ Message sent', processed: true }]);
+    } catch {
+      setFormStatus('failed');
       playSound('error');
-      
-      setFormStatus({
-        submitted: false,
-        submitting: false,
-        error: 'Failed to send message. Please try again.'
-      });
-      
-      // Add error message to terminal
-      setTerminalCommands(prev => [
-        ...prev,
-        { text: '✗ Message sending failed!', processed: true }
-      ]);
-    });
-  };
+      setTerminalCommands((previous) => [...previous, { text: '✗ Message could not be sent', processed: true }]);
+    } finally {
+      sending.current = false;
+    }
+  }
 
   return (
     <PageContainer>
       <HeroSection>
-        <HeroContent>
+        <HeroContent data-scroll-reveal="rise">
           <PageTitle>Get In Touch</PageTitle>
           <PageSubtitle>Have a question or want to work together? Feel free to contact me!</PageSubtitle>
         </HeroContent>
@@ -124,7 +74,7 @@ ${formData.get('message')}
       <ContactSection>
         <SectionContainer>
           <ContactGrid>
-            <ContactInfoContainer>
+            <ContactInfoContainer data-scroll-reveal="rise">
   <Terminal>
     <TerminalHeader>
       <TerminalButton className="red" />
@@ -212,74 +162,84 @@ ${formData.get('message')}
   </SocialLinks>
 </ContactInfoContainer>
             
-            <ContactFormContainer>
-              <FormHeading>Send Me a Message</FormHeading>
-              
-              {formStatus.error && (
-                <FormError role="alert">{formStatus.error}</FormError>
+            <ContactFormContainer data-scroll-reveal="depth">
+              <FormHeading id="contact-form-title">Send Me a Message</FormHeading>
+
+              {formStatus === 'failed' && (
+                <FormError role="alert">
+                  Your message couldn’t be sent. Try again or <a href={`mailto:${profile.email}`}>email me</a>.
+                </FormError>
               )}
-              
-              {formStatus.submitted ? (
-                <SuccessMessage role="status">
-                  <FiTerminal />
-                  <span>Thank you for your message! I'll get back to you soon.</span>
-                </SuccessMessage>
-              ) : (
-                <Form ref={form} onSubmit={sendEmail}>
+
+              <div role="status">
+                {formStatus === 'sent' && <SuccessMessage>
+                  <FiTerminal aria-hidden="true" />
+                  <span>Message sent. I’ll reply to the email address you provided.</span>
+                </SuccessMessage>}
+              </div>
+
+              {formStatus !== 'sent' && (
+                <Form method="post" aria-labelledby="contact-form-title" aria-busy={formStatus === 'sending'}
+                  onSubmit={sendEmail} onInput={(event) => event.target.setCustomValidity('')}>
                   <FormGroup>
-                    <FormLabel htmlFor="user_name">Name <RequiredStar>*</RequiredStar></FormLabel>
+                    <FormLabel htmlFor="user_name">Name <RequiredStar aria-hidden="true">*</RequiredStar></FormLabel>
                     <FormInput
                       type="text"
                       id="user_name"
                       name="user_name"
                       autoComplete="name"
-                      placeholder="Your Name"
+                      enterKeyHint="next"
                       required
                     />
                   </FormGroup>
                   
                   <FormGroup>
-                    <FormLabel htmlFor="user_email">Email <RequiredStar>*</RequiredStar></FormLabel>
+                    <FormLabel htmlFor="user_email">Email <RequiredStar aria-hidden="true">*</RequiredStar></FormLabel>
                     <FormInput
                       type="email"
                       id="user_email"
                       name="user_email"
                       autoComplete="email"
-                      placeholder="Your Email"
+                      autoCapitalize="none"
+                      spellCheck={false}
+                      enterKeyHint="next"
                       required
                     />
                   </FormGroup>
                   
                   <FormGroup>
-                    <FormLabel htmlFor="subject">Subject</FormLabel>
+                    <FormLabel htmlFor="subject">Subject <OptionalField>Optional</OptionalField></FormLabel>
                     <FormInput
                       type="text"
                       id="subject"
                       name="subject"
-                      placeholder="Subject"
+                      placeholder="Project collaboration"
+                      enterKeyHint="next"
                     />
                   </FormGroup>
                   
                   <FormGroup>
-                    <FormLabel htmlFor="message">Message <RequiredStar>*</RequiredStar></FormLabel>
+                    <FormLabel htmlFor="message">Message <RequiredStar aria-hidden="true">*</RequiredStar></FormLabel>
+                    <MessageHint id="contact-message-hint">Share what you’re working on and how I can help.</MessageHint>
                     <FormTextarea
                       id="message"
                       name="message"
-                      placeholder="Your Message"
+                      aria-describedby="contact-message-hint"
+                      rows={5}
                       required
                     />
                   </FormGroup>
                   
-                  <SubmitButton type="submit" disabled={formStatus.submitting}>
-                    {formStatus.submitting ? (
+                  <SubmitButton type="submit" disabled={formStatus === 'sending'}>
+                    {formStatus === 'sending' ? (
                       <>
                         <LoadingSpinner />
-                        Sending...
+                        Sending…
                       </>
                     ) : (
                       <>
-                        <FiSend />
-                        Send Message
+                        <FiSend aria-hidden="true" />
+                        Send message
                       </>
                     )}
                   </SubmitButton>
@@ -292,8 +252,6 @@ ${formData.get('message')}
     </PageContainer>
   );
 };
-
-// Keyframes
 
 // Styled Components
 const HeroSection = styled.section`
@@ -599,173 +557,126 @@ const SocialLink = styled.a`
 
 const ContactFormContainer = styled.div`
   background-color: ${props => props.theme.cardBackground};
-  border-radius: 20px;
-  padding: 3rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  
-  @media (max-width: 768px) {
-    padding: 2rem;
-    border-radius: 15px;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 1.5rem;
-    border-radius: 12px;
-  }
+  border: 1px solid ${props => props.theme.borderColor};
+  border-radius: 14px;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  align-self: start;
 `;
 
 const FormHeading = styled.h2`
-  font-size: 2rem;
-  margin-bottom: 2rem;
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+  line-height: 1.18;
+  letter-spacing: -0.045em;
+  margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
   color: ${props => props.theme.text};
-  position: relative;
-  
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 60px;
-    height: 4px;
-    background: linear-gradient(90deg, ${props => props.theme.primary}, ${props => props.theme.secondary});
-    border-radius: 2px;
-  }
-  
-  @media (max-width: 480px) {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
+
+  &::after { content: none; }
 `;
 
 const Form = styled.form`
-  width: 100%;
+  display: grid;
+  gap: 1rem;
 `;
 
 const FormGroup = styled.div`
-  margin-bottom: 1.5rem;
+  display: grid;
+  gap: 6px;
+  min-width: 0;
 `;
 
 const FormLabel = styled.label`
-  display: block;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
   color: ${props => props.theme.text};
-  font-weight: 500;
+  font-weight: 600;
 `;
 
 const RequiredStar = styled.span`
   color: ${props => props.theme.error};
-  margin-left: 4px;
+`;
+
+const OptionalField = styled.span`
+  margin-inline-start: 4px;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: ${props => props.theme.textSecondary};
+`;
+
+const MessageHint = styled.p`
+  margin: 0;
+  color: ${props => props.theme.textSecondary};
+  font-size: 0.82rem;
+`;
+
+const formControl = css`
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid ${props => props.theme.inputBorder};
+  background-color: ${props => props.theme.inputBackground};
+  color: ${props => props.theme.text};
+  font: inherit;
+  font-size: max(1rem, 1em);
+  line-height: 1.5;
+
+  &:focus-visible {
+    border-color: ${props => props.theme.primary};
+    outline: 2px solid ${props => props.theme.primary};
+    outline-offset: 2px;
+  }
+
+  &:user-invalid { border-color: ${props => props.theme.error}; }
+  &::placeholder { color: ${props => props.theme.textSecondary}; }
 `;
 
 const FormInput = styled.input`
-  width: 100%;
-  padding: 1rem;
-  border-radius: 10px;
-  border: 1px solid ${props => props.theme.borderColor};
-  background-color: ${props => props.theme.inputBackground};
-  color: ${props => props.theme.text};
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  font-family: 'Fira Code', monospace;
-  box-sizing: border-box;
-  
-  &:focus {
-    outline: none;
-    border-color: ${props => props.theme.primary};
-    box-shadow: 0 0 0 2px ${props => props.theme.primary}30;
-  }
-  
-  &::placeholder {
-    color: ${props => props.theme.textSecondary};
-    opacity: 0.7;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 0.8rem;
-    border-radius: 8px;
-  }
+  ${formControl}
 `;
 
 const FormTextarea = styled.textarea`
-  width: 100%;
-  padding: 1rem;
-  border-radius: 10px;
-  border: 1px solid ${props => props.theme.borderColor};
-  background-color: ${props => props.theme.inputBackground};
-  color: ${props => props.theme.text};
-  font-size: 1rem;
-  min-height: 150px;
+  ${formControl}
   resize: vertical;
-  transition: all 0.3s ease;
-  font-family: 'Fira Code', monospace;
-  box-sizing: border-box;
-  
-  &:focus {
-    outline: none;
-    border-color: ${props => props.theme.primary};
-    box-shadow: 0 0 0 2px ${props => props.theme.primary}30;
-  }
-  
-  &::placeholder {
-    color: ${props => props.theme.textSecondary};
-    opacity: 0.7;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 0.8rem;
-    min-height: 120px;
-    border-radius: 8px;
-  }
 `;
 
 const SubmitButton = styled.button`
-  width: 100%;
-  padding: 1rem;
-  border-radius: 10px;
-  border: none;
+  justify-self: start;
+  min-height: 48px;
+  padding: 10px 16px;
+  border-radius: 8px;
   background: ${props => props.theme.buttonBackground};
   color: ${props => props.theme.buttonText};
-  font-size: 1rem;
+  font: inherit;
   font-weight: 600;
   display: flex;
+  gap: 8px;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  
-  svg {
-    margin-right: 8px;
-  }
-  
-  &:hover:not(:disabled) {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  &:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
+
+  &:hover:not(:disabled) { filter: brightness(1.08); }
+  &:disabled { opacity: 0.7; cursor: wait; }
+  @media (max-width: 600px) { width: 100%; }
 `;
 
+const spin = keyframes`to { transform: rotate(1turn); }`;
+
 const LoadingSpinner = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border: 2px solid currentColor;
   border-radius: 50%;
   border-top-color: transparent;
-  animation: rotate 1s linear infinite;
-  margin-right: 10px;
+  @media (prefers-reduced-motion: no-preference) { animation: ${spin} 0.8s linear infinite; }
 `;
 
 const FormError = styled.div`
-  padding: 1rem;
-  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
   background-color: ${props => props.theme.error}20;
   color: ${props => props.theme.error};
   border-radius: 10px;
   font-size: 0.9rem;
+
+  a { color: inherit; text-decoration: underline; }
 `;
 
 const SuccessMessage = styled.div`

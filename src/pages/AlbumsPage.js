@@ -9,7 +9,7 @@ const AlbumsPage = () => {
   return (
     <PageContainer>
       <HeroSection>
-        <HeroContent>
+        <HeroContent data-scroll-reveal="rise">
           <PageTitle>Photo Albums</PageTitle>
           <PageSubtitle>A collection of memories with friends, hackathons, and more</PageSubtitle>
         </HeroContent>

@@ -64,6 +64,15 @@
   align-self: center;
   display: grid;
   justify-items: center;
+  isolation: isolate;
+}
+
+.portrait-hero-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background: radial-gradient(ellipse at 54% 46%, var(--portfolio-portrait-glow) 0%, transparent 69%);
 }
 

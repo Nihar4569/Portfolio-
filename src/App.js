@@ -1,10 +1,11 @@
-import React, { lazy, useContext } from 'react';
+import React, { lazy, useContext, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, ThemeContext } from './context/ThemeContext';
 import { TerminalProvider } from './context/TerminalContext';
 import { SoundProvider, useSound } from './context/SoundContext';
 import styled, { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { MotionConfig } from 'framer-motion';
+import { observeScrollReveals } from './utils/scrollReveals';
 
 // Common Components
 import Navbar from './components/common/Navbar';
@@ -23,6 +24,7 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 // Styles
 import './styles/globals.css';
 import './styles/portfolio.css';
+import './styles/scroll-motion.css';
 
 function App() {
   return (
@@ -39,6 +41,9 @@ function App() {
 const ThemedApp = () => {
   const { theme } = useContext(ThemeContext);
   const { playSound, armSound } = useSound();
+  const motionRoot = useRef(null);
+
+  useEffect(() => observeScrollReveals(motionRoot.current), []);
 
   function soundOnClick(event) {
     const control = event.target.closest?.('button, a[href], summary, [role="button"], [data-sound]');
@@ -56,7 +61,7 @@ const ThemedApp = () => {
   return (
     <StyledThemeProvider theme={theme}>
       <MotionConfig reducedMotion="user">
-        <AppContainer onClickCapture={soundOnClick} onChangeCapture={(event) => {
+        <AppContainer ref={motionRoot} onClickCapture={soundOnClick} onChangeCapture={(event) => {
           if (event.target instanceof HTMLSelectElement) playSound('click');
         }}>
           <svg className="portfolio-light-filters" width="0" height="0" aria-hidden="true" focusable="false">

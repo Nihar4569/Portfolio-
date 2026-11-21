@@ -27,7 +27,7 @@ const NotFoundPage = () => {
       <ContentContainer>
         <ErrorCode>404</ErrorCode>
         
-        <TerminalWindow>
+        <TerminalWindow data-scroll-reveal="depth">
           <TerminalHeader>
             <TerminalButton className="red" />
             <TerminalButton className="yellow" />

@@ -11,7 +11,7 @@ const Footer = () => {
     return (
         <FooterContainer>
             <FooterContent>
-                <FooterSection>
+                <FooterSection data-scroll-reveal="rise">
                     <FooterLogo>
                         <FiCode />
                         <span>Nihar<FooterAccent>.</FooterAccent></span>
@@ -21,7 +21,7 @@ const Footer = () => {
                     </FooterTagline>
                 </FooterSection>
 
-                <FooterSection>
+                <FooterSection data-scroll-reveal="rise">
                     <FooterHeading>Quick Links</FooterHeading>
                     <FooterLinks>
                         <FooterLink>
@@ -39,7 +39,7 @@ const Footer = () => {
                     </FooterLinks>
                 </FooterSection>
 
-                <FooterSection>
+                <FooterSection data-scroll-reveal="rise">
                     <FooterHeading>Connect</FooterHeading>
                     <SocialLinks>
                         <SocialLink href="https://github.com/Nihar4569" target="_blank" rel="noopener noreferrer">

@@ -196,4 +196,14 @@ export function projectTechnologies(items) {
   return [...new Set(items.flatMap(({ techStack }) => techStack.map(technologyLabel)))].sort();
 }
 
+export function filterProjects(items, query, technology) {
+  const words = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  return items.filter((project) => {
+    if (technology && !project.techStack.some((tech) => technologyLabel(tech) === technology)) return false;
+    const searchable = [project.title, project.shortTitle, project.category, project.description,
+      ...project.techStack, ...project.features].join(' ').toLowerCase();
+    return words.every((word) => searchable.includes(word));
+  });
+}
+
 export default projects;

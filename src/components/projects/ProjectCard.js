@@ -4,7 +4,7 @@ import './project-card.css';
 
 export default function ProjectCard({ project, onOpen }) {
   return (
-    <article className="portfolio-project">
+    <article className="portfolio-project" data-scroll-reveal="depth">
       <div className="portfolio-project-art" data-art={project.image ? 'screenshot' : 'crew'}>
         {project.image ? (
           <img src={project.image} alt="" loading="lazy" decoding="async" />
@@ -22,7 +22,8 @@ export default function ProjectCard({ project, onOpen }) {
           {project.techStack.map((item) => <li key={item}>{item}</li>)}
         </ul>
         <div className="portfolio-project-actions">
-          <button type="button" onClick={onOpen} aria-label={`View details for ${project.title}`}>
+          <button className="portfolio-project-open" type="button" onClick={onOpen}
+            aria-haspopup="dialog" aria-label={`View details for ${project.title}`}>
             View details <FiArrowUpRight aria-hidden="true" />
           </button>
           {project.links.github && <a href={project.links.github} target="_blank" rel="noopener noreferrer"

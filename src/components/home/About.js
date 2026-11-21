@@ -13,14 +13,14 @@ export default function About() {
   return (
     <section className="portfolio-about" id="about" aria-labelledby="about-title">
       <div className="portfolio-about-inner">
-        <h2 id="about-title">About Me</h2>
+        <h2 id="about-title" data-scroll-reveal="rise">About Me</h2>
         <div className="portfolio-about-grid">
-          <figure className="portfolio-about-portrait">
+          <figure className="portfolio-about-portrait" data-scroll-reveal="depth">
             <img src="/images/portrait/nihar-portrait-480.webp" alt={profile.name}
               width="480" height="640" loading="lazy" decoding="async" />
             <figcaption><FiAward aria-hidden="true" /> Smart India Hackathon 2022 winner</figcaption>
           </figure>
-          <div className="portfolio-about-copy">
+          <div className="portfolio-about-copy" data-scroll-reveal="rise">
             <p>I’m a Software Engineer at Cisco in Bengaluru. I build backend services and LangGraph workflows that route engineering requests, coordinate specialist agents, and let engineers review changes to system state.</p>
             <p>I also work on distributed embedding pipelines. Parallel processing, caching, and thread-safe state management helped bring model initialization from 22 minutes to about 32 seconds.</p>
             <dl className="portfolio-about-specialties">

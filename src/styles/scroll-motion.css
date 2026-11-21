@@ -1,0 +1,80 @@
+@media (prefers-reduced-motion: no-preference) {
+  [data-scroll-reveal] {
+    --scroll-enter: scroll-rise;
+    --scroll-lift: 12px;
+  }
+
+  [data-scroll-reveal="depth"] {
+    --scroll-enter: scroll-depth;
+    --scroll-lift: 24px;
+    --scroll-angle: 5deg;
+    transform-origin: center bottom;
+  }
+
+  @media (max-width: 600px) {
+    [data-scroll-reveal] { --scroll-lift: 8px; }
+    [data-scroll-reveal="depth"] { --scroll-lift: 16px; --scroll-angle: 3deg; }
+  }
+
+  @keyframes scroll-rise {
+    from { opacity: 0.88; translate: 0 var(--scroll-lift); }
+    to { opacity: 1; translate: none; }
+  }
+
+  @keyframes scroll-depth {
+    from {
+      opacity: 0.85;
+      transform: perspective(1000px) translate3d(0, var(--scroll-lift), -14px) rotateX(var(--scroll-angle));
+    }
+    to { opacity: 1; transform: none; }
+  }
+
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    [data-scroll-reveal] {
+      animation: var(--scroll-enter) auto linear backwards;
+      animation-timeline: view(block);
+      animation-range: entry 0% entry 85%;
+    }
+
+    .portfolio-navbar::after {
+      content: '';
+      position: absolute;
+      inset: auto 0 -1px;
+      height: 2px;
+      background: var(--portfolio-accent);
+      scale: 0 1;
+      transform-origin: left center;
+      pointer-events: none;
+      animation: scroll-line auto linear both;
+      animation-timeline: scroll(root block);
+    }
+
+    .portrait-hero {
+      view-timeline-name: --portrait-scroll;
+    }
+
+    .portrait-hero-stage::before {
+      animation: portrait-light auto linear both;
+      animation-timeline: --portrait-scroll;
+      animation-range: exit 0% exit 100%;
+    }
+
+    @keyframes scroll-line {
+      from { scale: 0 1; }
+      to { scale: 1 1; }
+    }
+
+    @keyframes portrait-light {
+      from { translate: 0 0; scale: 1; opacity: 1; }
+      to { translate: 0 -28px; scale: 1.09; opacity: 0.55; }
+    }
+  }
+
+  @supports not ((animation-timeline: view()) and (animation-range: entry)) {
+    [data-scroll-reveal][data-scroll-revealed] {
+      animation: var(--scroll-enter) 440ms cubic-bezier(0.22, 0.75, 0.2, 1) backwards;
+    }
+  }
+
+  [data-scroll-reveal]:focus-within { animation: none; }
+}

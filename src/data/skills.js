@@ -1,126 +1,32 @@
-const skills = {
-    programming: [
-      {
-        name: "Java",
-        icon: "java",
-        level: 90
-      },
-      {
-        name: "Python",
-        icon: "python",
-        level: 85
-      },
-      {
-        name: "JavaScript",
-        icon: "javascript",
-        level: 75
-      },
-      {
-        name: "SQL",
-        icon: "database",
-        level: 80
-      }
-    ],
-    frameworks: [
-      {
-        name: "Spring Boot",
-        icon: "spring",
-        level: 90
-      },
-      {
-        name: "FastAPI",
-        icon: "fastapi",
-        level: 85
-      },
-      {
-        name: "Flask",
-        icon: "flask",
-        level: 80
-      },
-      {
-        name: "React.js",
-        icon: "react",
-        level: 75
-      }
-    ],
-    databases: [
-      {
-        name: "MongoDB",
-        icon: "mongodb",
-        level: 85
-      },
-      {
-        name: "SQL",
-        icon: "mysql",
-        level: 85
-      },
-      {
-        name: "Milvus",
-        icon: "database",
-        level: 75
-      },
-      {
-        name: "Redis",
-        icon: "redis",
-        level: 70
-      }
-    ],
-    aiLlm: [
-      {
-        name: "LangGraph",
-        icon: "ai",
-        level: 85
-      },
-      {
-        name: "LangChain",
-        icon: "ai",
-        level: 85
-      },
-      {
-        name: "ReAct Pattern",
-        icon: "ai",
-        level: 80
-      },
-      {
-        name: "StateGraph",
-        icon: "ai",
-        level: 80
-      }
-    ],
-    tools: [
-      {
-        name: "Git",
-        icon: "git",
-        level: 80
-      },
-      {
-        name: "REST APIs",
-        icon: "api",
-        level: 90
-      },
-      {
-        name: "VS Code",
-        icon: "vscode",
-        level: 90
-      }
-    ],
-    other: [
-      {
-        name: "Multi-threading",
-        icon: "thread",
-        level: 85
-      },
-      {
-        name: "System Design",
-        icon: "design",
-        level: 75
-      },
-      {
-        name: "Firebase",
-        icon: "firebase",
-        level: 70
-      }
-    ]
-  };
-  
-  export default skills;
+const skills = [
+  {
+    id: 'ai',
+    title: 'AI systems',
+    summary: 'Agent workflows with engineer review',
+    projectId: 9,
+    technologies: ['LangGraph', 'LangChain', 'ReAct', 'StateGraph'],
+  },
+  {
+    id: 'backend',
+    title: 'Backend',
+    summary: 'Case management with role-based access',
+    projectId: 1,
+    technologies: ['Spring Boot', 'FastAPI', 'Flask', 'REST APIs', 'System Design', 'Multi-threading'],
+  },
+  {
+    id: 'languages',
+    title: 'Languages',
+    summary: 'Java services with a React interface',
+    projectId: 2,
+    technologies: ['Java', 'Python', 'JavaScript', 'SQL', 'React'],
+  },
+  {
+    id: 'data',
+    title: 'Data & tools',
+    summary: 'Full-text search, filters, and autocomplete',
+    projectId: 10,
+    technologies: ['MongoDB', 'Milvus', 'Redis', 'Elasticsearch', 'Firebase', 'Docker', 'Git', 'VS Code'],
+  },
+];
+
+export default skills;

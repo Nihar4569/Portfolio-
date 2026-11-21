@@ -9,7 +9,7 @@ export default function CrewNote({ guide, children }) {
   const { name, question } = crew[guide];
 
   return (
-    <aside className="crew-note" aria-label={`A note from ${name}`}>
+    <aside className="crew-note" data-scroll-reveal="rise" aria-label={`A note from ${name}`}>
       <img src={`/images/crew/${guide}.webp`} width="62" height="62" alt="" loading="lazy" />
       <p>{children}</p>
       <button type="button" aria-haspopup="dialog" aria-controls="crew-chat" data-sound="terminal" onClick={() => openTerminal(guide, question)}>

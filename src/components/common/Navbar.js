@@ -60,7 +60,7 @@ const Navbar = () => {
   }, [isOpen]);
 
   return (
-    <NavbarContainer $scrolled={scrolled}>
+    <NavbarContainer className="portfolio-navbar" $scrolled={scrolled}>
       <NavContent>
         <LogoContainer>
           <Link to="/">

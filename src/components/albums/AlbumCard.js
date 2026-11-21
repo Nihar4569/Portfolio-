@@ -37,7 +37,7 @@ const AlbumCard = ({ album }) => {
   
   return (
     <>
-      <Card onClick={handleClick} data-sound="click">
+      <Card onClick={handleClick} data-sound="click" data-scroll-reveal="depth">
         <CardImageContainer>
           {album.coverImage
             ? <CardImage src={album.coverImage} alt="" loading="lazy" decoding="async" />
@@ -96,27 +96,16 @@ const Card = styled.article`
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
-  
-  &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    transition: translate 230ms ease-out;
+    &:hover { translate: 0 -4px; }
   }
   
   @media (max-width: 768px) {
     border-radius: 12px;
-    
-    &:hover {
-      transform: translateY(-5px);
-    }
-  }
-  
-  @media (max-width: 480px) {
-    &:hover {
-      transform: none;
-    }
   }
 `;
 
