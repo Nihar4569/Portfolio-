@@ -23,6 +23,7 @@
 .crew-launcher img,
 .crew-chat-header img,
 .crew-note img,
+.tech-stack-guide img,
 .portfolio-project-art[data-art="crew"] img,
 .portfolio-workflow-step img {
   filter: url("#portfolio-blue-light");
