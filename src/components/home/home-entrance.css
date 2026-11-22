@@ -1,0 +1,214 @@
+.home-entrance { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-home-entrance] {
+    --entrance-ease: cubic-bezier(0.2, 0.72, 0.25, 1);
+  }
+
+  .home-entrance {
+    position: fixed;
+    inset: 0;
+    z-index: 1400;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: var(--portfolio-bg);
+    color: var(--portfolio-text);
+    pointer-events: none;
+    animation: entrance-handoff var(--home-entrance-duration) linear both;
+  }
+
+  .home-entrance-space {
+    position: absolute;
+    inset: 0;
+    perspective: 850px;
+    perspective-origin: 50% 44%;
+    background: radial-gradient(ellipse at 50% 43%,
+      color-mix(in srgb, var(--portfolio-accent) 17%, transparent), transparent 65%);
+  }
+
+  .home-entrance-floor {
+    position: absolute;
+    inset: 56% -25% -28%;
+    --grid-line: color-mix(in srgb, var(--portfolio-accent) 23%, transparent);
+    background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 54px 54px;
+    mask-image: radial-gradient(ellipse at 50% 15%, #000, transparent 70%);
+    transform-origin: center top;
+    animation: entrance-floor var(--home-entrance-duration) ease-out both;
+  }
+
+  .home-entrance-rig {
+    position: absolute;
+    inset: 44% auto auto 50%;
+    inline-size: min(88vw, 57rem);
+    aspect-ratio: 2.1;
+    translate: -50% -50%;
+    transform-style: preserve-3d;
+    animation: entrance-camera var(--home-entrance-duration) var(--entrance-ease) both;
+  }
+
+  .home-entrance-frame {
+    position: absolute;
+    inset: 0;
+    border: 1px solid color-mix(in srgb, var(--portfolio-accent) 43%, transparent);
+    border-radius: 14px;
+    transform: translateZ(var(--frame-depth));
+    box-shadow: 0 0 32px color-mix(in srgb, var(--portfolio-accent) 12%, transparent),
+      inset 0 0 22px color-mix(in srgb, var(--portfolio-accent) 9%, transparent);
+  }
+
+  .home-entrance-frame::before,
+  .home-entrance-frame::after {
+    content: '';
+    position: absolute;
+    inline-size: 20%;
+    block-size: 24%;
+    border: 2px solid var(--portfolio-accent);
+  }
+
+  .home-entrance-frame::before {
+    inset: -1px auto auto -1px;
+    border-width: 2px 0 0 2px;
+    border-top-left-radius: 14px;
+  }
+
+  .home-entrance-frame::after {
+    inset: auto -1px -1px auto;
+    border-width: 0 2px 2px 0;
+    border-bottom-right-radius: 14px;
+  }
+
+  .home-entrance-beam {
+    position: absolute;
+    inset: 12% 14%;
+    background: radial-gradient(ellipse at center,
+      color-mix(in srgb, var(--portfolio-accent) 21%, transparent), transparent 65%);
+    animation: entrance-beam 1650ms ease-in-out both;
+  }
+
+  .home-entrance-identity {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: clamp(8px, 2svh, 18px);
+    max-inline-size: min(92vw, 80rem);
+    margin-block-end: 10svh;
+    padding-inline: 10px;
+    text-align: center;
+    animation: entrance-identity var(--home-entrance-duration) var(--entrance-ease) both;
+  }
+
+  .home-entrance-identity svg { inline-size: clamp(24px, 4vw, 49px); block-size: auto; color: var(--portfolio-accent); }
+  .home-entrance-name {
+    margin: 0;
+    font-size: clamp(2.35rem, 6.4vw, 6rem);
+    font-weight: 600;
+    line-height: 0.98;
+    letter-spacing: -0.075em;
+    text-wrap: balance;
+    text-shadow: 0 0 34px color-mix(in srgb, var(--portfolio-accent) 19%, transparent);
+  }
+  .home-entrance-role {
+    margin: 0;
+    color: var(--portfolio-accent);
+    font: 500 clamp(0.72rem, 1.36vw, 1.07rem) / 1.5 'Fira Code', monospace;
+    letter-spacing: 0.09em;
+  }
+
+  [data-home-entrance] :is(.portfolio-navbar, .portfolio-sound-switch, .crew-launcher,
+    .portrait-hero-role, .portrait-hero h1, .hero-role-loop, .portrait-hero-bio,
+    .portrait-hero-photo, .portrait-hero-crew button, .portrait-hero-links,
+    .portrait-hero-ask, .portrait-hero-socials, .portrait-hero-scroll) {
+    animation: entrance-assemble var(--arrival-time, 760ms) var(--entrance-ease) var(--arrival-delay) both;
+  }
+
+  [data-home-entrance] .portrait-hero-photo {
+    --arrival-delay: 860ms;
+    --arrival-time: 1600ms;
+    --arrival-x: clamp(-295px, -19vw, -100px);
+    --arrival-y: 40px;
+    --arrival-depth: -520px;
+    --arrival-turn: 29deg;
+  }
+  [data-home-entrance] .portrait-hero h1 {
+    --arrival-delay: 1240ms;
+    --arrival-time: 1190ms;
+    --arrival-x: clamp(42px, 15vw, 220px);
+    --arrival-y: 52px;
+    --arrival-depth: -390px;
+    --arrival-turn: -26deg;
+  }
+  [data-home-entrance] .portrait-hero-role { --arrival-delay: 1480ms; --arrival-y: -16px; }
+  [data-home-entrance] .hero-role-loop { --arrival-delay: 1660ms; }
+  [data-home-entrance] .portrait-hero-bio { --arrival-delay: 1750ms; }
+  [data-home-entrance] .portrait-hero-links { --arrival-delay: 1820ms; --arrival-x: -38px; }
+  [data-home-entrance] .portrait-hero-ask { --arrival-delay: 1940ms; --arrival-y: 35px; }
+  [data-home-entrance] .portrait-hero-socials { --arrival-delay: 2110ms; }
+  [data-home-entrance] .portfolio-navbar { --arrival-delay: 2110ms; --arrival-y: -26px; }
+  [data-home-entrance] :is(.crew-launcher, .portfolio-sound-switch) { --arrival-delay: 2240ms; }
+  [data-home-entrance] .portrait-hero-scroll { --arrival-delay: 2240ms; }
+
+  [data-home-entrance] .portrait-hero-crew button {
+    --arrival-delay: calc(1560ms + var(--crew-order) * 200ms);
+    --arrival-time: 740ms;
+    --arrival-x: calc((var(--crew-order) - 1.5) * 42px);
+    --arrival-y: 46px;
+    --arrival-depth: -260px;
+    --arrival-turn: calc((var(--crew-order) - 1.5) * 16deg);
+  }
+
+  @keyframes entrance-handoff {
+    0%, 29% { opacity: 1; }
+    47% { opacity: 0.48; }
+    72%, 100% { opacity: 0; }
+  }
+
+  @keyframes entrance-camera {
+    from { transform: translateZ(-520px) rotateX(27deg) rotateY(-37deg) rotateZ(-9deg); }
+    26% { transform: translateZ(-90px) rotateX(10deg) rotateY(-15deg) rotateZ(-4deg); }
+    50% { transform: translateZ(115px) rotateX(0deg) rotateY(13deg) rotateZ(1deg); }
+    to { transform: translate3d(7vw, -24px, 365px) rotateX(-14deg) rotateY(25deg) rotateZ(6deg); }
+  }
+
+  @keyframes entrance-floor {
+    from { opacity: 0; transform: rotateX(63deg) translateY(36px); }
+    22%, 48% { opacity: 0.76; }
+    to { opacity: 0; transform: rotateX(67deg) translateY(-75px) scale(1.35); }
+  }
+
+  @keyframes entrance-beam {
+    from { opacity: 0; transform: translateX(-42%) scaleX(0.65); }
+    54% { opacity: 1; }
+    to { opacity: 0; transform: translateX(39%) scaleX(1.15); }
+  }
+
+  @keyframes entrance-identity {
+    from { opacity: 0; transform: perspective(770px) translate3d(0, 38px, -235px) rotateX(27deg); }
+    15%, 31% { opacity: 1; transform: none; }
+    54%, 100% {
+      opacity: 0;
+      transform: perspective(770px) translate3d(var(--identity-exit-x, -16vw), -11svh, -205px) rotateY(-13deg);
+    }
+  }
+
+  @keyframes entrance-assemble {
+    from {
+      opacity: 0;
+      transform: perspective(970px) translate3d(var(--arrival-x, 0px), var(--arrival-y, 18px), var(--arrival-depth, -180px))
+        rotateY(var(--arrival-turn, 0deg)) rotateX(12deg);
+    }
+    43% { opacity: 1; }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (max-width: 768px) {
+    .home-entrance { --identity-exit-x: 0px; }
+    .home-entrance-rig { aspect-ratio: 1.25; }
+    .home-entrance-name { max-inline-size: 13ch; }
+    [data-home-entrance] .portrait-hero h1 { --arrival-x: -15px; --arrival-turn: -14deg; }
+    [data-home-entrance] .portrait-hero-photo { --arrival-x: 34px; --arrival-turn: 17deg; }
+    [data-home-entrance] .portrait-hero-crew button { --arrival-x: calc((var(--crew-order) - 1.5) * 19px); }
+  }
+}

@@ -275,14 +275,6 @@
 
   .portrait-hero { --intro-ease: cubic-bezier(0.22, 0.74, 0.28, 1); }
 
-  .portrait-hero[data-hero-intro] .portrait-hero-intro {
-    animation: portrait-settle 620ms var(--intro-ease) both;
-  }
-
-  .portrait-hero[data-hero-intro] .portrait-hero-photo {
-    animation: portrait-settle 940ms var(--intro-ease) both;
-  }
-
   .portrait-hero[data-hero-intro] .portrait-hero-stage::after {
     content: '';
     position: absolute;
@@ -295,12 +287,12 @@
       color-mix(in srgb, var(--hero-accent) 12%, transparent) 49%,
       transparent 100%
     );
-    animation: portrait-light-sweep 1320ms var(--intro-ease) 60ms both;
+    animation: portrait-light-sweep 1520ms var(--intro-ease) 1030ms both;
   }
 
   .portrait-hero-ask[data-hero-cue] {
     position: relative;
-    --terminal-cue-start: 690ms;
+    --terminal-cue-start: 1940ms;
     --terminal-typing-start: calc(var(--terminal-cue-start) + 180ms);
   }
   .portrait-hero-ask[data-hero-cue="in-view"] { --terminal-cue-start: 0ms; }
@@ -370,10 +362,6 @@
     animation-play-state: running;
   }
 
-  @keyframes portrait-settle {
-    from { opacity: 0.91; translate: 0 7px; }
-    to { opacity: 1; translate: 0 0; }
-  }
   @keyframes portrait-light-sweep {
     from { opacity: 0; transform: translate(-11%, -13%) scale(0.94); }
     38% { opacity: 1; }

@@ -18,11 +18,11 @@ import projects from '../data/projects';
 
 const featuredProjects = projects.filter((project) => project.featured);
 
-const HomePage = () => {
+const HomePage = ({ opening }) => {
   return (
     <>
     <PageContainer>
-      <Hero />
+      <Hero opening={opening} />
       
       <About />
       

@@ -63,24 +63,20 @@ function useHeroCue(target, enabled, openingLength, inViewLength) {
   return enabled ? cue : undefined;
 }
 
-export default function Hero() {
+export default function Hero({ opening }) {
   const { openTerminal, openShell, isTerminalOpen } = useTerminal();
   const changingPage = useContext(PageTransitionContext);
-  const [playIntro, setPlayIntro] = useState(() =>
-    !changingPage && !window.location.hash && window.matchMedia(fullMotion).matches
-  );
-  const [sweepPortrait, setSweepPortrait] = useState(playIntro);
+  const [playIntro, setPlayIntro] = useState(opening);
   const hero = useRef(null);
   const portrait = useRef(null);
   const crewRow = useRef(null);
   const terminalButton = useRef(null);
   const showingIntro = playIntro && !changingPage;
-  const terminalCue = useHeroCue(terminalButton, showingIntro, 1800, 1110);
+  const terminalCue = useHeroCue(terminalButton, showingIntro, 3000, 1110);
   const crewCue = useHeroCue(crewRow, showingIntro, 2900, 1330);
-  const entrancePlaying = showingIntro && (sweepPortrait || terminalCue || crewCue);
-  const motionReady = !changingPage && !isTerminalOpen;
+  const motionReady = !opening && !changingPage && !isTerminalOpen;
   const crewVisible = useMotionVisibility(crewRow, 0.9);
-  const settledMotion = motionReady && !entrancePlaying;
+  const settledMotion = motionReady && !terminalCue && !crewCue;
   usePortraitBacklight(hero, portrait, motionReady);
 
   useEffect(() => {
@@ -92,16 +88,12 @@ export default function Hero() {
 
     const motion = window.matchMedia(fullMotion);
     const finish = () => setPlayIntro(false);
-    const timeout = window.setTimeout(() => setSweepPortrait(false), 1450);
     motion.addEventListener('change', finish);
-    return () => {
-      window.clearTimeout(timeout);
-      motion.removeEventListener('change', finish);
-    };
+    return () => motion.removeEventListener('change', finish);
   }, [playIntro, changingPage]);
 
   function movePortrait(event) {
-    if (event.pointerType !== 'mouse' || !window.matchMedia(fullMotion).matches) return;
+    if (opening || event.pointerType !== 'mouse' || !window.matchMedia(fullMotion).matches) return;
     const stage = event.currentTarget;
     const box = stage.getBoundingClientRect();
     const x = (event.clientX - box.left) / box.width - 0.5;
@@ -120,7 +112,7 @@ export default function Hero() {
 
   return (
     <section className="portrait-hero" ref={hero} aria-labelledby="portfolio-name"
-      data-hero-intro={showingIntro && sweepPortrait ? '' : undefined}>
+      data-hero-intro={opening ? '' : undefined}>
       <div className="portrait-hero-inner">
         <div className="portrait-hero-intro">
           <p className="portrait-hero-role">{profile.title} <span>at {profile.company}</span></p>

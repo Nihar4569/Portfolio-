@@ -13,6 +13,7 @@ import Footer from './components/common/Footer';
 import PageTransition from './components/common/PageTransition';
 import SmartTerminal from './components/common/SmartTerminal';
 import SoundToggle from './components/common/SoundToggle';
+import HomeEntrance, { useHomeEntrance } from './components/home/HomeEntrance';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -42,6 +43,7 @@ const ThemedApp = () => {
   const { theme } = useContext(ThemeContext);
   const { playSound, armSound } = useSound();
   const motionRoot = useRef(null);
+  const [opening, finishOpening] = useHomeEntrance();
 
   useEffect(() => observeScrollReveals(motionRoot.current), []);
 
@@ -61,7 +63,8 @@ const ThemedApp = () => {
   return (
     <StyledThemeProvider theme={theme}>
       <MotionConfig reducedMotion="user">
-        <AppContainer ref={motionRoot} onClickCapture={soundOnClick} onChangeCapture={(event) => {
+        <AppContainer ref={motionRoot} data-home-entrance={opening ? '' : undefined}
+          onClickCapture={soundOnClick} onChangeCapture={(event) => {
           if (event.target instanceof HTMLSelectElement) playSound('click');
         }}>
           <svg className="portfolio-light-filters" width="0" height="0" aria-hidden="true" focusable="false">
@@ -90,7 +93,7 @@ const ThemedApp = () => {
               <PageTransition>
                 {(location) => (
                   <Routes location={location}>
-                    <Route path="/" element={<HomePage />} />
+                    <Route path="/" element={<HomePage opening={opening} />} />
                     <Route path="/projects" element={<ProjectsPage />} />
                     <Route path="/albums" element={<AlbumsPage />} />
                     <Route path="/contact" element={<ContactPage />} />
@@ -103,6 +106,7 @@ const ThemedApp = () => {
             <SmartTerminal />
             <SoundToggle />
           </Router>
+          {opening && <HomeEntrance onFinish={finishOpening} />}
         </AppContainer>
       </MotionConfig>
     </StyledThemeProvider>

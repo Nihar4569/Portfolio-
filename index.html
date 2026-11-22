@@ -6,6 +6,18 @@
     <meta name="theme-color" content="#060a0e" />
     <meta name="color-scheme" content="dark light" />
     <script>
+      // Apply a refresh before the router mounts and the browser restores scroll.
+      if (performance.getEntriesByType?.('navigation')[0]?.type === 'reload') {
+        const previousRestoration = history.scrollRestoration;
+        history.scrollRestoration = 'manual';
+        if (location.pathname !== '/' || location.search || location.hash) {
+          history.replaceState(history.state, '', '/');
+        }
+        window.addEventListener('pageshow', () => {
+          requestAnimationFrame(() => { history.scrollRestoration = previousRestoration; });
+        }, { once: true });
+      }
+
       let scheme = 'dark';
       try {
         if (localStorage.getItem('theme') === 'light') scheme = 'light';
