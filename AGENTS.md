@@ -10,6 +10,6 @@
 - Keep opt-in interaction sounds and the functional portfolio terminal. Show project, technology, and hackathon counts on Projects.
 - Use the selected Four-group overview for Tech Stack. Display AI systems, Backend, Languages, and Data & tools together. Keep technology lists free of project names, descriptions, and links.
 - Show every featured project on Home and the full catalog on Projects. The whole project card opens its details, with separate source and demo links.
-- Keep project facts in `src/data/projects.js` and profile facts in `src/data/profile.js`. Ground each crew member's Gemini answers in those sources. Use a Gemini Free Tier project, keep its key server-side, and fall back to curated answers on errors or quota limits.
+- Keep project facts in `src/data/projects.js` and profile facts in `src/data/profile.js`. Ground crew answers in those sources. Use a Gemini Free Tier project with a server-only key, separate cooldowns for each Flash-Lite model, and curated answers when the models cannot respond.
 - Send conversational questions, including greetings, to Gemini with the selected guide and a short turn history. Keep source links tied to published portfolio data. Keep all routes, navigation, and overlays usable at phone, tablet, and desktop sizes, including short landscape viewports.
 - The Vercel preset is Vite with output in `dist/client`. Build and preview locally before handing off changes.

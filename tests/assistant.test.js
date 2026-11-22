@@ -67,6 +67,7 @@ test('the server returns the curated answer and sources without a model key', as
   assert.equal(response.body.text, text);
   assert.deepEqual(response.body.sources, sources);
   assert.equal(response.body.generated, false);
+  assert.equal(response.body.fallbackReason, 'model-not-configured');
   assert.equal('evidence' in response.body, false);
 });
 
@@ -115,6 +116,7 @@ test('Gemini uses public facts, conversation, and trusted source IDs, and reuses
   const [response, duplicate] = await Promise.all([callCrew(input, env), callCrew(input, env)]);
   assert.equal(response.body.text, 'LangGraph routes requests to specialists.');
   assert.equal(response.body.generated, true);
+  assert.equal(response.body.model, 'gemini-3.5-flash-lite');
   assert.deepEqual(response.body.sources, answerPortfolio(question).sources);
   assert.deepEqual(response.body.followUps, ['How does engineer review work?']);
   assert.deepEqual(duplicate.body, response.body);
@@ -169,8 +171,98 @@ test('the endpoint keeps text and source links available when Gemini runs out of
   const response = await callCrew({ question, guide: 'byte' }, env);
   assert.equal(response.statusCode, 200);
   assert.equal(response.body.generated, false);
+  assert.equal(response.body.fallbackReason, 'provider-rate-limited');
   assert.equal(response.body.text, answerPortfolio(question).text);
   assert.deepEqual(response.body.sources, answerPortfolio(question).sources);
   await callCrew({ question: 'Compare FIR Vault and CareSync', guide: 'atlas' }, env);
-  assert.equal(modelRequests, 1);
+  assert.equal(modelRequests, 2);
+});
+
+test('the backup answers a hiring follow-up with the same conversation when the primary hits quota', async (context) => {
+  const history = [
+    { question: 'Tell me about his work at Cisco', answer: 'He built agent workflows at Cisco and reduced model startup time.' },
+    { question: 'convience me to hire him', answer: 'He combines experience at Cisco with a Smart India Hackathon win.' },
+  ];
+  const calls = [];
+  let now = Date.now();
+  context.mock.method(Date, 'now', () => now);
+  context.mock.method(globalThis, 'fetch', async (url, options) => {
+    const model = url.includes('3.5-flash-lite') ? 'primary' : 'backup';
+    calls.push(model);
+    const prompt = JSON.parse(options.body);
+    const input = JSON.parse(prompt.contents[0].parts[0].text);
+    if (input.question === 'other than this?') {
+      assert.deepEqual(input.conversation, history);
+      assert.match(prompt.systemInstruction.parts[0].text, /different verified evidence/);
+      if (model === 'primary') {
+        return Response.json({ error: { details: [
+          { '@type': 'type.googleapis.com/google.rpc.RetryInfo', retryDelay: '90s' },
+        ] } }, { status: 429 });
+      }
+    }
+    return geminiReply({ text: 'At Evolvision, he consolidated dashboard API calls and cached frequently accessed data.',
+      sourceIds: ['resume'], followUps: [] });
+  });
+  const env = { GEMINI_KEY: 'recruiter-conversation-test' };
+  for (const [index, turn] of history.entries()) {
+    const response = await callCrew({ question: turn.question, history: history.slice(0, index) }, env);
+    assert.equal(response.body.model, 'gemini-3.5-flash-lite');
+  }
+  const followUp = await callCrew({ question: 'other than this?', history }, env);
+  assert.equal(followUp.body.generated, true);
+  assert.equal(followUp.body.model, 'gemini-3.1-flash-lite');
+  assert.match(followUp.body.text, /Evolvision/);
+  assert.equal(followUp.body.sources[0].href, '/resume.pdf');
+
+  now += 75_000;
+  assert.equal((await callCrew({ question: 'What else can I ask?', history }, env)).body.model, 'gemini-3.1-flash-lite');
+  now += 16_000;
+  assert.equal((await callCrew({ question: 'Can you describe his backend experience?', history }, env)).body.model, 'gemini-3.5-flash-lite');
+  assert.deepEqual(calls, ['primary', 'primary', 'primary', 'backup', 'backup', 'primary']);
+});
+
+test('reaching a model’s local minute limit still leaves the other model available', async (context) => {
+  let calls = 0;
+  context.mock.method(globalThis, 'fetch', async () => {
+    calls += 1;
+    return geminiReply({ text: 'Nihar builds AI workflows and backend services.', sourceIds: [], followUps: [] });
+  });
+  const env = { GEMINI_KEY: 'model-budget-test' };
+  for (let index = 0; index < 12; index += 1) {
+    const { body } = await callCrew({ question: `Tell me about his work, part ${index}` }, env);
+    assert.equal(body.model, index < 8 ? 'gemini-3.5-flash-lite' : 'gemini-3.1-flash-lite');
+  }
+  const limited = await callCrew({ question: 'Tell me about his work again' }, env);
+  assert.equal(limited.body.generated, false);
+  assert.equal(limited.body.fallbackReason, 'site-rate-limited');
+  assert.equal(calls, 12);
+});
+
+test('an incomplete model output can be answered by the fallback model', async (context) => {
+  const calls = [];
+  context.mock.method(globalThis, 'fetch', async (url) => {
+    calls.push(url);
+    if (url.includes('3.1-flash-lite')) return Response.json({ candidates: [{ finishReason: 'MAX_TOKENS' }] });
+    return geminiReply({ text: 'Nihar uses LangGraph to coordinate agents.', sourceIds: ['project-9'], followUps: [] });
+  });
+  const { body } = await callCrew({ question: 'Which technologies does he use?' }, {
+    GEMINI_KEY: 'truncated-model-test', GEMINI_MODEL: 'gemini-3.1-flash-lite',
+  });
+  assert.equal(body.model, 'gemini-3.5-flash-lite');
+  assert.equal(calls.length, 2);
+  assert.match(calls[0], /gemini-3\.1-flash-lite/);
+});
+
+test('a shared credential rejection stops attempts across both models', async (context) => {
+  let calls = 0;
+  context.mock.method(globalThis, 'fetch', async () => {
+    calls += 1;
+    return Response.json({ error: { details: [
+      { '@type': 'type.googleapis.com/google.rpc.ErrorInfo', reason: 'API_KEY_INVALID' },
+    ] } }, { status: 400 });
+  });
+  const env = { GEMINI_KEY: 'credential-rejection-test' };
+  assert.equal((await callCrew({ question: 'Hello' }, env)).body.fallbackReason, 'credentials-unavailable');
+  await callCrew({ question: 'What did Nihar build?' }, env);
+  assert.equal(calls, 1);
 });
