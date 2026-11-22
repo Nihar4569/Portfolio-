@@ -42,6 +42,25 @@ test('the guide retrieves architecture and cold-start evidence from common phras
   assert.match(answerPortfolio('How did Nihar reduce cold starts?').text, /22 minutes/);
 });
 
+test('the guide introduces both papers and follows a named study with verified findings and sources', () => {
+  assert.ok(answerPortfolio('Hi').followUps.includes('What research did Nihar publish?'));
+  const overview = answerPortfolio('What research did Nihar publish?');
+  assert.match(overview.text, /TrustMyIDS/);
+  assert.match(overview.text, /Weather Prediction with SMOTE/);
+  assert.equal(overview.sources.length, 2);
+
+  const question = 'Tell me about TrustMyIDS';
+  const findings = answerPortfolio('What did it find?', [question]);
+  assert.match(findings.text, /99\.44% accuracy and F1.*CyberAI Cup 2024/);
+  assert.ok(findings.sources.some(({ href }) => href === '/research/trustmyids.pdf'));
+  assert.match(answerPortfolio('Who co-authored it?', [question]).text, /Sankar Kumar Mridha, Nihar Ranjan Sahu, Ritwik Kumar Bholika/);
+
+  const weather = answerPortfolio('How did the weather prediction study work?');
+  assert.match(weather.text, /random forest.*LSTM.*SMOTE-balanced/);
+  assert.equal(weather.sources[0].href, 'https://github.com/exploreces/Weather-detection/blob/main/WD_full_paper_SADCSS.pdf');
+  assert.match(answerPortfolio('What stack does the rainfall project use?').text, /Python, TensorFlow/);
+});
+
 async function callCrew(body, env = {}, headers = {}) {
   const request = {
     method: 'POST',
@@ -87,6 +106,24 @@ function geminiReply(answer) {
     candidates: [{ finishReason: 'STOP', content: { parts: [{ text: JSON.stringify(answer) }] } }],
   });
 }
+
+test('the model receives the publication facts and returns only their registered links', async (context) => {
+  context.mock.method(globalThis, 'fetch', async (_url, options) => {
+    const prompt = JSON.parse(options.body);
+    const { publicFacts } = JSON.parse(prompt.contents[0].parts[0].text);
+    const [ids, weather] = publicFacts.publications;
+    assert.match(ids.findings, /99\.44% accuracy and F1/);
+    assert.match(weather.methods, /SMOTE-balanced/);
+    assert.ok(ids.authors.includes('Nihar Ranjan Sahu'));
+    assert.ok(prompt.generationConfig.responseJsonSchema.properties.sourceIds.items.enum.includes('trustmyids-pdf'));
+    return geminiReply({ text: 'Here is the TrustMyIDS paper.', sourceIds: ['trustmyids-ieee', 'trustmyids-pdf', 'unregistered'], followUps: [] });
+  });
+  const response = await callCrew({ question: 'Can I read TrustMyIDS?', guide: 'pip' }, { GEMINI_KEY: 'publication-test' });
+  assert.equal(response.body.generated, true);
+  assert.deepEqual(response.body.sources.map(({ href }) => href), [
+    'https://ieeexplore.ieee.org/document/11156784', '/research/trustmyids.pdf',
+  ]);
+});
 
 test('Gemini uses public facts, conversation, and trusted source IDs, and reuses an identical answer', async (context) => {
   let modelRequests = 0;

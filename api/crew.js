@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { answerPortfolio, projectLink } from '../src/data/assistant.js';
 import { crew, experienceSummary, profile, skillsSummary } from '../src/data/profile.js';
 import projects from '../src/data/projects.js';
+import { research } from '../src/data/research.js';
 
 const requestLimit = 16_384;
 const windowMs = 5 * 60_000;
@@ -43,6 +44,11 @@ const catalog = projects.map((project) => {
   }
   return { id, title, description, techStack, features, outcome, sources };
 });
+const publications = research.map(({ id, title, authors, venue, summary, methods, findings, sources }) => {
+  const sourceIds = Object.keys(sources);
+  for (const [sourceId, link] of Object.entries(sources)) publicSources.set(sourceId, link);
+  return { id, title, authors, venue, summary, methods, findings, sourceIds };
+});
 const publicFacts = {
   profile: {
     name: profile.name, title: profile.title, company: profile.company, location: profile.location,
@@ -51,6 +57,7 @@ const publicFacts = {
   experience: experienceSummary,
   skills: skillsSummary,
   projects: catalog,
+  publications,
   profileSourceIds,
 };
 const answerSchema = {

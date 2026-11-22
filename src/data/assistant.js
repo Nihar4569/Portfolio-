@@ -1,10 +1,11 @@
 import projects from './projects.js';
 import { awards, crew, experienceSummary, profile, skillsSummary } from './profile.js';
+import { research } from './research.js';
 
 export const starterQuestions = [
   'How does the AI automation platform work?',
+  'What research did Nihar publish?',
   'Compare FIR Vault and CareSync',
-  'How did Nihar improve performance?',
 ];
 
 const projectNames = [
@@ -24,6 +25,11 @@ const byId = new Map(projects.map((project) => [project.id, project]));
 const archiveLink = { label: 'All projects', href: '/projects' };
 const resumeLink = { label: 'July 2026 résumé', href: profile.resume, external: true };
 const contactLink = { label: 'Contact Nihar', href: '/contact' };
+const researchIntent = /\b(?:research|publications?|papers?|chapter|published|co authored|coauthored)\b/;
+const researchNames = {
+  trustmyids: /\b(?:trust ?my ?ids|bert|intrusion detection|11156784|isac3)\b/,
+  'weather-prediction': /\b(?:weather (?:prediction|detection|classification|forecasting|research)|sadcss|chapter 4 2)\b/,
+};
 
 const shortName = (project) => project.shortTitle ?? project.title.split(' – ')[0];
 const normalize = (text) => text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -109,6 +115,38 @@ function recommend(ids, intro) {
   };
 }
 
+function mentionedResearch(query) {
+  const weatherStudy = researchIntent.test(query) && /\b(?:smote|rainfall|lstm|weather)\b/.test(query);
+  return research.filter(({ id }) => researchNames[id].test(query) || (id === 'weather-prediction' && weatherStudy));
+}
+
+function researchOverview() {
+  return {
+    text: ['Nihar co-authored these two studies.', ...research.map(({ shortTitle, venue, summary }) =>
+      `${shortTitle} (${venue}). ${summary}`)].join('\n\n'),
+    sources: research.map(({ sources }) => Object.values(sources)[0]),
+    followUps: research.map(({ shortTitle }) => `What did ${shortTitle} find?`),
+    evidence: research,
+  };
+}
+
+function researchReply(paper, query) {
+  let text = `${paper.summary}\n\n${paper.findings}`;
+  if (/\b(?:authors?|co ?authored|who wrote|citation|published where|where (?:was|did).*publish(?:ed)?)\b/.test(query)) {
+    text = `${paper.title}\n${paper.authors.join(', ')}\n${paper.venue}`;
+  } else if (/\b(?:pdf|download|link|source code|github)\b/.test(query)) {
+    text = `Here are the published sources for ${paper.shortTitle}.`;
+  } else if (/\b(?:dataset|data set|methods?|methodology|how .* (?:work|train|trained))\b/.test(query)) {
+    text = paper.methods;
+  }
+  return {
+    text,
+    sources: Object.values(paper.sources),
+    followUps: [`How did ${paper.shortTitle} work?`, `What did ${paper.shortTitle} find?`],
+    evidence: [paper],
+  };
+}
+
 export function guideWelcome(guideId = 'scout') {
   const guide = Object.hasOwn(crew, guideId) ? crew[guideId] : crew.scout;
   return {
@@ -127,9 +165,19 @@ export function answerPortfolio(question, history = [], guideId = 'scout') {
   if (/^(?:thanks|thanks a lot|thank you|thank you so much|cheers)$/.test(query)) {
     return { text: 'You’re welcome! If you want to keep exploring, I’m here.', sources: [], followUps: [] };
   }
+  const papers = mentionedResearch(query);
+  if (papers.length > 1) return researchOverview();
+  if (papers.length === 1) return researchReply(papers[0], query);
+
   const namedProjects = mentionedProjects(query);
   if (namedProjects.length > 1) return compareProjects(namedProjects);
   if (namedProjects.length === 1) return projectReply(namedProjects[0], query);
+
+  if (/\b(?:it|its|(?:the|that) (?:paper|study|chapter|authors?)|pdf|dataset|findings|results?)\b/.test(query)) {
+    const previous = mentionedResearch(normalize(history.at(-1) ?? ''));
+    if (previous.length === 1) return researchReply(previous[0], query);
+  }
+  if (researchIntent.test(query)) return researchOverview();
 
   if (/\b(?:solving for india|gfg amd)\b/.test(query)) {
     const { name, year, organizers, projectSummary } = awards.solvingForIndia;

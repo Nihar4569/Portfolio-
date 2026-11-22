@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
-import { FiAward, FiCode, FiCpu, FiDatabase, FiServer, FiStar } from 'react-icons/fi';
+import { FiArrowUpRight, FiAward, FiCode, FiCpu, FiDatabase, FiServer, FiStar } from 'react-icons/fi';
 import { awards, profile } from '../../data/profile';
+import { research } from '../../data/research';
 import useMotionVisibility from './useMotionVisibility';
 
 const { smartIndia, solvingForIndia } = awards;
@@ -50,7 +51,7 @@ export default function About() {
         </div>
 
         <section id="awards" className="portfolio-awards" aria-labelledby="awards-title">
-          <h3 id="awards-title" data-scroll-reveal="rise">Awards</h3>
+          <h3 id="awards-title" data-scroll-reveal="rise">Awards and Achievements</h3>
           <div className="portfolio-award-list">
             <article className="portfolio-award-feature" data-scroll-reveal="depth">
               <img src="/images/albums/sih/cover.avif"
@@ -77,6 +78,29 @@ export default function About() {
               <AwardCornerMedal />
             </article>
           </div>
+
+          <section id="research" className="portfolio-research" aria-labelledby="research-title">
+            <h4 id="research-title" data-scroll-reveal="rise">Research</h4>
+            <div className="portfolio-award-list">
+              {research.map(({ id, shortTitle, venue, summary, image, imageAlt, sources }) => (
+                <article key={id} className="portfolio-award-feature portfolio-research-card" data-scroll-reveal="depth">
+                  <img src={image} alt={imageAlt} width="1440" height="600" loading="lazy" decoding="async" />
+                  <div className="portfolio-award-feature-copy portfolio-research-copy">
+                    <h5>{shortTitle}</h5>
+                    <p className="portfolio-award-organizers">{venue}</p>
+                    <p className="portfolio-research-summary">{summary}</p>
+                    <div className="portfolio-research-links">
+                      {Object.values(sources).map(({ href, label }) => (
+                        <a key={href} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${label} · ${shortTitle}`}>
+                          {label} <FiArrowUpRight aria-hidden="true" />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
         </section>
       </div>
     </section>

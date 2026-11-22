@@ -257,6 +257,47 @@
   font-size: 0.88rem;
   color: var(--portfolio-accent);
 }
+.portfolio-research {
+  margin-block-start: clamp(28px, 4vw, 40px);
+  scroll-margin-top: calc(var(--portfolio-header-height) + 16px);
+}
+.portfolio-research > h4 {
+  margin: 0 0 14px;
+  font-size: clamp(1.22rem, 2.5vw, 1.65rem);
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+}
+.portfolio-research-card > img { object-position: center; }
+.portfolio-research-copy h5 {
+  margin: 0;
+  font-size: clamp(1.18rem, 2vw, 1.55rem);
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.portfolio-research-summary {
+  margin: 10px 0 3px;
+  color: var(--portfolio-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.portfolio-research-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.05rem;
+}
+.portfolio-research-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  color: var(--portfolio-accent);
+  font-size: 0.86rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.portfolio-research-links a:hover { color: var(--portfolio-text); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -272,7 +313,7 @@
     aspect-ratio: 2 / 1;
     border-radius: 13px 13px 0 0;
   }
-  .portfolio-award-feature > img { object-position: center bottom; }
+  .portfolio-award-feature:not(.portfolio-research-card) > img { object-position: center bottom; }
   .portfolio-award-feature-copy { padding: 17px 16px 8px; }
   .portfolio-sound-switch { left: max(14px, env(safe-area-inset-left)); bottom: max(14px, env(safe-area-inset-bottom)); }
   .portfolio-theme-switch { min-width: 44px; }
