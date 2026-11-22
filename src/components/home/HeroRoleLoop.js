@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { profile } from '../../data/profile';
+import useMotionVisibility from './useMotionVisibility';
 import './hero-role-loop.css';
 
 const roles = [
@@ -14,28 +15,8 @@ export default function HeroRoleLoop({ ready }) {
   const loop = useRef(null);
   const [position, setPosition] = useState(0);
   const [started, setStarted] = useState(false);
-  const [visible, setVisible] = useState(() => !document.hidden);
-  const playing = ready && visible;
+  const playing = useMotionVisibility(loop) && ready;
   const [prefix, role] = roles[position % roles.length];
-
-  useEffect(() => {
-    let inView = true;
-    const updateVisibility = () => setVisible(inView && !document.hidden);
-    const observer = typeof IntersectionObserver === 'function'
-      ? new IntersectionObserver(([entry]) => {
-        inView = entry.isIntersecting;
-        updateVisibility();
-      })
-      : null;
-
-    observer?.observe(loop.current);
-    document.addEventListener('visibilitychange', updateVisibility);
-    updateVisibility();
-    return () => {
-      observer?.disconnect();
-      document.removeEventListener('visibilitychange', updateVisibility);
-    };
-  }, []);
 
   useEffect(() => {
     if (playing) setStarted(true);

@@ -3,11 +3,15 @@
 - This checkout is for the existing portfolio at https://itsnihar.vercel.app/. Work on `v2` and preserve `main` and the `ai_portfolio` snapshot. Use the personal Git identity `nihar4569 <nihar4569@gmail.com>`. Push or publish only on request.
 - Use the approved cinematic portrait and four crew members in the existing portfolio. Keep the title `Software Engineer`, the portrait in its own layout space, and the existing Work, Albums, and Contact routes.
 - Use short, reduced-motion-aware animations. Keep scrolling native and use scroll-linked reveals with subtle depth across pages. Scout guides the portfolio, Pip explains AI workflows, Atlas explains architecture, and Byte explains backend performance.
-- Play the approved cyan portrait sweep, terminal `whoami` cue, and staggered crew wake-up on a direct homepage arrival, once per tab. Let below-the-fold cues play when they come into view. Keep the hero usable throughout and settle into the existing layout.
+- Play the cyan portrait sweep, terminal `whoami` cue, and staggered crew wake-up on direct homepage loads and refreshes. Let below-the-fold cues play when they come into view. Keep the hero usable throughout and settle into the existing layout.
+- Keep the existing glow behind the portrait. Use the pointer’s angle around the portrait to move the glow on the opposite side at a fixed radius. Let the crew take turns making small idle gestures while their row is visible, and respect reduced motion.
 - Place the approved role typewriter as a plain text line with a cyan caret directly beneath the name and above the bio. Keep the Software Engineer title above the name. Let the opening animation settle before cycling roles and show a static role with reduced motion.
 - Keep scroll progress indicators out of the header.
 - Use near-black and electric blue from the approved blue reference across this checkout. Light mode uses cool blue-gray surfaces. Keep the portrait and crew, including their blue lighting.
 - Match the wider 110% desktop reference at default browser zoom. The hero fills the first desktop viewport below the header so About starts on scroll. Keep the compact layout for short laptops and a stacked layout on phones.
+- Center the About Me portrait on its own row on phones. Keep the biography and specialties aligned to the text column.
+- Use matching cards in About Me’s Awards, with the same size, layout, and media ratio. Use the hero’s blue accent for both organizer lines. Keep the original Smart India Hackathon 2022 team photo and use a gold medal for Solving For India Hackathon. Keep project names and links out of the award cards.
+- Place a tiny gold medal with a star in the top-right corner of each award card. Let its glow pulse briefly as it comes into view and stay steady with reduced motion.
 - Preserve the original coding loader and its route-specific messages. Each full page navigation eases the outgoing page away, shows the loader, and reveals the ready page. Respect reduced motion and keep same-page interactions immediate.
 - Keep opt-in interaction sounds and the functional portfolio terminal. Show project, technology, and hackathon counts on Projects.
 - Use the selected Four-group overview for Tech Stack. Display AI systems, Backend, Languages, and Data & tools together. Keep technology lists free of project names, descriptions, and links.

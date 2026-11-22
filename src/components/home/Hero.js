@@ -5,19 +5,12 @@ import { useTerminal } from '../../context/TerminalContext';
 import { crew, profile } from '../../data/profile';
 import { PageTransitionContext } from '../common/PageTransition';
 import HeroRoleLoop from './HeroRoleLoop';
+import useMotionVisibility from './useMotionVisibility';
+import usePortraitBacklight from './usePortraitBacklight';
 import './portrait-hero.css';
 
 const fullMotion = '(prefers-reduced-motion: no-preference)';
-const introStorageKey = 'portfolio-home-intro';
-
-function shouldPlayIntro() {
-  if (window.location.hash || !window.matchMedia(fullMotion).matches) return false;
-  try {
-    return !window.sessionStorage.getItem(introStorageKey);
-  } catch {
-    return true;
-  }
-}
+const crewMembers = Object.entries(crew);
 
 function useHeroCue(target, enabled, openingLength, inViewLength) {
   const [cue, setCue] = useState();
@@ -73,26 +66,28 @@ function useHeroCue(target, enabled, openingLength, inViewLength) {
 export default function Hero() {
   const { openTerminal, openShell, isTerminalOpen } = useTerminal();
   const changingPage = useContext(PageTransitionContext);
-  const [playIntro, setPlayIntro] = useState(() => !changingPage && shouldPlayIntro());
+  const [playIntro, setPlayIntro] = useState(() =>
+    !changingPage && !window.location.hash && window.matchMedia(fullMotion).matches
+  );
   const [sweepPortrait, setSweepPortrait] = useState(playIntro);
+  const hero = useRef(null);
+  const portrait = useRef(null);
   const crewRow = useRef(null);
   const terminalButton = useRef(null);
   const showingIntro = playIntro && !changingPage;
   const terminalCue = useHeroCue(terminalButton, showingIntro, 1800, 1110);
   const crewCue = useHeroCue(crewRow, showingIntro, 2900, 1330);
   const entrancePlaying = showingIntro && (sweepPortrait || terminalCue || crewCue);
+  const motionReady = !changingPage && !isTerminalOpen;
+  const crewVisible = useMotionVisibility(crewRow, 0.9);
+  const settledMotion = motionReady && !entrancePlaying;
+  usePortraitBacklight(hero, portrait, motionReady);
 
   useEffect(() => {
     if (!playIntro) return;
     if (changingPage) {
       setPlayIntro(false);
       return;
-    }
-
-    try {
-      window.sessionStorage.setItem(introStorageKey, 'seen');
-    } catch {
-      // The entrance can still play when session storage is unavailable.
     }
 
     const motion = window.matchMedia(fullMotion);
@@ -124,16 +119,17 @@ export default function Hero() {
   }
 
   return (
-    <section className="portrait-hero" aria-labelledby="portfolio-name" data-hero-intro={showingIntro && sweepPortrait ? '' : undefined}>
+    <section className="portrait-hero" ref={hero} aria-labelledby="portfolio-name"
+      data-hero-intro={showingIntro && sweepPortrait ? '' : undefined}>
       <div className="portrait-hero-inner">
         <div className="portrait-hero-intro">
           <p className="portrait-hero-role">{profile.title} <span>at {profile.company}</span></p>
           <h1 id="portfolio-name">{profile.name}</h1>
-          <HeroRoleLoop ready={!entrancePlaying && !changingPage && !isTerminalOpen} />
+          <HeroRoleLoop ready={settledMotion} />
           <p className="portrait-hero-bio">I build AI workflows and backend systems people can depend on.</p>
         </div>
 
-        <div className="portrait-hero-stage" onPointerMove={movePortrait} onPointerLeave={settlePortrait}>
+        <div className="portrait-hero-stage" ref={portrait} onPointerMove={movePortrait} onPointerLeave={settlePortrait}>
           <img
             className="portrait-hero-photo"
             src="/images/portrait/nihar-portrait-800.webp"
@@ -145,10 +141,12 @@ export default function Hero() {
             {...{ fetchpriority: 'high' }}
             decoding="async"
           />
-          <div className="portrait-hero-crew" ref={crewRow} data-hero-cue={crewCue} role="group" aria-label="Meet the crew">
-            {Object.entries(crew).map(([id, guide], index) => (
+          <div className="portrait-hero-crew" ref={crewRow} data-hero-cue={crewCue}
+            data-crew-idle={settledMotion && crewVisible ? '' : undefined}
+            style={{ '--crew-count': crewMembers.length }} role="group" aria-label="Meet the crew">
+            {crewMembers.map(([id, guide], index) => (
               <button type="button" key={id} onClick={() => openTerminal(id)} data-sound="terminal"
-                style={crewCue ? { '--crew-order': index } : undefined}
+                style={{ '--crew-order': index }}
                 aria-label={`Meet ${guide.name}, ${guide.role}`} aria-haspopup="dialog"
                 aria-controls="crew-chat" title={guide.name}>
                 <span className="portrait-hero-avatar" aria-hidden="true">

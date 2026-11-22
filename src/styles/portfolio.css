@@ -135,14 +135,150 @@
 .portfolio-about-specialties dt svg { flex: none; color: var(--portfolio-accent); }
 .portfolio-about-specialties dd { margin: 5px 0 0; color: var(--portfolio-muted); font-size: 0.82rem; }
 
+.portfolio-awards {
+  margin-block-start: clamp(32px, 5vw, 56px);
+  scroll-margin-top: calc(var(--portfolio-header-height) + 16px);
+}
+.portfolio-awards h3 {
+  margin: 0 0 17px;
+  font-size: clamp(1.65rem, 3.6vw, 2.35rem);
+  line-height: 1.12;
+  letter-spacing: -0.05em;
+}
+.portfolio-award-list {
+  display: grid;
+  grid-auto-rows: 1fr;
+  gap: 15px;
+}
+.portfolio-award-feature {
+  position: relative;
+  display: grid;
+  align-items: center;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: clamp(14px, 2vw, 28px);
+  padding: 6px;
+  border: 1px solid var(--portfolio-line);
+  border-radius: 14px;
+  background: var(--portfolio-bg);
+}
+.portfolio-award-feature > img,
+.portfolio-award-medal-art {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 12 / 5;
+  border-radius: 9px;
+}
+.portfolio-award-feature > img {
+  object-fit: cover;
+  object-position: center 76%;
+}
+.portfolio-award-medal-art {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 52%, rgb(218 155 57 / 18%), transparent 60%), var(--portfolio-panel);
+}
+.portfolio-award-medal {
+  position: absolute;
+  display: grid;
+  align-items: end;
+  aspect-ratio: 5 / 7;
+}
+.portfolio-award-medal-art > .portfolio-award-medal {
+  inset-block: 0;
+  left: 50%;
+  block-size: 66%;
+  max-block-size: 11rem;
+  margin-block: auto;
+  transform: translateX(-50%);
+}
+.portfolio-award-medal::before {
+  content: '';
+  position: absolute;
+  inset: 0 6% 41%;
+  background: linear-gradient(125deg, #203858, #5888ad 46%, #192d48 86%);
+  clip-path: polygon(2% 0, 34% 0, 50% 34%, 66% 0, 98% 0, 67% 82%, 50% 100%, 33% 82%);
+}
+.portfolio-award-medallion {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border: 1px solid #ffde91;
+  border-radius: 50%;
+  color: #734817;
+  background: linear-gradient(145deg, #fff2b8, #edbd5d 46%, #bc802e);
+  box-shadow: inset 0 0 0 4px #d99b43, inset 0 0 0 5px #f9d78d, 0 4px 0 #96611e, 0 12px 24px #1a110f4f;
+}
+.portfolio-award-medallion svg {
+  inline-size: 43%;
+  block-size: auto;
+  fill: currentColor;
+  stroke-width: 1.25;
+}
+.portfolio-award-corner-medal {
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  block-size: 2rem;
+  pointer-events: none;
+}
+.portfolio-award-corner-medal .portfolio-award-medallion {
+  box-shadow: inset 0 0 0 1px #d99b43, inset 0 0 0 2px #f9d78d, 0 2px 0 #96611e;
+}
+.portfolio-award-corner-medal .portfolio-award-medallion::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 10px 3px rgb(255 195 73 / 72%);
+  opacity: 0.4;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .portfolio-award-corner-medal[data-medal-visible] .portfolio-award-medallion::after {
+    animation: portfolio-award-medal-glow 1.55s ease-in-out 2;
+  }
+  @keyframes portfolio-award-medal-glow {
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+}
+.portfolio-award-feature-copy {
+  padding-block: 17px;
+  padding-inline-end: clamp(14px, 2.5vw, 28px);
+}
+.portfolio-award-feature-copy .portfolio-award-result {
+  margin: 0 0 7px;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.045em;
+}
+.portfolio-award-feature h4 {
+  margin: 0;
+  font-size: clamp(0.96rem, 1.45vw, 1.18rem);
+  font-weight: 500;
+}
+.portfolio-award-organizers {
+  margin: 7px 0 0;
+  font-size: 0.88rem;
+  color: var(--portfolio-accent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
 @media (max-width: 700px) {
   .portfolio-about { padding-inline: 20px; }
   .portfolio-about-grid { grid-template-columns: 1fr; }
-  .portfolio-about-portrait { width: min(100%, 350px); }
+  .portfolio-about-portrait { justify-self: center; width: min(100%, 350px); }
   .portfolio-about-portrait img { width: min(58%, 198px); }
+  .portfolio-award-feature { grid-template-columns: minmax(0, 1fr); align-content: start; gap: 0; padding: 0; }
+  .portfolio-award-feature > img,
+  .portfolio-award-medal-art {
+    aspect-ratio: 2 / 1;
+    border-radius: 13px 13px 0 0;
+  }
+  .portfolio-award-feature > img { object-position: center bottom; }
+  .portfolio-award-feature-copy { padding: 17px 16px 8px; }
   .portfolio-sound-switch { left: max(14px, env(safe-area-inset-left)); bottom: max(14px, env(safe-area-inset-bottom)); }
   .portfolio-theme-switch { min-width: 44px; }
 }

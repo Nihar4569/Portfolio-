@@ -76,6 +76,15 @@
   background: radial-gradient(ellipse at 54% 46%, var(--portfolio-portrait-glow) 0%, transparent 69%);
 }
 
+@media (any-hover: hover) and (any-pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .portrait-hero-stage::before {
+    transform: rotate(var(--portrait-light-angle, 0rad))
+      translateX(var(--portrait-light-radius, 0px))
+      rotate(calc(-1 * var(--portrait-light-angle, 0rad)));
+    transition: transform 340ms cubic-bezier(0.2, 0.74, 0.22, 1);
+  }
+}
+
 .portrait-hero-photo {
   display: block;
   width: min(100%, clamp(250px, 51svh, 437px));
@@ -348,9 +357,18 @@
   .portrait-hero-crew[data-hero-cue] .portrait-hero-awake {
     animation: portrait-crew-lights 220ms ease-out var(--crew-wake-start) both;
   }
-  .portrait-hero-crew[data-hero-cue] button:nth-child(2) { --crew-rise: -9px; --crew-tilt: 4deg; }
-  .portrait-hero-crew[data-hero-cue] button:nth-child(3) { --crew-rise: -3px; --crew-tilt: 0deg; }
-  .portrait-hero-crew[data-hero-cue] button:nth-child(4) { --crew-rise: -6px; --crew-tilt: 6deg; }
+  .portrait-hero-crew button:nth-child(2) { --crew-rise: -9px; --crew-tilt: 4deg; }
+  .portrait-hero-crew button:nth-child(3) { --crew-rise: -3px; --crew-tilt: 0deg; }
+  .portrait-hero-crew button:nth-child(4) { --crew-rise: -6px; --crew-tilt: 6deg; }
+
+  .portrait-hero-crew { --crew-idle-spacing: 6s; }
+  .portrait-hero-crew:not([data-hero-cue]) .portrait-hero-avatar {
+    animation: portrait-crew-idle calc(var(--crew-count) * var(--crew-idle-spacing)) var(--intro-ease)
+      calc(5s + var(--crew-order) * var(--crew-idle-spacing)) infinite paused;
+  }
+  .portrait-hero-crew[data-crew-idle]:not([data-hero-cue]) .portrait-hero-avatar {
+    animation-play-state: running;
+  }
 
   @keyframes portrait-settle {
     from { opacity: 0.91; translate: 0 7px; }
@@ -384,5 +402,14 @@
       transform: perspective(180px) translateY(var(--crew-rise, -5px)) rotateX(7deg) rotate(var(--crew-tilt, -5deg)) scale(1.035);
     }
     72% { transform: translateY(0.7px) scale(0.985); }
+  }
+  @keyframes portrait-crew-idle {
+    0%, 3.1%, 100% { transform: none; }
+    0.55% { transform: translateY(1px) scale(1.018, 0.975); }
+    1.75% {
+      transform: perspective(180px) translateY(calc(var(--crew-rise, -5px) * 0.85))
+        rotateX(5deg) rotate(var(--crew-tilt, -5deg)) scale(1.025);
+    }
+    2.5% { transform: translateY(0.7px) scale(0.99); }
   }
 }

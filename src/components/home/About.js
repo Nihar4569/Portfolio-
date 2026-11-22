@@ -1,6 +1,9 @@
-import React from 'react';
-import { FiAward, FiCode, FiCpu, FiDatabase, FiServer } from 'react-icons/fi';
-import { profile } from '../../data/profile';
+import React, { useRef } from 'react';
+import { FiAward, FiCode, FiCpu, FiDatabase, FiServer, FiStar } from 'react-icons/fi';
+import { awards, profile } from '../../data/profile';
+import useMotionVisibility from './useMotionVisibility';
+
+const { smartIndia, solvingForIndia } = awards;
 
 const specialties = [
   { title: 'Languages', detail: 'Java, Python, JavaScript', icon: FiCode },
@@ -8,6 +11,18 @@ const specialties = [
   { title: 'Data', detail: 'MongoDB, SQL, Milvus', icon: FiDatabase },
   { title: 'AI systems', detail: 'LangGraph, LangChain, ReAct', icon: FiCpu },
 ];
+
+function AwardCornerMedal() {
+  const medal = useRef(null);
+  const visible = useMotionVisibility(medal, 0.85);
+
+  return (
+    <span ref={medal} className="portfolio-award-medal portfolio-award-corner-medal"
+      data-medal-visible={visible ? '' : undefined} aria-hidden="true">
+      <span className="portfolio-award-medallion"><FiStar /></span>
+    </span>
+  );
+}
 
 export default function About() {
   return (
@@ -33,6 +48,36 @@ export default function About() {
             </dl>
           </div>
         </div>
+
+        <section id="awards" className="portfolio-awards" aria-labelledby="awards-title">
+          <h3 id="awards-title" data-scroll-reveal="rise">Awards</h3>
+          <div className="portfolio-award-list">
+            <article className="portfolio-award-feature" data-scroll-reveal="depth">
+              <img src="/images/albums/sih/cover.avif"
+                alt="The Smart India Hackathon 2022 winning team receiving their award on stage"
+                width="900" height="600" loading="lazy" decoding="async" />
+              <div className="portfolio-award-feature-copy">
+                <p className="portfolio-award-result">{smartIndia.result}</p>
+                <h4>{smartIndia.name} {smartIndia.year}</h4>
+                <p className="portfolio-award-organizers">{smartIndia.organizers}</p>
+              </div>
+              <AwardCornerMedal />
+            </article>
+            <article className="portfolio-award-feature" data-scroll-reveal="depth">
+              <div className="portfolio-award-medal-art" aria-hidden="true">
+                <span className="portfolio-award-medal">
+                  <span className="portfolio-award-medallion"><FiStar /></span>
+                </span>
+              </div>
+              <div className="portfolio-award-feature-copy">
+                <p className="portfolio-award-result">{solvingForIndia.result}</p>
+                <h4>{solvingForIndia.name}</h4>
+                <p className="portfolio-award-organizers">GFG × AMD ’{String(solvingForIndia.year).slice(-2)}</p>
+              </div>
+              <AwardCornerMedal />
+            </article>
+          </div>
+        </section>
       </div>
     </section>
   );

@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FiAward, FiBriefcase, FiCode, FiCalendar } from 'react-icons/fi';
+import { awards } from '../../data/profile';
+
+const { smartIndia, solvingForIndia } = awards;
 
 const Timeline = () => {
   
@@ -54,10 +57,10 @@ const Timeline = () => {
       id: 6,
       type: 'achievement',
       icon: <FiAward />,
-      title: 'Solving For India Hackathon',
-      organization: 'GeeksforGeeks × AMD',
-      date: '2023',
-      description: 'Built a RAG model that retrieves relevant medical information using vector embeddings. Selected for the East Zone regional round.'
+      title: `${solvingForIndia.name} – ${solvingForIndia.result}`,
+      organization: solvingForIndia.organizers,
+      date: String(solvingForIndia.year),
+      description: 'Won with a prototype that retrieves relevant medical information using vector embeddings.'
     },
     {
       id: 7,
@@ -72,9 +75,9 @@ const Timeline = () => {
       id: 8,
       type: 'achievement',
       icon: <FiAward />,
-      title: 'Smart India Hackathon 2022 – National Winner',
+      title: `${smartIndia.name} ${smartIndia.year} – ${smartIndia.result}`,
       organization: 'Ministry of Education (Problem ID: DR717)',
-      date: '2022',
+      date: String(smartIndia.year),
       description: 'Won the national-level hackathon by developing an integrated annual academic calendar for all Indian universities. Led end-to-end development under intense 36-hour deadline.'
     }
   ];
