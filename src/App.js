@@ -74,6 +74,15 @@ const ThemedApp = () => {
               <feComposite in="blue" in2="greenLight" operator="in" result="blueLight" />
               <feComposite in="blueLight" in2="SourceGraphic" operator="over" />
             </filter>
+            <filter id="portfolio-crew-asleep" colorInterpolationFilters="sRGB">
+              {/* Lower the brightest values to switch off the eyes on the existing sprites. */}
+              <feColorMatrix type="saturate" values="0" />
+              <feComponentTransfer>
+                <feFuncR type="table" tableValues="0 .19 .29 .14 .07" />
+                <feFuncG type="table" tableValues="0 .19 .29 .14 .07" />
+                <feFuncB type="table" tableValues="0 .19 .29 .14 .07" />
+              </feComponentTransfer>
+            </filter>
           </svg>
           <Router>
             <Navbar />

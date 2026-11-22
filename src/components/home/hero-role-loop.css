@@ -1,0 +1,83 @@
+.hero-role-loop {
+  display: flex;
+  align-items: center;
+  gap: 0.65ch;
+  inline-size: calc(var(--hero-role-columns) * 1ch);
+  margin-block-start: clamp(10px, 1.65svh, 18px);
+  color: var(--hero-text);
+  font: 500 clamp(0.98rem, 1.46vw, 1.3rem) / 1.4 'Fira Code', monospace;
+  text-align: start;
+  font-variant-ligatures: none;
+}
+
+.hero-role-word {
+  position: relative;
+  --hero-role-end: calc(var(--hero-role-characters) * 1ch);
+}
+
+.hero-role-phrase { display: block; white-space: pre; }
+.hero-role-name { color: var(--hero-accent); }
+
+.hero-role-word::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 0.2em;
+  inset-inline-start: 0.14ch;
+  inline-size: 0.56ch;
+  block-size: 1em;
+  background: var(--hero-accent);
+  transform: translateX(var(--hero-role-end));
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .hero-role-loop {
+    margin-inline: auto;
+    font-size: clamp(0.6875rem, 3.8vw, 1.15rem);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-role-loop[data-role-started] .hero-role-word {
+    --hero-role-duration: 4s;
+    --hero-role-delay: 0s;
+    --hero-role-playback: running;
+  }
+
+  .hero-role-loop[data-role-started] .hero-role-word[data-first-role] {
+    /* The first role is already visible during the entrance. Start with its hold. */
+    --hero-role-delay: -1s;
+  }
+
+  .hero-role-loop[data-role-paused] .hero-role-word { --hero-role-playback: paused; }
+
+  .hero-role-loop[data-role-started] .hero-role-phrase {
+    animation: hero-role-reveal var(--hero-role-duration) linear var(--hero-role-delay) both;
+    animation-play-state: var(--hero-role-playback);
+  }
+
+  .hero-role-loop[data-role-started] .hero-role-word::after {
+    animation: hero-role-caret var(--hero-role-duration) linear var(--hero-role-delay) both;
+    animation-play-state: var(--hero-role-playback);
+  }
+
+  @keyframes hero-role-reveal {
+    0% {
+      clip-path: inset(0 100% 0 0);
+      animation-timing-function: steps(var(--hero-role-characters), end);
+    }
+    25%, 87.5% { clip-path: inset(0 0% 0 0); }
+    87.5% { animation-timing-function: steps(var(--hero-role-characters), end); }
+    100% { clip-path: inset(0 100% 0 0); }
+  }
+
+  @keyframes hero-role-caret {
+    0% {
+      transform: translateX(0);
+      animation-timing-function: steps(var(--hero-role-characters), end);
+    }
+    25%, 87.5% { transform: translateX(var(--hero-role-end)); }
+    87.5% { animation-timing-function: steps(var(--hero-role-characters), end); }
+    100% { transform: translateX(0); }
+  }
+}
