@@ -116,9 +116,7 @@
   cursor: pointer;
 }
 
-.portrait-hero-avatar { position: relative; width: min(100%, 60px); }
-.portrait-hero-avatar img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; }
-.portrait-hero-avatar .portrait-hero-sleeping { position: absolute; inset: 0; opacity: 0; }
+.portrait-hero-avatar { inline-size: min(100%, 60px); }
 .portrait-hero-crew button:hover { color: var(--hero-accent); border-color: var(--hero-line); }
 .portrait-hero-actions { grid-area: actions; align-self: start; margin-top: 28px; }
 
@@ -212,7 +210,7 @@
   .portrait-hero-photo { width: min(100%, clamp(275px, 51svh, 481px)); }
   .portrait-hero-crew { margin-top: clamp(-70px, -6.4svh, -40px); gap: clamp(6px, 1vw, 14px); }
   .portrait-hero-crew button { width: clamp(57px, 5.1vw, 79px); min-height: 60px; font-size: 0.725rem; }
-  .portrait-hero-avatar { width: min(100%, 66px); }
+  .portrait-hero-avatar { inline-size: min(100%, 66px); }
 
   .portrait-hero-actions { margin-top: 31px; }
   .portrait-hero-links { gap: 10px 22px; }
@@ -342,12 +340,8 @@
   .portrait-hero-crew[data-hero-cue] .portrait-hero-avatar {
     animation: portrait-crew-wake 540ms var(--intro-ease) var(--crew-wake-start) both;
   }
-  .portrait-hero-crew[data-hero-cue] .portrait-hero-sleeping {
-    filter: url("#portfolio-crew-asleep");
+  .portrait-hero-crew[data-hero-cue] .crew-avatar-blink {
     animation: portrait-crew-lights 180ms ease-out var(--crew-wake-start) reverse both;
-  }
-  .portrait-hero-crew[data-hero-cue] .portrait-hero-awake {
-    animation: portrait-crew-lights 220ms ease-out var(--crew-wake-start) both;
   }
   .portrait-hero-crew button:nth-child(2) { --crew-rise: -9px; --crew-tilt: 4deg; }
   .portrait-hero-crew button:nth-child(3) { --crew-rise: -3px; --crew-tilt: 0deg; }

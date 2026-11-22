@@ -42,13 +42,9 @@ const HomePage = ({ opening }) => {
         </SectionContainer>
       </ProjectsSection>
       
-      <TimelineSection>
+      <TimelineSection aria-labelledby="journey-title">
         <SectionContainer>
-          <SectionTitle data-scroll-reveal="rise">My Journey</SectionTitle>
-          <SectionSubtitle>
-            Key milestones and achievements in my development career
-          </SectionSubtitle>
-          <CrewNote guide="byte">At Cisco, model initialization went from 22 minutes to about 32 seconds. Ask how parallel processing and caching helped.</CrewNote>
+          <SectionTitle id="journey-title" data-scroll-reveal="rise">My Journey</SectionTitle>
           <Timeline />
         </SectionContainer>
       </TimelineSection>

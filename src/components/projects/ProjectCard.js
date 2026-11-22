@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiArrowUpRight, FiExternalLink, FiGithub } from 'react-icons/fi';
+import CrewAvatar from '../common/CrewAvatar';
 import './project-card.css';
 
 export default function ProjectCard({ project, onOpen }) {
@@ -11,7 +12,7 @@ export default function ProjectCard({ project, onOpen }) {
         ) : (
           <>
             <span>{project.category}</span>
-            <img src={`/images/crew/${project.guide}.webp`} alt="" width="116" height="116" loading="lazy" />
+            <CrewAvatar guide={project.guide} size={116} loading="lazy" />
           </>
         )}
       </div>

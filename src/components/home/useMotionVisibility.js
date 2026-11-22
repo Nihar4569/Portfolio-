@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 
-export default function useMotionVisibility(target, threshold = 0) {
+export default function useMotionVisibility(target, threshold = 0, enabled = true) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (!enabled) return;
+
     let inView = typeof IntersectionObserver !== 'function';
     const update = () => setVisible(inView && !document.hidden);
     const observer = typeof IntersectionObserver === 'function'
@@ -21,7 +23,7 @@ export default function useMotionVisibility(target, threshold = 0) {
       observer?.disconnect();
       document.removeEventListener('visibilitychange', update);
     };
-  }, [target, threshold]);
+  }, [target, threshold, enabled]);
 
-  return visible;
+  return enabled && visible;
 }

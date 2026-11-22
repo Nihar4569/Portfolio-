@@ -1,5 +1,5 @@
 import projects from './projects.js';
-import { crew, experienceSummary, profile, skillsSummary } from './profile.js';
+import { awards, crew, experienceSummary, profile, skillsSummary } from './profile.js';
 
 export const starterQuestions = [
   'How does the AI automation platform work?',
@@ -130,6 +130,12 @@ export function answerPortfolio(question, history = [], guideId = 'scout') {
   const namedProjects = mentionedProjects(query);
   if (namedProjects.length > 1) return compareProjects(namedProjects);
   if (namedProjects.length === 1) return projectReply(namedProjects[0], query);
+
+  if (/\b(?:solving for india|gfg amd)\b/.test(query)) {
+    const { name, year, organizers, projectSummary } = awards.solvingForIndia;
+    const text = `Nihar won the ${year} ${name}, organized by ${organizers}, with ${projectSummary}.`;
+    return { text, sources: [{ label: 'About Nihar', href: '/' }], followUps: [], evidence: [{ summary: text }] };
+  }
 
   if (/^(?:help|commands|menu)$/.test(query)) {
     return { text: 'Ask me about a project, compare two projects, or follow up with “what stack does it use?”. Shortcuts include about, skills, projects, experience, résumé, and contact.', sources: [archiveLink], followUps: starterQuestions };

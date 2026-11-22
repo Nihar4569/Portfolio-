@@ -3,6 +3,7 @@ import { FiArrowUpRight, FiExternalLink, FiGithub, FiX } from 'react-icons/fi';
 import { useTerminal } from '../../context/TerminalContext';
 import { crew, profile } from '../../data/profile';
 import { PageTransitionContext } from '../common/PageTransition';
+import CrewAvatar from '../common/CrewAvatar';
 
 const workflow = [
   { guide: 'scout', title: 'Route the request', text: 'The LangGraph supervisor classifies the request and uses its confidence to route it to a specialist.' },
@@ -24,7 +25,7 @@ function WorkflowWalkthrough() {
         ))}
       </div>
       <div className="portfolio-workflow-step" aria-live="polite">
-        <img src={`/images/crew/${step.guide}.webp`} alt="" width="52" height="52" />
+        <CrewAvatar guide={step.guide} size={52} />
         <p key={step.title}>{step.text}</p>
       </div>
     </section>

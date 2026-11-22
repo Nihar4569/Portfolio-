@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FiArrowDown, FiArrowRight, FiArrowUpRight, FiCode, FiDownload, FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
 import { useTerminal } from '../../context/TerminalContext';
 import { crew, profile } from '../../data/profile';
+import CrewAvatar from '../common/CrewAvatar';
 import { PageTransitionContext } from '../common/PageTransition';
 import HeroRoleLoop from './HeroRoleLoop';
 import useMotionVisibility from './useMotionVisibility';
@@ -141,12 +142,7 @@ export default function Hero({ opening }) {
                 style={{ '--crew-order': index }}
                 aria-label={`Meet ${guide.name}, ${guide.role}`} aria-haspopup="dialog"
                 aria-controls="crew-chat" title={guide.name}>
-                <span className="portrait-hero-avatar" aria-hidden="true">
-                  {crewCue && (
-                    <img className="portrait-hero-sleeping" src={`/images/crew/${id}.webp`} alt="" width="60" height="60" />
-                  )}
-                  <img className="portrait-hero-awake" src={`/images/crew/${id}.webp`} alt="" width="60" height="60" />
-                </span>
+                <CrewAvatar guide={id} size={60} className="portrait-hero-avatar" />
                 <span>{guide.name}</span>
               </button>
             ))}

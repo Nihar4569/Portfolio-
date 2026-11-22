@@ -5,6 +5,7 @@ import { useTerminal } from '../../context/TerminalContext';
 import { answerPortfolio, guideWelcome } from '../../data/assistant';
 import { crew } from '../../data/profile';
 import { completeTerminalInput, runTerminalCommand, terminalPath, terminalShortcuts } from '../../data/terminal';
+import CrewAvatar from './CrewAvatar';
 import './crew-chat.css';
 
 function useConversation() {
@@ -198,15 +199,15 @@ export default function SmartTerminal() {
     <>
       <button type="button" className="crew-launcher" aria-label="Ask Scout" aria-haspopup="dialog"
         aria-controls="crew-chat" data-sound="terminal" onClick={() => openTerminal()}>
-        <img src="/images/crew/scout.webp" alt="" width="42" height="42" />
-        <span>Ask Scout</span>
+        <CrewAvatar guide="scout" size={42} />
+        <span className="crew-launcher-label">Ask Scout</span>
       </button>
 
       <dialog id="crew-chat" className={`crew-chat${shell ? ' crew-terminal' : ''}`}
         aria-labelledby="crew-chat-title" onClose={closeTerminal} ref={dialog}>
         <header className="crew-chat-header">
           {shell ? <span className="crew-terminal-mark"><FiTerminal aria-hidden="true" /></span>
-            : <img src={`/images/crew/${guideId}.webp`} width="54" height="54" alt="" />}
+            : <CrewAvatar guide={guideId} size={54} />}
           <div className="crew-chat-heading">
             <h2 id="crew-chat-title" ref={dialogTitle} tabIndex={-1}>{title}</h2>
             <p>{shell ? terminalPath(pathname) : guide.role}</p>

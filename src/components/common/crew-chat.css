@@ -27,7 +27,6 @@
   cursor: pointer;
 }
 
-.crew-launcher img { object-fit: contain; }
 .crew-launcher:hover { border-color: var(--crew-accent); }
 
 .crew-chat {
@@ -77,7 +76,6 @@
   border-bottom: 1px solid var(--crew-border);
 }
 
-.crew-chat-header img { object-fit: contain; }
 .crew-chat-heading { min-width: 0; overflow-wrap: anywhere; }
 .crew-chat-header h2 { margin: 0; font-size: 1.18rem; font-weight: 600; }
 .crew-chat-header h2::after { content: none; }
@@ -235,11 +233,11 @@
 
 @media (max-width: 600px) {
   .crew-launcher { right: max(14px, env(safe-area-inset-right)); bottom: max(14px, env(safe-area-inset-bottom)); padding: 5px; }
-  .crew-launcher span { display: none; }
+  .crew-launcher-label { display: none; }
   .crew-chat { --crew-gap: 10px; --crew-max-width: 100%; --crew-max-height: 640px; }
   .crew-chat-header { padding: 12px; gap: 6px; }
   .crew-chat-header h2 { font-size: 1rem; }
-  .crew-chat-header img { width: 41px; height: 41px; }
+  .crew-chat-header .crew-avatar { inline-size: 41px; }
   .crew-terminal-mark { width: 37px; height: 37px; }
   .crew-chat-log { padding: 17px 14px; }
   .crew-chat-prompts { padding-inline: 14px; }
@@ -252,7 +250,7 @@
 @media (max-height: 520px) {
   .crew-chat { --crew-gap: 10px; }
   .crew-chat-header, .crew-chat-form { padding-block: 7px; }
-  .crew-chat-header img, .crew-terminal-mark { width: 36px; height: 36px; }
+  .crew-chat-header .crew-avatar, .crew-terminal-mark { inline-size: 36px; block-size: 36px; }
   .crew-chat-log { padding-block: 10px; }
   .crew-chat-prompts { padding-block-end: 6px; max-block-size: min(60px, 20dvh); }
 }

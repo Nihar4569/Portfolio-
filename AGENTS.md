@@ -13,6 +13,8 @@
 - Center the About Me portrait on its own row on phones. Keep the biography and specialties aligned to the text column.
 - Use matching cards in About Me’s Awards, with the same size, layout, and media ratio. Use the hero’s blue accent for both organizer lines. Keep the original Smart India Hackathon 2022 team photo and use a gold medal for Solving For India Hackathon. Keep project names and links out of the award cards.
 - Place a tiny gold medal with a star in the top-right corner of each award card. Let its glow pulse briefly as it comes into view and stay steady with reduced motion.
+- Pair each My Journey milestone with an animated crew guide on the opposite side of the timeline. Let the guide point to the card in a loop while in view, with a short callout and milestone-specific chat question. On phones, place the guide beneath the card and point up. Keep the content and gesture visible with reduced motion.
+- Let crew avatars blink at different intervals across the site. Pause blinking outside the viewport and keep the eyes steady with reduced motion.
 - Preserve the original coding loader and its route-specific messages. Each full page navigation eases the outgoing page away, shows the loader, and reveals the ready page. Respect reduced motion and keep same-page interactions immediate.
 - Keep opt-in interaction sounds and the functional portfolio terminal. Show project, technology, and hackathon counts on Projects.
 - Use the selected Four-group overview for Tech Stack. Display AI systems, Backend, Languages, and Data & tools together. Keep technology lists free of project names, descriptions, and links.

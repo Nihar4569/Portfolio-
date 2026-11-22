@@ -1,0 +1,64 @@
+.crew-avatar {
+  position: relative;
+  display: block;
+  flex: none;
+  inline-size: var(--crew-avatar-size);
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+
+.crew-avatar > img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+}
+
+.crew-avatar-blink {
+  opacity: 0;
+  filter: url('#portfolio-crew-asleep');
+  mask-image: radial-gradient(ellipse 7.4% 7.4% at var(--crew-left-eye), #000 70%, transparent),
+    radial-gradient(ellipse 7.4% 7.4% at var(--crew-right-eye), #000 70%, transparent);
+}
+
+/* Eye centers measured in the square containing each sprite. */
+.crew-avatar[data-crew-guide='scout'] {
+  --crew-left-eye: 56.1% 57.2%;
+  --crew-right-eye: 77.9% 53.5%;
+  --crew-blink-start: 460ms;
+  --crew-blink-period: 8.2s;
+}
+.crew-avatar[data-crew-guide='pip'] {
+  --crew-left-eye: 39.5% 47.5%;
+  --crew-right-eye: 61.3% 47.5%;
+  --crew-blink-start: 1.54s;
+  --crew-blink-period: 8.9s;
+}
+.crew-avatar[data-crew-guide='atlas'] {
+  --crew-left-eye: 34.6% 45.1%;
+  --crew-right-eye: 64.3% 45.1%;
+  --crew-blink-start: 2.62s;
+  --crew-blink-period: 9.4s;
+}
+.crew-avatar[data-crew-guide='byte'] {
+  --crew-left-eye: 52% 54.3%;
+  --crew-right-eye: 73% 52.5%;
+  --crew-blink-start: 3.7s;
+  --crew-blink-period: 10.1s;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .crew-avatar-blink {
+    animation: crew-blink var(--crew-blink-period) ease-in-out
+      calc(var(--crew-blink-start) + var(--crew-blink-offset)) infinite paused;
+  }
+
+  .crew-avatar[data-crew-in-view] .crew-avatar-blink { animation-play-state: running; }
+
+  @keyframes crew-blink {
+    0%, 2.55%, 100% { opacity: 0; }
+    0.85%, 1.45% { opacity: 1; }
+  }
+}

@@ -7,7 +7,6 @@
   padding: 14px 0;
   border-block: 1px solid var(--portfolio-line);
 }
-.crew-note img { object-fit: contain; }
 .crew-note p { margin: 0; max-width: 63ch; color: var(--portfolio-muted); font-size: 0.91rem; line-height: 1.55; }
 .crew-note button {
   display: inline-flex;
@@ -26,21 +25,193 @@
 .crew-note button:hover { color: var(--portfolio-text); }
 @media (max-width: 600px) {
   .crew-note { grid-template-columns: 48px minmax(0, 1fr); gap: 6px 12px; }
-  .crew-note img { width: 48px; height: 48px; }
+  .crew-note > .crew-avatar { inline-size: 48px; }
   .crew-note p { font-size: 0.84rem; }
   .crew-note button { grid-column: 2; justify-self: start; }
 }
+
+.crew-note--journey {
+  --journey-avatar-size: clamp(76px, 8vw, 112px);
+  --journey-arrival-x: 38px;
+  --journey-arrival-turn: -24deg;
+  position: relative;
+  isolation: isolate;
+  grid-area: guide;
+  grid-template-columns: var(--journey-avatar-size) minmax(0, 1fr);
+  grid-template-areas: 'avatar note' 'avatar ask';
+  justify-self: center;
+  inline-size: min(100%, 23rem);
+  min-inline-size: 0;
+  gap: 0 16px;
+  margin: 0;
+  padding: 10px 0;
+  border: 0;
+}
+
+.crew-note--journey::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: calc(var(--journey-avatar-size) / 2);
+  inline-size: calc(var(--journey-avatar-size) * 1.65);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse, var(--portfolio-portrait-glow), transparent 68%);
+}
+
+.journey-row {
+  --journey-gesture-cycle: 6.4s;
+  --journey-gesture-delay: 380ms;
+}
+.journey-row[data-card-side='right'] { --journey-gesture-delay: 640ms; }
+
+.journey-guide-figure {
+  position: relative;
+  grid-area: avatar;
+  inline-size: var(--journey-avatar-size);
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+.journey-guide-figure .crew-avatar { inline-size: 100%; }
+
+.journey-guide-gesture {
+  position: absolute;
+  inset-inline-start: var(--journey-shoulder, 20%);
+  inset-block-start: 61%;
+  inline-size: 0;
+  block-size: 0;
+  transform: scaleX(var(--journey-facing, 1)) rotate(var(--journey-point-angle, 0deg));
+}
+.journey-guide-gesture img {
+  position: absolute;
+  inset: 0 auto auto 0;
+  inline-size: calc(var(--journey-avatar-size) * 0.66);
+  max-inline-size: none;
+  block-size: auto;
+  transform: translate(-100%, -50%);
+  transform-origin: right center;
+}
+
+.crew-note--journey p {
+  grid-area: note;
+  align-self: end;
+  padding-inline-start: 13px;
+  border-inline-start: 1px solid color-mix(in srgb, var(--portfolio-accent) 55%, var(--portfolio-line));
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+.crew-note--journey button {
+  grid-area: ask;
+  justify-self: start;
+  align-self: start;
+  margin-inline-start: 13px;
+  padding: 0;
+  border: 0;
+  font-family: 'Fira Code', monospace;
+}
+
+@media (min-width: 769px) {
+  .journey-row[data-card-side='right'] .crew-note--journey {
+    --journey-arrival-x: -38px;
+    --journey-arrival-turn: 24deg;
+    --journey-shoulder: 80%;
+    --journey-facing: -1;
+    grid-template-columns: minmax(0, 1fr) var(--journey-avatar-size);
+    grid-template-areas: 'note avatar' 'ask avatar';
+  }
+
+  .journey-row[data-card-side='right'] .crew-note--journey::before {
+    inset-inline-start: auto;
+    inset-inline-end: calc(var(--journey-avatar-size) / 2);
+    transform: translate(50%, -50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .crew-note--journey {
+    --journey-avatar-size: 56px;
+    --journey-arrival-x: -12px;
+    --journey-arrival-turn: 16deg;
+    --journey-shoulder: 15%;
+    --journey-point-angle: 83deg;
+    justify-self: start;
+    padding: 2px 0 0;
+    column-gap: 10px;
+  }
+
+  .crew-note--journey p { padding-inline-start: 10px; font-size: 0.82rem; }
+  .crew-note--journey button { margin-inline-start: 10px; }
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  .journey-guide-gesture img { opacity: 0; }
+
+  /* Start at a readable pace once the note is visible, even after a fast scroll. */
+  .crew-note--journey[data-journey-in-view] .journey-guide-figure {
+    animation: journey-guide-arrival 810ms cubic-bezier(0.18, 0.65, 0.28, 1) both,
+      journey-guide-lean var(--journey-gesture-cycle) ease-in-out var(--journey-gesture-delay) infinite;
+  }
+  .crew-note--journey[data-journey-in-view] .journey-guide-gesture img {
+    animation: journey-guide-point var(--journey-gesture-cycle) ease-in-out var(--journey-gesture-delay) infinite both;
+  }
+  .crew-note--journey[data-journey-in-view] p {
+    animation: journey-guide-comment 580ms ease-out 380ms both;
+  }
+  .journey-row:has(> .crew-note--journey[data-journey-in-view]) .journey-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--portfolio-accent);
+    border-radius: inherit;
+    box-shadow: 0 0 23px var(--portfolio-portrait-glow);
+    pointer-events: none;
+    animation: journey-guide-signal var(--journey-gesture-cycle) ease-in-out var(--journey-gesture-delay) infinite both;
+  }
+
+  @keyframes journey-guide-arrival {
+    from {
+      opacity: 0.28;
+      transform: perspective(440px) translate3d(var(--journey-arrival-x), 20px, -105px)
+        rotateY(var(--journey-arrival-turn)) rotateX(14deg);
+    }
+    75% { opacity: 1; transform: perspective(440px) translate3d(0, -4px, 9px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes journey-guide-comment {
+    from { opacity: 0.46; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes journey-guide-lean {
+    0%, 35%, 100% { translate: 0 0; }
+    9% { translate: 0 -5px; }
+  }
+
+  @keyframes journey-guide-point {
+    0%, 48%, 100% { opacity: 0; transform: translate(-100%, -50%) rotate(-38deg) scaleX(0.54); }
+    10% { opacity: 1; transform: translate(-100%, -50%) rotate(7deg) scaleX(1.06); }
+    17%, 36% { opacity: 1; transform: translate(-100%, -50%); }
+  }
+
+  @keyframes journey-guide-signal {
+    0%, 9%, 36%, 100% { opacity: 0; }
+    15% { opacity: 0.78; }
+  }
+
   @supports (animation-timeline: view()) and (animation-range: entry) {
     @keyframes crew-note-entry {
       from { opacity: 0.2; transform: translate(-22px, 12px) rotate(-12deg) scale(0.78); }
       to { opacity: 1; transform: none; }
     }
     .crew-note { view-timeline: --crew-note block; }
-    .crew-note img {
+    .crew-note:not(.crew-note--journey) > .crew-avatar {
       animation: crew-note-entry auto ease-out both;
       animation-timeline: --crew-note;
       animation-range: entry 0% entry 100%;
     }
+
   }
 }

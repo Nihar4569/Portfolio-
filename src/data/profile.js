@@ -23,6 +23,7 @@ export const awards = {
     year: 2023,
     result: 'Winner',
     organizers: 'GeeksforGeeks × AMD',
+    projectSummary: 'a prototype that retrieves relevant medical information using vector embeddings',
   },
 };
 
