@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
-import { FiArrowUpRight, FiAward, FiCode, FiCpu, FiDatabase, FiServer, FiStar } from 'react-icons/fi';
+import { FiAward, FiCode, FiCpu, FiDatabase, FiServer, FiStar } from 'react-icons/fi';
 import { awards, profile } from '../../data/profile';
 import { research } from '../../data/research';
 import useMotionVisibility from './useMotionVisibility';
 
 const { smartIndia, solvingForIndia } = awards;
+const paperLinkLabels = { 'Read PDF': 'PDF', 'Read paper': 'Paper' };
 
 const specialties = [
   { title: 'Languages', detail: 'Java, Python, JavaScript', icon: FiCode },
@@ -52,55 +53,62 @@ export default function About() {
 
         <section id="awards" className="portfolio-awards" aria-labelledby="awards-title">
           <h3 id="awards-title" data-scroll-reveal="rise">Awards and Achievements</h3>
-          <div className="portfolio-award-list">
-            <article className="portfolio-award-feature" data-scroll-reveal="depth">
-              <img src="/images/albums/sih/cover.avif"
-                alt="The Smart India Hackathon 2022 winning team receiving their award on stage"
-                width="900" height="600" loading="lazy" decoding="async" />
-              <div className="portfolio-award-feature-copy">
-                <p className="portfolio-award-result">{smartIndia.result}</p>
-                <h4>{smartIndia.name} {smartIndia.year}</h4>
-                <p className="portfolio-award-organizers">{smartIndia.organizers}</p>
-              </div>
-              <AwardCornerMedal />
-            </article>
-            <article className="portfolio-award-feature" data-scroll-reveal="depth">
-              <div className="portfolio-award-medal-art" aria-hidden="true">
-                <span className="portfolio-award-medal">
-                  <span className="portfolio-award-medallion"><FiStar /></span>
-                </span>
-              </div>
-              <div className="portfolio-award-feature-copy">
-                <p className="portfolio-award-result">{solvingForIndia.result}</p>
-                <h4>{solvingForIndia.name}</h4>
-                <p className="portfolio-award-organizers">GFG × AMD ’{String(solvingForIndia.year).slice(-2)}</p>
-              </div>
-              <AwardCornerMedal />
-            </article>
-          </div>
-
-          <section id="research" className="portfolio-research" aria-labelledby="research-title">
-            <h4 id="research-title" data-scroll-reveal="rise">Research</h4>
-            <div className="portfolio-award-list">
-              {research.map(({ id, shortTitle, venue, summary, image, imageAlt, sources }) => (
-                <article key={id} className="portfolio-award-feature portfolio-research-card" data-scroll-reveal="depth">
-                  <img src={image} alt={imageAlt} width="1440" height="600" loading="lazy" decoding="async" />
-                  <div className="portfolio-award-feature-copy portfolio-research-copy">
-                    <h5>{shortTitle}</h5>
-                    <p className="portfolio-award-organizers">{venue}</p>
-                    <p className="portfolio-research-summary">{summary}</p>
-                    <div className="portfolio-research-links">
-                      {Object.values(sources).map(({ href, label }) => (
-                        <a key={href} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${label} · ${shortTitle}`}>
-                          {label} <FiArrowUpRight aria-hidden="true" />
-                        </a>
-                      ))}
-                    </div>
+          <div className="portfolio-award-groups">
+            <section className="portfolio-award-group" aria-labelledby="award-group-title">
+              <h4 id="award-group-title" data-scroll-reveal="rise">Awards</h4>
+              <div className="portfolio-award-list">
+                <article className="portfolio-award-feature" data-scroll-reveal="depth">
+                  <img className="portfolio-award-team-photo" src="/images/albums/sih/cover.avif"
+                    alt="The Smart India Hackathon 2022 winning team receiving their award on stage"
+                    width="900" height="600" loading="lazy" decoding="async" />
+                  <div className="portfolio-award-feature-copy">
+                    <h5>{smartIndia.name} {smartIndia.year}</h5>
+                    <p className="portfolio-award-organizers">{smartIndia.organizers}</p>
+                    <p className="portfolio-award-result">{smartIndia.result}</p>
                   </div>
+                  <AwardCornerMedal />
                 </article>
-              ))}
-            </div>
-          </section>
+                <article className="portfolio-award-feature" data-scroll-reveal="depth">
+                  <div className="portfolio-award-medal-art" aria-hidden="true">
+                    <span className="portfolio-award-medal">
+                      <span className="portfolio-award-medallion"><FiStar /></span>
+                    </span>
+                  </div>
+                  <div className="portfolio-award-feature-copy">
+                    <h5>{solvingForIndia.name}</h5>
+                    <p className="portfolio-award-organizers">GFG × AMD ’{String(solvingForIndia.year).slice(-2)}</p>
+                    <p className="portfolio-award-result">{solvingForIndia.result}</p>
+                  </div>
+                  <AwardCornerMedal />
+                </article>
+              </div>
+            </section>
+
+            <section id="research" className="portfolio-award-group portfolio-research" aria-labelledby="research-title">
+              <h4 id="research-title" data-scroll-reveal="rise">Research</h4>
+              <div className="portfolio-award-list">
+                {research.map(({ id, shortTitle, venue, image, imageAlt, sources }) => (
+                  <article key={id} className="portfolio-award-feature" data-scroll-reveal="depth">
+                    <img src={image} alt={imageAlt} width="1440" height="600" loading="lazy" decoding="async" />
+                    <div className="portfolio-award-feature-copy">
+                      <h5>{shortTitle}</h5>
+                      <p className="portfolio-research-venue">{venue}</p>
+                      <footer className="portfolio-research-links">
+                        {Object.values(sources).map(({ href, label }) => {
+                          const linkLabel = paperLinkLabels[label] ?? label;
+                          return (
+                            <a key={href} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${linkLabel} · ${shortTitle}`}>
+                              {linkLabel}
+                            </a>
+                          );
+                        })}
+                      </footer>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          </div>
         </section>
       </div>
     </section>
